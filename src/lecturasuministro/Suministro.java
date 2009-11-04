@@ -24,8 +24,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         
         display = Display.getDisplay (this);
 
-        mainForm = new Form ("String Item Demo");
-        mainForm.append ("This is a simple label");
+        mainForm = new Form ("Suministro");
        
         txt1 = new TextField ("Buscar", "", 15, TextField.ANY);
         
@@ -53,15 +52,13 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             String[] stringArray = {"jaqui", "carlos", "juan", "moni"};
            
             for (int i=0; i<4; i++){
-               if (stringArray[i].equals(txt1.getString())){
-                  
+               if (stringArray[i].equals(txt1.getString())){                  
                    mainForm2.setCommandListener(this);
                    display.setCurrent (mainForm2);
                    txt3.setString(txt1.getString());
 
-               }else if(stringArray[i] != (txt1.getString())){
-
-                   String text = "No se encontro suministro";
+               }else if(stringArray[i].equals(txt1.getString())){
+                   String text = "Se edfancontro suministro";
                    Alert a = new Alert ("Action", text, null, AlertType.INFO);
                    display.setCurrent (a);
                }
