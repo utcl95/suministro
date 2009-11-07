@@ -23,7 +23,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
 
         mainForm = new Form ("Suministro");
        
-        txt1 = new TextField ("Buscar", "", 15, TextField.ANY);
+        txt1 = new TextField ("Buscar", "", 15, TextField.NUMERIC);
         
         mainForm.append(txt1);
 
@@ -74,7 +74,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
      * return True o False si se encuentra el suministro
      */
     public boolean buscarSuministro(String msuministro) {
-        String[] stringArray = {"jaqui", "carlos", "juan", "moni"};
+        String[] stringArray = {"1234", "2341", "2312", "4123"};
         int i=0;
         while(i<=4){
             if (stringArray[i].equals(msuministro))
