@@ -17,9 +17,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private Form mainForm;
     private Form mainForm2;
 
-    /**
-     * Signals the MIDlet to start and enter the Active state.
-     */
     protected void startApp () {
         
         display = Display.getDisplay (this);
@@ -38,7 +35,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         mainForm.setCommandListener (this);
         display.setCurrent (mainForm);
 
-        mainForm2 = new Form ("respuesta");
+        mainForm2 = new Form ("Lectura");
         txt3 = new TextField("Suministro", "", 20, TextField.UNEDITABLE);
         txt4 = new TextField("Cuenta", "", 20, TextField.ANY);
         mainForm2.append(txt3);
@@ -46,25 +43,12 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     }
 
     public void commandAction (Command c, Item item) {
-
         if (c == CMD_PRESS) {
-
-            String[] stringArray = {"jaqui", "carlos", "juan", "moni"};
-           
-            for (int i=0; i<4; i++){
-               if (stringArray[i].equals(txt1.getString())){                  
-                   mainForm2.setCommandListener(this);
-                   display.setCurrent (mainForm2);
-                   txt3.setString(txt1.getString());
-
-               }else if(stringArray[i].equals(txt1.getString())){
-                   String text = "Se edfancontro suministro";
-                   Alert a = new Alert ("Action", text, null, AlertType.INFO);
-                   display.setCurrent (a);
-               }
+             if (buscarSuministro(txt1.getString())) {
+                 mainForm2.setCommandListener(this);
+                 display.setCurrent (mainForm2);
+                 txt3.setString(txt1.getString());
              }
-
-                       
         }
     }
 
@@ -83,5 +67,20 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
      * Signals the MIDlet to stop and enter the Paused state.
      */
     protected void pauseApp () {
+    }
+
+    /**
+     * Buscar Suministro
+     * return True o False si se encuentra el suministro
+     */
+    public boolean buscarSuministro(String msuministro) {
+        String[] stringArray = {"jaqui", "carlos", "juan", "moni"};
+        int i=0;
+        while(i<=4){
+            if (stringArray[i].equals(msuministro))
+                return true;
+            ++i;
+        }
+        return false;
     }
 }
