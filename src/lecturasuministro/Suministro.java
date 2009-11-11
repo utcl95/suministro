@@ -1,8 +1,14 @@
 
 package lecturasuministro;
 
+
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
+
+import javax.microedition.pim.*;
+import javax.microedition.rms.RecordStore;
+import javax.microedition.rms.RecordStoreException;
+
 /**
  *
  * @author utcl95
@@ -12,14 +18,16 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
     private Display display;
     private TextField txt1;
-    private TextField txt3;
-    private TextField txt4;
+    private TextField consumo;
     private Form mainForm;
     private Form mainForm2;
 
     protected void startApp () {
         
         display = Display.getDisplay (this);
+
+        // Cargar Suministro.
+        cargarSuministro();
 
         mainForm = new Form ("Suministro");
        
@@ -36,10 +44,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         display.setCurrent (mainForm);
 
         mainForm2 = new Form ("Lectura");
-        txt3 = new TextField("Suministro", "", 20, TextField.UNEDITABLE);
-        txt4 = new TextField("Cuenta", "", 20, TextField.ANY);
-        mainForm2.append(txt3);
-        mainForm2.append(txt4);
+        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
+        mainForm2.append(new TextField("Suministro", txt1.getString(), 20, TextField.UNEDITABLE));
+        mainForm2.append(consumo);
     }
 
     public void commandAction (Command c, Item item) {
@@ -47,7 +54,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
              if (buscarSuministro(txt1.getString())) {
                  mainForm2.setCommandListener(this);
                  display.setCurrent (mainForm2);
-                 txt3.setString(txt1.getString());
              }
         }
     }
@@ -67,6 +73,26 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
      * Signals the MIDlet to stop and enter the Paused state.
      */
     protected void pauseApp () {
+    }
+
+    /**
+     * Cargar suministros a leer, 1000 aprox.
+     */
+    public boolean cargarSuministro() {
+        // Estos son los suministros que van a ser leidos.
+        String m_suministros[] = {"2","4","6","8","10","12","14","16","18","20"};
+        boolean retVal;
+        
+        RecordStore rs = null;
+        int     authMode = RecordStore.AUTHMODE_ANY;
+        boolean writable = true;
+
+        try {
+            rs = RecordStore.openRecordStore( "myrs", true, authMode, writable );
+        } catch (RecordStoreException ex) {
+            ex.printStackTrace();
+        }
+        return true;
     }
 
     /**
