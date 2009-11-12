@@ -148,9 +148,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             ex.printStackTrace();
         }
 
-        int nextID = recordCount()+1;
+        int nextID = recordCount();
         
-        for(int i=0; i<nextID; i++) {
+        for(int i=1; i<=nextID; i++) {
             mostrarSuministro(i);
         }
 
