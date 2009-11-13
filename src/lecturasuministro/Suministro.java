@@ -21,6 +21,10 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private Form mainForm2;
 
     private static RecordStore rs = null;
+
+    // Funciones sobre Suministro:
+    // addSuministro, searchSuministro,
+    // TODO: setSuministro(rs, suministro, consumo).
     SuministroRMS sRMS = new SuministroRMS();
 
     protected void startApp () {

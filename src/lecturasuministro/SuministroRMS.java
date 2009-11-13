@@ -9,8 +9,29 @@ import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
 /**
- *
  * @author utcl95
+ * Uso:
+ *
+ * addSuministro, devuelve true o false, indicando el exito al ser añadido.
+ * addSuministro(rs, "123456");
+ *
+ * searchSuministro, devuelve un int, indicando la posicion del suministro o
+ * 0 en caso no sea encontrado.
+ * searchSuministro(rs, "123456");
+ *
+ * showSuministro, muestra un suministro ubicado en la posicion index.
+ * showSuministro(rs, 4)
+ *
+ * setSuministro, cambia el consumo de acuerdo al suministro y al index
+ * Ejemplo:
+ * 
+ * ssuministro = "12345678";
+ * consumo    = "563251"
+ * index = searchSuministro(rs, ssuministro)
+ * if(setSuministro(rs, index, ssuministro, consumo))
+ *     // suministro cambiado ok.
+ * 
+ * setSuministro(rs, index, ssuministro, sconsumo)
  */
 public class SuministroRMS {
     /**
@@ -67,6 +88,25 @@ public class SuministroRMS {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public boolean setSuministro(RecordStore rs, int index, String ssuministro, String sconsumo) {
+        ByteArrayOutputStream   bout = new ByteArrayOutputStream();
+        DataOutputStream        dout = new DataOutputStream(bout);
+        try {
+            dout.writeUTF(ssuministro); // Suministro
+            dout.writeUTF(sconsumo);    // Consumo a cero al inicio.
+            dout.close();
+            byte[] data = bout.toByteArray();
+            rs.setRecord(index, data, index, index);
+            rs.setRecord(index, data, 0, data.length);
+        } catch (RecordStoreException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            return false;
+        }
     }
 
     public void showRMS(RecordStore rs) {
