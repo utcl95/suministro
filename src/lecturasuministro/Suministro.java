@@ -27,6 +27,10 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     protected void startApp () {
         try {
             display = Display.getDisplay(this);
+            // Realiza test sobre las funciones en SuministroRMS.
+            testSuministroRMS ts = new testSuministroRMS();
+            ts.doTest();
+
             // Cargar Suministro.
             cargarSuministro();
             sRMS.showRMS();
@@ -122,7 +126,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     }
 
     public boolean ingresarConsumo(String mconsumo) {
-
             String text = "Consumo ingresado";
             Alert b = new Alert ("Action", text, null, AlertType.INFO);
             display.setCurrent (b);

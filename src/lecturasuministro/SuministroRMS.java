@@ -141,7 +141,7 @@ public class SuministroRMS {
             String msuministro  = din.readUTF();
             String mlectura     = din.readUTF();
             din.close();
-            System.out.println(msuministro);
+            System.out.println(msuministro + " -- " + mlectura);
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (RecordStoreException ex) {
