@@ -13,31 +13,43 @@ import javax.microedition.rms.RecordStoreException;
  * Uso:
  *
  * addSuministro, devuelve true o false, indicando el exito al ser añadido.
- * addSuministro(rs, "123456");
+ * addSuministro("123456");
  *
  * searchSuministro, devuelve un int, indicando la posicion del suministro o
  * 0 en caso no sea encontrado.
- * searchSuministro(rs, "123456");
+ * searchSuministro("123456");
  *
  * showSuministro, muestra un suministro ubicado en la posicion index.
- * showSuministro(rs, 4)
+ * showSuministro(4)
  *
  * setSuministro, cambia el consumo de acuerdo al suministro y al index
  * Ejemplo:
  * 
  * ssuministro = "12345678";
  * consumo    = "563251"
- * index = searchSuministro(rs, ssuministro)
- * if(setSuministro(rs, index, ssuministro, consumo))
+ * index = searchSuministro(ssuministro)
+ * if(setSuministro(index, ssuministro, consumo))
  *     // suministro cambiado ok.
  * 
- * setSuministro(rs, index, ssuministro, sconsumo)
+ * setSuministro(index, ssuministro, sconsumo)
  */
 public class SuministroRMS {
+    static RecordStore m_rs     = null;
+    static String      m_name   = "";
+
+    SuministroRMS(String name) {
+        m_name = name;
+        try {
+            m_rs = RecordStore.openRecordStore(m_name, true);
+        } catch (RecordStoreException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     /**
      * Añadir Suministro al RMS.
      */
-    public boolean addSuministro(RecordStore rs, String asuministro) {
+    public boolean addSuministro(String asuministro) {
         ByteArrayOutputStream   bout = new ByteArrayOutputStream();
         DataOutputStream        dout = new DataOutputStream(bout);
         try {
@@ -45,7 +57,7 @@ public class SuministroRMS {
             dout.writeUTF("000000");    // Consumo a cero al inicio.
             dout.close();
             byte[] data = bout.toByteArray();
-            rs.addRecord(data, 0, data.length); // Añade el registro.
+            m_rs.addRecord(data, 0, data.length); // Añade el registro.
             return true;
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
@@ -56,23 +68,23 @@ public class SuministroRMS {
         }
     }
 
-    public int searchSuministro(RecordStore rs, String ssuministro) {
-        int nextID = SuministroRMS.recordCount(rs);
+    public int searchSuministro(String ssuministro) {
+        int nextID = SuministroRMS.recordCount();
         int i=1;
         
         while(i<=nextID) {
-            if(compareSuministro(rs, ssuministro, i))
+            if(compareSuministro(ssuministro, i))
                 return i;
             ++i;
         }
         return 0;
     }
 
-    private boolean compareSuministro(RecordStore rs, String csuministro, int index) {
+    private boolean compareSuministro(String csuministro, int index) {
         ByteArrayInputStream bin = null;
         DataInputStream din = null;
         try {
-            byte[] data = rs.getRecord(index);
+            byte[] data = m_rs.getRecord(index);
 
             bin = new ByteArrayInputStream(data);
             din = new DataInputStream(bin);
@@ -90,7 +102,7 @@ public class SuministroRMS {
         return false;
     }
 
-    public boolean setSuministro(RecordStore rs, int index, String ssuministro, String sconsumo) {
+    public boolean setSuministro(int index, String ssuministro, String sconsumo) {
         ByteArrayOutputStream   bout = new ByteArrayOutputStream();
         DataOutputStream        dout = new DataOutputStream(bout);
         try {
@@ -98,8 +110,8 @@ public class SuministroRMS {
             dout.writeUTF(sconsumo);    // Consumo a cero al inicio.
             dout.close();
             byte[] data = bout.toByteArray();
-            rs.setRecord(index, data, index, index);
-            rs.setRecord(index, data, 0, data.length);
+            m_rs.setRecord(index, data, index, index);
+            m_rs.setRecord(index, data, 0, data.length);
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
@@ -109,25 +121,25 @@ public class SuministroRMS {
         }
     }
 
-    public void showRMS(RecordStore rs) {
-        int nextID = SuministroRMS.recordCount(rs);
+    public void showRMS() {
+        int nextID = SuministroRMS.recordCount();
 
         for(int i=1; i<=nextID; i++) {
-            this.showSuministro(rs, i);
+            this.showSuministro(i);
         }
 
         try {
-            rs.closeRecordStore();
+            m_rs.closeRecordStore();
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void showSuministro(RecordStore rs, int index) {
+    public void showSuministro(int index) {
         ByteArrayInputStream bin = null;
         DataInputStream din = null;
         try {
-            byte[] data = rs.getRecord(index);
+            byte[] data = m_rs.getRecord(index);
 
             bin = new ByteArrayInputStream(data);
             din = new DataInputStream(bin);
@@ -143,10 +155,10 @@ public class SuministroRMS {
         }
     }
 
-    public static int recordCount(RecordStore rs)  {
+    public static int recordCount()  {
       int count = 0;
       try  {
-         count = rs.getNumRecords();
+         count = m_rs.getNumRecords();
       }
       catch (Exception e) {
          System.out.println(e);

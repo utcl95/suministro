@@ -4,7 +4,6 @@ package lecturasuministro;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
-import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
 /**
@@ -20,19 +19,17 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private Form mainForm;
     private Form mainForm2;
 
-    private static RecordStore rs = null;
-
     // Funciones sobre Suministro:
-    // addSuministro, searchSuministro,
-    // TODO: setSuministro(rs, suministro, consumo).
-    SuministroRMS sRMS = new SuministroRMS();
+    // addSuministro, searchSuministro, setSuministro, showSuministro
+    SuministroRMS sRMS = new SuministroRMS("ELECTRO");
 
     protected void startApp () {
         try {
             display = Display.getDisplay(this);
             // Cargar Suministro.
             cargarSuministro();
-            sRMS.showRMS(rs);
+            sRMS.showRMS();
+            
             mainForm = new Form("Suministro");
             txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
             mainForm.append(txt1);
@@ -83,25 +80,14 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
      */
     public boolean cargarSuministro() throws RecordStoreException {
         // Estos son los suministros que van a ser leidos.
-        String[] m_suministros = {"1111", "2222", "3333", "4444"};
-                    
-        try {
-            rs = RecordStore.openRecordStore("myrs", true);
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
+        String[] m_suministros = {"1111", "2222", "3333", "4444"};                    
 
         int nElementos = 4;
         for (int i = 0; i < nElementos; ++i) {
-            sRMS.addSuministro(rs, m_suministros[i]);
+            sRMS.addSuministro(m_suministros[i]);
             System.out.println(m_suministros[i]);
         }
         
-        try {
-            rs.closeRecordStore();
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
         return true;
     }
 
@@ -120,10 +106,4 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         }
         return false;
     }
-
-
-
-
-
-
 }
