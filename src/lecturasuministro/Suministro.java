@@ -1,12 +1,6 @@
 
 package lecturasuministro;
 
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
@@ -27,13 +21,14 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private Form mainForm2;
 
     private static RecordStore rs = null;
+    SuministroRMS sRMS = new SuministroRMS();
 
     protected void startApp () {
         try {
             display = Display.getDisplay(this);
             // Cargar Suministro.
             cargarSuministro();
-            showRMS();
+            sRMS.showRMS(rs);
             mainForm = new Form("Suministro");
             txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
             mainForm.append(txt1);
@@ -95,7 +90,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
 
         int nElementos = 4;
         for (int i = 0; i < nElementos; ++i) {
-            addSuministro(m_suministros[i]);
+            sRMS.addSuministro(rs, m_suministros[i]);
             System.out.println(m_suministros[i]);
         }
         
@@ -107,25 +102,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         return true;
     }
 
-    /**
-     * Añadir Suministro al RMS.
-     */
-    public boolean addSuministro(String aSuministro) {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);
-        try {
-            dout.writeUTF(aSuministro);
-            dout.writeUTF("000000");
-            dout.close();
-            byte[] data = bout.toByteArray();
-            rs.addRecord(data, 0, data.length);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
-        return true;
-    }
+
     /**
      * Buscar Suministro
      * return True o False si se encuentra el suministro
@@ -141,56 +118,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         return false;
     }
 
-    public void showRMS() {
-        try {
-            rs = RecordStore.openRecordStore("myrs", false);
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
 
-        int nextID = recordCount();
-        
-        for(int i=1; i<=nextID; i++) {
-            mostrarSuministro(i);
-        }
 
-        try {
-            rs.closeRecordStore();
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
-    }
 
-    public void mostrarSuministro(int index) {
-        ByteArrayInputStream bin = null;
-        DataInputStream din = null;
-        try {
-            byte[] data = rs.getRecord(index);
 
-            bin = new ByteArrayInputStream(data);
-            din = new DataInputStream(bin);
 
-            String msuministro  = din.readUTF();
-            String mlectura     = din.readUTF();
-            din.close();
-            System.out.println(msuministro);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static int recordCount()  {
-      int count = 0;
-      try  {
-         count = rs.getNumRecords();
-      }
-      catch (Exception e) {
-         System.out.println(e);
-         e.printStackTrace();
-      }
-
-      return count;
-   }
 }
