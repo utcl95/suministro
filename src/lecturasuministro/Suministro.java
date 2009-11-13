@@ -80,7 +80,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     public boolean cargarSuministro() throws RecordStoreException {
         // Estos son los suministros que van a ser leidos.
         String[] m_suministros = {"1111", "2222", "3333", "4444"};
-        boolean retVal;
                     
         try {
             rs = RecordStore.openRecordStore("myrs", true);

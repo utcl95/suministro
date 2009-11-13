@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package lecturasuministro;
 
 import java.io.ByteArrayInputStream;
@@ -21,34 +16,64 @@ public class SuministroRMS {
     /**
      * Añadir Suministro al RMS.
      */
-    public boolean addSuministro(RecordStore rs, String aSuministro) {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);
+    public boolean addSuministro(RecordStore rs, String asuministro) {
+        ByteArrayOutputStream   bout = new ByteArrayOutputStream();
+        DataOutputStream        dout = new DataOutputStream(bout);
         try {
-            dout.writeUTF(aSuministro);
-            dout.writeUTF("000000");
+            dout.writeUTF(asuministro); // Suministro
+            dout.writeUTF("000000");    // Consumo a cero al inicio.
             dout.close();
             byte[] data = bout.toByteArray();
-            rs.addRecord(data, 0, data.length);
+            rs.addRecord(data, 0, data.length); // Añade el registro.
+            return true;
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
+        } finally {
+            return false;
         }
-        return true;
     }
 
-    public void showRMS(RecordStore rs) {
+    public int searchSuministro(RecordStore rs, String ssuministro) {
+        int nextID = SuministroRMS.recordCount(rs);
+        int i=1;
+        
+        while(i<=nextID) {
+            if(compareSuministro(rs, ssuministro, i))
+                return i;
+            ++i;
+        }
+        return 0;
+    }
+
+    private boolean compareSuministro(RecordStore rs, String csuministro, int index) {
+        ByteArrayInputStream bin = null;
+        DataInputStream din = null;
         try {
-            rs = RecordStore.openRecordStore("myrs", false);
+            byte[] data = rs.getRecord(index);
+
+            bin = new ByteArrayInputStream(data);
+            din = new DataInputStream(bin);
+
+            String msuministro  = din.readUTF();
+            // String mlectura     = din.readUTF();
+            din.close();
+            if(csuministro.equals(msuministro))
+                return true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
+        return false;
+    }
 
-        int nextID = this.recordCount(rs);
+    public void showRMS(RecordStore rs) {
+        int nextID = SuministroRMS.recordCount(rs);
 
         for(int i=1; i<=nextID; i++) {
-            this.mostrarSuministro(rs, i);
+            this.showSuministro(rs, i);
         }
 
         try {
@@ -58,7 +83,7 @@ public class SuministroRMS {
         }
     }
 
-    public void mostrarSuministro(RecordStore rs, int index) {
+    public void showSuministro(RecordStore rs, int index) {
         ByteArrayInputStream bin = null;
         DataInputStream din = null;
         try {
