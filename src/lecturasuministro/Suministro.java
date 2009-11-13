@@ -29,6 +29,11 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             // Cargar Suministro.
             cargarSuministro();
             sRMS.showRMS();
+
+            if(sRMS.searchSuministro("3333") == 0)
+                System.out.println("NO Encontrado");
+            else
+                System.out.println("Encontrado");
             
             mainForm = new Form("Suministro");
             txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
@@ -86,11 +91,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         for (int i = 0; i < nElementos; ++i) {
             sRMS.addSuministro(m_suministros[i]);
             System.out.println(m_suministros[i]);
-        }
-        
+        }        
         return true;
     }
-
 
     /**
      * Buscar Suministro

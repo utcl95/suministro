@@ -127,12 +127,6 @@ public class SuministroRMS {
         for(int i=1; i<=nextID; i++) {
             this.showSuministro(i);
         }
-
-        try {
-            m_rs.closeRecordStore();
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void showSuministro(int index) {
