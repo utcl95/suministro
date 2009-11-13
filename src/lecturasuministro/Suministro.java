@@ -18,7 +18,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private TextField consumo;
     private Form mainForm;
     private Form mainForm2;
-
+  
     // Funciones sobre Suministro:
     // addSuministro, searchSuministro, setSuministro, showSuministro
     SuministroRMS sRMS = new SuministroRMS("ELECTRO");
@@ -29,13 +29,8 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             // Cargar Suministro.
             cargarSuministro();
             sRMS.showRMS();
-
-            if(sRMS.searchSuministro("3333") == 0)
-                System.out.println("NO Encontrado");
-            else
-                System.out.println("Encontrado");
             
-            mainForm = new Form("Suministro");
+            mainForm = new Form("Lectura Suministro");
             txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
             mainForm.append(txt1);
             StringItem item = new StringItem("Button ", "Button", Item.BUTTON);
@@ -45,10 +40,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             mainForm.addCommand(CMD_EXIT);
             mainForm.setCommandListener(this);
             display.setCurrent(mainForm);
-            mainForm2 = new Form("Lectura");
-            consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
-            mainForm2.append(new TextField("Suministro", txt1.getString(), 20, TextField.UNEDITABLE));
-            mainForm2.append(consumo);
+           
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
@@ -57,8 +49,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     public void commandAction (Command c, Item item) {
         if (c == CMD_PRESS) {
              if (buscarSuministro(txt1.getString())) {
-                 mainForm2.setCommandListener(this);
-                 display.setCurrent (mainForm2);
+                 
              }
         }
     }
@@ -100,13 +91,20 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
      * return True o False si se encuentra el suministro
      */
     public boolean buscarSuministro(String msuministro) {
-        String[] stringArray = {"1234", "2341", "2312", "4123"};
-        int i=0;
-        while(i<=4){
-            if (stringArray[i].equals(msuministro))
-                return true;
-            ++i;
+             
+        if(sRMS.searchSuministro(msuministro) == 0)
+               
+           System.out.println("NO Encontrado");
+        
+        else{
+            mainForm2 = new Form("Ingresar Suministro");
+            consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
+            mainForm2.append(new TextField("Suministro", txt1.getString(), 20, TextField.UNEDITABLE));
+            mainForm2.append(consumo);
+            mainForm2.setCommandListener(this);
+            display.setCurrent (mainForm2);
+           //System.out.println("Encontrado");
         }
-        return false;
+        return false; 
     }
 }
