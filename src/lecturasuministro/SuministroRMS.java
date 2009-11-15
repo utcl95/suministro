@@ -160,5 +160,34 @@ public class SuministroRMS {
       }
       return count;
    }
+
+    public int cuentaLista()  {
+      int numero = 0;
+      int compare = 0;
+      ByteArrayInputStream bin = null;
+      DataInputStream din = null;
+
+      try  {
+
+        numero = SuministroRMS.recordCount();
+
+        for(int i=1; i<=numero; i++) {
+            byte[] data = m_rs.getRecord(i);
+
+            bin = new ByteArrayInputStream(data);
+            din = new DataInputStream(bin);
+
+            String mlectura     = din.readUTF();
+            if(mlectura.equals("0000"))
+                compare = compare+1;            
+        }
+
+      }
+      catch (Exception e) {
+         System.out.println(e);
+         e.printStackTrace();
+      }
+      return compare;
+   }
     
 } // end class

@@ -57,7 +57,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
                  
              }
         }if (c == CMD_PRESS2) {
-            if (ingresarConsumo(consumo.getString())){
+            if (ingresarConsumo(txt1.getString(), consumo.getString())){
            
             }
         }
@@ -119,16 +119,22 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
            mainForm2.append(item);
            mainForm2.setCommandListener(this);
            display.setCurrent (mainForm2);
-           //System.out.println("Encontrado");
+
         }
 
         return false;
     }
 
-    public boolean ingresarConsumo(String mconsumo) {
-            String text = "Consumo ingresado";
-            Alert b = new Alert ("Action", text, null, AlertType.INFO);
-            display.setCurrent (b);
+    public boolean ingresarConsumo(String msuministro, String mconsumo) {
+
+        int index = sRMS.searchSuministro(msuministro);
+        sRMS.setSuministro(index, msuministro, mconsumo);
+        int resta = sRMS.cuentaLista();
+        sRMS.showRMS();
+
+        String text = "Consumo ingresado. "+"Le qedan "+resta+" suministros";
+        Alert b = new Alert ("Action", text, null, AlertType.INFO);
+        display.setCurrent (b);
 
         return false;
     }
