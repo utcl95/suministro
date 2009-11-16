@@ -27,6 +27,7 @@ public class testSuministroRMS {
         sRMS.setSuministro(index, m_suministro, m_consumo);
         // Muestra todos los consumos.
         sRMS.showRMS();
+        System.out.println(m_consumo+m_suministro+"prub");
     }
 
     public void cargarSuministro() {

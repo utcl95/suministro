@@ -177,8 +177,12 @@ public class SuministroRMS {
             bin = new ByteArrayInputStream(data);
             din = new DataInputStream(bin);
 
+            String msuministro  = din.readUTF();
             String mlectura     = din.readUTF();
-            if(mlectura.equals("0000"))
+
+            din.close();
+            System.out.println(mlectura+msuministro+"prub");
+            if(mlectura.equals("000000"))
                 compare = compare+1;            
         }
 
