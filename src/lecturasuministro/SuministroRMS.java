@@ -181,7 +181,6 @@ public class SuministroRMS {
             String mlectura     = din.readUTF();
 
             din.close();
-            System.out.println(mlectura+msuministro+"prub");
             if(mlectura.equals("000000"))
                 compare = compare+1;            
         }

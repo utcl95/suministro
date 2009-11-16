@@ -28,8 +28,8 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         try {
             display = Display.getDisplay(this);
             // Realiza test sobre las funciones en SuministroRMS.
-            testSuministroRMS ts = new testSuministroRMS();
-            ts.doTest();
+            //testSuministroRMS ts = new testSuministroRMS();
+            //ts.doTest();
 
             // Cargar Suministro.
             cargarSuministro();
@@ -90,7 +90,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         int nElementos = 4;
         for (int i = 0; i < nElementos; ++i) {
             sRMS.addSuministro(m_suministros[i]);
-            System.out.println(m_suministros[i]);
+            //System.out.println(m_suministros[i]);
         }        
         return true;
     }
@@ -132,7 +132,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         int resta = sRMS.cuentaLista();
         sRMS.showRMS();
 
-        String text = "Consumo ingresado. "+"Le qedan "+resta+" suministros";
+        String text = "Consumo ingresado. "+"Le quedan "+resta+" suministros";
         Alert b = new Alert ("Action", text, null, AlertType.INFO);
         display.setCurrent (b);
 
