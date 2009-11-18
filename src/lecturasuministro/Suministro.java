@@ -4,8 +4,6 @@ package lecturasuministro;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
-import javax.microedition.rms.RecordStoreException;
-
 /**
  *
  * @author utcl95
@@ -25,16 +23,8 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     SuministroRMS sRMS = new SuministroRMS("ELECTRO");
 
     protected void startApp () {
-        try {
             display = Display.getDisplay(this);
-            // Realiza test sobre las funciones en SuministroRMS.
-            //testSuministroRMS ts = new testSuministroRMS();
-            //ts.doTest();
-
-            // Cargar Suministro.
-            cargarSuministro();
-            sRMS.showRMS();
-            
+       
             mainForm = new Form("Lectura Suministro");
             txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
             mainForm.append(txt1);
@@ -46,9 +36,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             mainForm.setCommandListener(this);
             display.setCurrent(mainForm);
            
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void commandAction (Command c, Item item) {
@@ -80,20 +67,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     protected void pauseApp () {
     }
 
-    /**
-     * Cargar suministros a leer, 1000 aprox.
-     */
-    public boolean cargarSuministro() throws RecordStoreException {
-        // Estos son los suministros que van a ser leidos.
-        String[] m_suministros = {"1111", "2222", "3333", "4444"};                    
 
-        int nElementos = 4;
-        for (int i = 0; i < nElementos; ++i) {
-            sRMS.addSuministro(m_suministros[i]);
-            //System.out.println(m_suministros[i]);
-        }        
-        return true;
-    }
 
     /**
      * Buscar Suministro
