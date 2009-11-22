@@ -28,12 +28,13 @@ public class CargaSuministro extends MIDlet {
      */
     public boolean cargarSuministros() {
         // Estos son los suministros que van a ser leidos.
-        String[] m_suministros = {"5555", "6666", "7777", "8888"};
-
-        int nElementos = 4;
-        for (int i = 0; i < nElementos; ++i) {
-            sRMS.addSuministro(m_suministros[i]);
-            //System.out.println(m_suministros[i]);
+        String m_linea = "";
+        TextFile txt = new TextFile("file:///SDCard//solosuministros.txt");
+        int lineas = txt.numLineas();
+        for(int i=1; i<=lineas; i++){
+            m_linea = txt.readLine(i);
+            System.out.println(i + " : " + m_linea);
+            sRMS.addSuministro(m_linea);
         }
         return true;
     }
