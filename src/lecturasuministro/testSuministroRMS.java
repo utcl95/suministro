@@ -24,7 +24,7 @@ public class testSuministroRMS {
         // Busqueda de consumo, devuelve su UBICACION, index.
         int index = sRMS.searchSuministro(m_suministro);
         // Cambia el consumo del suministro "m_suministro".
-        sRMS.setSuministro(index, m_suministro, m_consumo);
+        sRMS.setSuministro(index, m_suministro, m_consumo, "00");
         // Muestra todos los consumos.
         System.out.println("-- Test : --");
         sRMS.showRMS();

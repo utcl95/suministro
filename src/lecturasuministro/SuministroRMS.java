@@ -66,7 +66,8 @@ public class SuministroRMS {
         openRMS();
         try {
             dout.writeUTF(asuministro); // Suministro
-            dout.writeUTF("000000");    // Consumo a cero al inicio.
+            dout.writeUTF("00000000");  // Consumo a cero al inicio.
+            dout.writeUTF("00");        // Observacon
             dout.close();
             byte[] data = bout.toByteArray();
             m_rs.addRecord(data, 0, data.length); // Añade el registro.
@@ -121,13 +122,15 @@ public class SuministroRMS {
         return false;
     }
 
-    public boolean setSuministro(int index, String ssuministro, String sconsumo) {
+    public boolean setSuministro(int index, String ssuministro, String sconsumo, String sobs) {
         ByteArrayOutputStream   bout = new ByteArrayOutputStream();
         DataOutputStream        dout = new DataOutputStream(bout);
         openRMS();
         try {
             dout.writeUTF(ssuministro); // Suministro
             dout.writeUTF(sconsumo);    // Consumo a cero al inicio.
+            dout.writeUTF(sobs);    // Consumo a cero al inicio.
+
             dout.close();
             byte[] data = bout.toByteArray();
             m_rs.setRecord(index, data, index, index);
@@ -205,7 +208,7 @@ public class SuministroRMS {
             String mlectura     = din.readUTF();
 
             din.close();
-            if(mlectura.equals("000000"))
+            if(mlectura.equals("00000000"))
                 compare = compare+1;            
         }
         closeRMS();
