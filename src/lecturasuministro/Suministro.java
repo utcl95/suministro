@@ -23,19 +23,38 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     SuministroRMS sRMS = new SuministroRMS("ELECTRO");
 
     protected void startApp () {
-            display = Display.getDisplay(this);
-       
-            mainForm = new Form("Lectura Suministro");
-            txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
-            mainForm.append(txt1);
-            StringItem item = new StringItem("", "Buscar", Item.BUTTON);
-            item.setDefaultCommand(CMD_PRESS);
-            item.setItemCommandListener(this);
-            mainForm.append(item);
-            mainForm.addCommand(CMD_EXIT);
-            mainForm.setCommandListener(this);
-            display.setCurrent(mainForm);
-           
+        display = Display.getDisplay(this);
+        // Leer Suministro.
+        //FormSuministro fs = new FormSuministro("Lectura x Zona");
+        //display.setCurrent(fs);
+        mainForm = new Form("Lectura Suministro");
+        txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
+        mainForm.append(txt1);
+        StringItem item = new StringItem("", "Buscar", Item.BUTTON);
+        item.setDefaultCommand(CMD_PRESS);
+        item.setItemCommandListener(this);
+        mainForm.append(item);
+        mainForm.addCommand(CMD_EXIT);
+        mainForm.setCommandListener(this);
+        display.setCurrent(mainForm);
+                                  
+    }
+
+    public void keypress() {
+        
+    }
+
+    public void leerSuministro() {
+        mainForm = new Form("Lectura Suministro");
+        txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
+        mainForm.append(txt1);
+        StringItem item = new StringItem("", "Buscar", Item.BUTTON);
+        item.setDefaultCommand(CMD_PRESS);
+        item.setItemCommandListener(this);
+        mainForm.append(item);
+        mainForm.addCommand(CMD_EXIT);
+        mainForm.setCommandListener(this);
+        display.setCurrent(mainForm);
     }
 
     public void commandAction (Command c, Item item) {
@@ -44,7 +63,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
                  
              }
         }if (c == CMD_PRESS2) {
-            if (ingresarConsumo(txt1.getString(), consumo.getString())){
+            if (ingresarConsumo(txt1.getString(), consumo.getString(), "00")){
            
             }
         }
@@ -99,10 +118,10 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         return false;
     }
 
-    public boolean ingresarConsumo(String msuministro, String mconsumo) {
+    public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
 
         int index = sRMS.searchSuministro(msuministro);
-        sRMS.setSuministro(index, msuministro, mconsumo);
+        sRMS.setSuministro(index, msuministro, mconsumo, mobs);
         int resta = sRMS.cuentaLista();
         sRMS.showRMS();
 
