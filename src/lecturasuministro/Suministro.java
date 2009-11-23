@@ -25,17 +25,19 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private TextField consumo;
     private Form mainForm;
     private Form mainForm2;
+
+    private FormSuministro fs = null;
   
     // Funciones sobre Suministro:
     // addSuministro, searchSuministro, setSuministro, showSuministro
-    SuministroRMS sRMS = new SuministroRMS("ELECTRO");
+    SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
 
     protected void startApp () {
 
         display = Display.getDisplay(this);
         // Leer Suministro.
 
-        FormSuministro fs = new FormSuministro("Lectura x Zona");
+        fs = new FormSuministro("Lectura x Zona");
         fs.setCurrentSuministro(currentItem);
         fs.addCommand(CMD_BACK);
         fs.addCommand(CMD_NEXT);
@@ -139,9 +141,23 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
 
 
     public void doBack() {
+        int i = currentItem;
+        if(i == 1) {
+        } else {
+            currentItem = currentItem - 1;
+            fs.setCurrentSuministro(currentItem);
+
+        }
+
     }
 
     public void doNext() {
+        int i = currentItem;
+        if(i == 1000) {
+        } else {
+            currentItem = currentItem + 1;
+            fs.setCurrentSuministro(currentItem);
+        }
     }
 
     

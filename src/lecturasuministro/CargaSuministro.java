@@ -11,7 +11,7 @@ import javax.microedition.midlet.*;
  * @author Carlos
  */
 public class CargaSuministro extends MIDlet {
-    SuministroRMS sRMS = new SuministroRMS("ELECTRO");
+    SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
 
     public void startApp() {
         cargarSuministros();

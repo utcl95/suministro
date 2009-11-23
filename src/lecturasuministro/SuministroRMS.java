@@ -165,6 +165,7 @@ public class SuministroRMS {
 
             String msuministro  = din.readUTF();
             String mlectura     = din.readUTF();
+            String mobs         = din.readUTF();
             din.close();
             System.out.println(msuministro + " -- " + mlectura);
         } catch (IOException ex) {
@@ -172,6 +173,30 @@ public class SuministroRMS {
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String[] getRecord(int index) {
+        ByteArrayInputStream bin = null;
+        DataInputStream din = null;
+        String m_rms[] = new String[3];
+        openRMS();
+        try {
+            byte[] data = m_rs.getRecord(index);
+
+            bin = new ByteArrayInputStream(data);
+            din = new DataInputStream(bin);
+
+            m_rms[0] = din.readUTF();
+            m_rms[1] = din.readUTF();
+            m_rms[2] = din.readUTF();
+            din.close();
+            closeRMS();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (RecordStoreException ex) {
+            ex.printStackTrace();
+        }        
+        return m_rms;
     }
 
     
@@ -219,5 +244,8 @@ public class SuministroRMS {
       }
       return compare;
    }
+
+
+
     
 } // end class

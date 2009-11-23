@@ -115,7 +115,7 @@ public class TextFile {
     public String[] split(String original) {
         Vector nodes = new Vector();
         String separator = "|";
-        System.out.println("split start...................");
+        // System.out.println("split start...................");
         // Parse nodes into vector
         int index = original.indexOf(separator);
         while(index>=0) {
@@ -131,7 +131,7 @@ public class TextFile {
         if( nodes.size()>0 ) {
             for(int loop=0; loop<nodes.size(); loop++) {
                 result[loop] = (String)nodes.elementAt(loop);
-                System.out.println(result[loop]);
+                // System.out.println(result[loop]);
             }
         }
         return result;

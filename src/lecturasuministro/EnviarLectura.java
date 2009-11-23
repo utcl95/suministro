@@ -5,12 +5,6 @@
 
 package lecturasuministro;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import javax.microedition.io.Connector;
-import javax.microedition.io.HttpConnection;
 import javax.microedition.midlet.*;
 
 /**
@@ -18,7 +12,7 @@ import javax.microedition.midlet.*;
  */
 public class EnviarLectura extends MIDlet {
     public void startApp() {
-
+        sendData();
     }
 
     public void pauseApp() {
@@ -28,25 +22,20 @@ public class EnviarLectura extends MIDlet {
     }
 
     public void sendData() {
-        byte[] data = null;
-        try {
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            DataOutputStream dout = new DataOutputStream(bout);
-            // Reemplazar por Suministros de RMS.
-            dout.writeUTF("1111111111");
-            dout.writeUTF("2222222222");
-            dout.close();
-            data = bout.toByteArray();
+        String m_record[] = new String[3];
+        // Variables a exportar.
+        String t_suministro = "";
+        String t_consumo    = "";
+        String t_obs        = "";
 
-            // Conexion al Servidor.
-            HttpConnection c = (HttpConnection) Connector.open("http://www.utcl95.com/elc/sumi.php");
-            c.setRequestMethod(HttpConnection.POST);
-            c.setRequestProperty("Content-Length", Integer.toString(data.length));
-            OutputStream sending = c.openOutputStream();
-            sending.write(data);
-            sending.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+        int numRMS = sRMS.recordCount();
+        
+        //System.out.println(numRMS);
+
+        for(int i=1; i<=numRMS; i++) {
+            m_record = sRMS.getRecord(i);
+            System.out.println(m_record[2]);
         }
     }
 }
