@@ -12,6 +12,14 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private static final Command CMD_PRESS = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
+
+    // Comandos para Adelante, Atras de informacion de Suministro.
+    private static final Command CMD_BACK = new Command ("Atras", Command.ITEM, 1);
+    private static final Command CMD_NEXT = new Command ("Sigte", Command.ITEM, 1);
+
+    // Actual Elemento en pantalla (Suministro)
+    private int currentItem = 1;
+
     private Display display;
     private TextField txt1;
     private TextField consumo;
@@ -23,25 +31,17 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     SuministroRMS sRMS = new SuministroRMS("ELECTRO");
 
     protected void startApp () {
+
         display = Display.getDisplay(this);
         // Leer Suministro.
-        //FormSuministro fs = new FormSuministro("Lectura x Zona");
-        //display.setCurrent(fs);
-        mainForm = new Form("Lectura Suministro");
-        txt1 = new TextField("Buscar", "", 15, TextField.NUMERIC);
-        mainForm.append(txt1);
-        StringItem item = new StringItem("", "Buscar", Item.BUTTON);
-        item.setDefaultCommand(CMD_PRESS);
-        item.setItemCommandListener(this);
-        mainForm.append(item);
-        mainForm.addCommand(CMD_EXIT);
-        mainForm.setCommandListener(this);
-        display.setCurrent(mainForm);
-                                  
-    }
 
-    public void keypress() {
-        
+        FormSuministro fs = new FormSuministro("Lectura x Zona");
+        fs.setCurrentSuministro(currentItem);
+        fs.addCommand(CMD_BACK);
+        fs.addCommand(CMD_NEXT);
+        fs.setCommandListener(this);
+        display.setCurrent(fs);        
+                                  
     }
 
     public void leerSuministro() {
@@ -66,7 +66,14 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             if (ingresarConsumo(txt1.getString(), consumo.getString(), "00")){
            
             }
+        } if (c == CMD_BACK) {
+            doBack();
+        } if(c == CMD_NEXT) {
+            doNext();
         }
+
+
+
     }
 
     public void commandAction (Command c, Displayable d) {
@@ -85,8 +92,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
      */
     protected void pauseApp () {
     }
-
-
 
     /**
      * Buscar Suministro
@@ -130,6 +135,13 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         display.setCurrent (b);
 
         return false;
+    }
+
+
+    public void doBack() {
+    }
+
+    public void doNext() {
     }
 
     

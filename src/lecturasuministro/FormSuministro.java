@@ -47,17 +47,29 @@ public class FormSuministro extends Form  {
     }
 
     public void setNombre(String sn) {
-        m_zona.setText(sn);
+        m_nombre.setText(sn);
     }
 
     public void setDireccion(String sd) {
-        m_zona.setText(sd);
+        m_direccion.setText(sd);
     }
 
     public void setSerie(String ss) {
-        m_zona.setText(ss);
+        m_serie.setText(ss);
     }
 
+    public void setCurrentSuministro(int cs) {
+        TextFile txt = new TextFile("file:///SDCard//juan.txt");
+        String m_linea = txt.readLine(cs);
+        String data[] = txt.split(m_linea);
 
+        setSuministro(data[1]);
+        String mzona = data[3] + "-" + data[5] + "-" + data[7] + "-" + data[9];
+        setZona(mzona);        
+        setNombre(data[11]);
+        setDireccion(data[13]);
+        setSerie(data[15]);
+        txt = null;
+    }
 
 }
