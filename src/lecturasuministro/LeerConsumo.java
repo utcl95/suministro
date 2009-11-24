@@ -11,7 +11,7 @@ import javax.microedition.lcdui.*;
 /**
  * @author Jaqui
  */
-public class LeerConsumo extends Form {
+public class LeerConsumo extends Form implements CommandListener, ItemCommandListener{
    // private static final Command CMD_PRESS = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
     //private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
@@ -32,6 +32,7 @@ public class LeerConsumo extends Form {
     
     public void commandAction (Command c, Item item) {
         if (c == CMD_PRESS2) {
+            System.out.println("jaqui2");
             if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){
            
             }
@@ -50,7 +51,9 @@ public class LeerConsumo extends Form {
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
        append(obs);
        StringItem item = new StringItem("", "Ingresar", Item.BUTTON);
+       System.out.println("jaqui1");
        item.setDefaultCommand(CMD_PRESS2);
+       item.setItemCommandListener(this);
        append(item);
     }
 
@@ -62,7 +65,7 @@ public class LeerConsumo extends Form {
 
         String text = "Consumo ingresado. "+"Le quedan "+resta+" suministros";
         Alert b = new Alert ("Action", text, null, AlertType.INFO);
-        display2.setCurrent (b);
+        display2.setCurrent(b);
 
         return false;
     }
