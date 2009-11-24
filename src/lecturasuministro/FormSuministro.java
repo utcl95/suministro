@@ -71,15 +71,16 @@ public class FormSuministro extends Form  {
         String m_linea = txt.readLine(cs);
         String data[] = txt.split(m_linea);
 
-        setSuministro(data[1]);
+        setSuministro(data[0]);
+        System.out.println(data[0]);
+        
         // Setea el suministro actual
-        currentSuministro = data[1];
+        currentSuministro = data[0];
 
-        String mzona = data[3] + "-" + data[5] + "-" + data[7] + "-" + data[9];
-        setZona(mzona);        
-        setNombre(data[11]);
-        setDireccion(data[13]);
-        setSerie(data[15]);
+        setZona(data[1]);
+        setNombre(data[2]);
+        setDireccion(data[3]);
+        setSerie(data[4]);
         txt = null;
     }
 
