@@ -9,9 +9,9 @@ import javax.microedition.lcdui.*;
  * @author utcl95
  */
 public class Suministro extends MIDlet implements CommandListener, ItemCommandListener {
-    private static final Command CMD_PRESS = new Command ("Press", Command.ITEM, 1);
-    private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
-    private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
+    //private static final Command CMD_PRESS = new Command ("Press", Command.ITEM, 1);
+    //private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
+    //private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
 
     // Comandos para Adelante, Atras de informacion de Suministro.
     //private static final Command CMD_BACK = new Command ("Atras", Command.ITEM, 1);
@@ -28,11 +28,12 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
   
 
     private FormSuministro fs = null;
+    private LeerConsumo lectura = null;
   
     // Funciones sobre Suministro:
     // addSuministro, searchSuministro, setSuministro, showSuministro
-    SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
-    LeerConsumo lectura = new LeerConsumo("INGRESAR LECTURA");
+    //SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+    
 
     protected void startApp () {
 
@@ -52,7 +53,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         item1.setItemCommandListener(this);
         fs.append(item1);
 
-        StringItem item2 = new StringItem("", "Siguiente", Item.BUTTON);
+        StringItem item2 = new StringItem("", "Lectura", Item.BUTTON);
         item2.setDefaultCommand(CMD_PRESS5);
         item2.setItemCommandListener(this);
         fs.append(item2);
@@ -64,12 +65,16 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     }
 
     public void commandAction (Command c, Item item) {
+        String lect = fs.getSuministro();
         if (c == CMD_PRESS3) {
             doBack();
         }if (c == CMD_PRESS4) {
             doNext();
         }if (c == CMD_PRESS5) {
-            lectura.buscarSuministro("suministro");
+            
+            lectura = new LeerConsumo(lect);
+            
+            
         }
     }
 
