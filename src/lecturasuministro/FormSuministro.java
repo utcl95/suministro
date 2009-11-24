@@ -20,6 +20,8 @@ public class FormSuministro extends Form  {
     private StringItem m_nombre;
     private StringItem m_direccion;
     private StringItem m_serie;
+    // Suministro Actual
+    private String currentSuministro = "";
     
     FormSuministro(String title) {
         super(title);
@@ -29,6 +31,8 @@ public class FormSuministro extends Form  {
         m_nombre       = new StringItem("", "None", Item.PLAIN);
         m_direccion    = new StringItem("", "None", Item.PLAIN);
         m_serie        = new StringItem("", "None", Item.PLAIN);
+
+        
 
         append(m_suministro);
         append(m_zona);
@@ -40,6 +44,10 @@ public class FormSuministro extends Form  {
 
     public void setSuministro(String ss) {
         m_suministro.setText(ss);
+    }
+
+    public String getSuministro() {
+        return currentSuministro;
     }
 
     public void setZona(String sz) {
@@ -59,11 +67,14 @@ public class FormSuministro extends Form  {
     }
 
     public void setCurrentSuministro(int cs) {
-        TextFile txt = new TextFile("file:///SDCard//juan.txt");
+        TextFile txt = new TextFile("file:///SDCard//suministros.txt");
         String m_linea = txt.readLine(cs);
         String data[] = txt.split(m_linea);
 
         setSuministro(data[1]);
+        // Setea el suministro actual
+        currentSuministro = data[1];
+
         String mzona = data[3] + "-" + data[5] + "-" + data[7] + "-" + data[9];
         setZona(mzona);        
         setNombre(data[11]);
