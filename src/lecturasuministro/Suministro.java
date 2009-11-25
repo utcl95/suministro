@@ -9,13 +9,6 @@ import javax.microedition.lcdui.*;
  * @author utcl95
  */
 public class Suministro extends MIDlet implements CommandListener, ItemCommandListener {
-    //private static final Command CMD_PRESS = new Command ("Press", Command.ITEM, 1);
-    //private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
-    //private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
-
-    // Comandos para Adelante, Atras de informacion de Suministro.
-    //private static final Command CMD_BACK = new Command ("Atras", Command.ITEM, 1);
-    //private static final Command CMD_NEXT = new Command ("Sigte", Command.ITEM, 1);
 
     private static final Command CMD_PRESS3 = new Command ("Atras", Command.ITEM, 1);
     private static final Command CMD_PRESS4 = new Command ("Sigte", Command.ITEM, 1);
@@ -25,8 +18,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private int currentItem = 1;
 
     private Display display;
-  
-
     private FormSuministro fs = null;
     private LeerConsumo lectura = null;
   
@@ -35,7 +26,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     //SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
     
 
-    protected void startApp () {
+    public void startApp () {
 
         display = Display.getDisplay(this);
         // Leer Suministro.
@@ -57,8 +48,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         item2.setDefaultCommand(CMD_PRESS5);
         item2.setItemCommandListener(this);
         fs.append(item2);
-        //fs.addCommand(CMD_BACK);
-        //fs.addCommand(CMD_NEXT);
+        
         fs.setCommandListener(this);
         display.setCurrent(fs);        
                                   
@@ -72,23 +62,20 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             doNext();
         }if (c == CMD_PRESS5) {
             
-            lectura = new LeerConsumo(lect);
+            lectura = new LeerConsumo(lect);            
             display.setCurrent(lectura);
-            
-            
-            
         }
     }
 
-    public void commandAction (Command c, Displayable d) {
-        destroyApp (false);
-        notifyDestroyed ();
+     public void commandAction (Command c, Displayable d) {
+    
     }
 
     /**
      * Signals the MIDlet to terminate and enter the Destroyed state.
      */
     protected void destroyApp (boolean unconditional) {
+                
     }
 
     /**
