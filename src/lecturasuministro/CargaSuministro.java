@@ -43,7 +43,7 @@ public class CargaSuministro extends MIDlet {
         String m_linea = "";
         String m_temp = "";
         int len = 0;
-        TextFile txt = new TextFile("file:///SDCard//solosuministros.txt");
+        TextFile txt = new TextFile("file:///SDCard/solosuministros.txt");
         int lineas = txt.numLineas() - 1;
         // Numero de Suministros.
         m_nsuministros = lineas;

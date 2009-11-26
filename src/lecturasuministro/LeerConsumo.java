@@ -5,62 +5,63 @@
 
 package lecturasuministro;
 
+import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
 /**
  * @author Jaqui
  */
 public class LeerConsumo extends Form implements CommandListener, ItemCommandListener{
-  
+
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
+
+    private Suministro ss;
     private TextField consumo;
     private String suministro;
     private TextField obs;
 
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
-    
-    LeerConsumo(String lect) {
-        super("Lectura");
+
+    LeerConsumo(String lect, Suministro ss) {
+        super("Lectura de Consumo");
+        this.ss = ss;
         buscarSuministro(lect);
     }
-    
+
     public void commandAction (Command c, Item item) {
         if (c == CMD_PRESS2) {
-            
             if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){
-           
+
             }
-            
         }
     }
-    
+
      /**
      * Buscar Suministro
      * return True o False si se encuentra el suministro
      */
-    public boolean buscarSuministro(String msuministro) {
-       suministro = msuministro;       
+    public void buscarSuministro(String msuministro) {
+       suministro = msuministro;
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
        append(consumo);
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
        append(obs);
+
        StringItem item = new StringItem("", "Ingresar", Item.BUTTON);
-       
        item.setDefaultCommand(CMD_PRESS2);
        item.setItemCommandListener(this);
        append(item);
 
-       return true;
     }
 
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
-
         int index = sRMS.searchSuministro(msuministro);
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
-        //int resta = sRMS.cuentaLista();
+
         sRMS.showRMS();
-        
+        ss.startApp();
+
         return false;
     }
 
@@ -68,8 +69,10 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     }
 
     public void destroyApp(boolean unconditional) {
+
     }
 
-    public void commandAction(Command c, Displayable d) {       
+    public void commandAction(Command c, Displayable d) {
+
     }
 }

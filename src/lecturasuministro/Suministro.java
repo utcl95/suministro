@@ -18,15 +18,17 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private int currentItem = 1;
 
     private Display display;
+
+
     private FormSuministro fs = null;
     private LeerConsumo lectura = null;
-  
+
     // Funciones sobre Suministro:
     // addSuministro, searchSuministro, setSuministro, showSuministro
     //SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
-    
 
-    public void startApp () {
+
+    protected void startApp () {
 
         display = Display.getDisplay(this);
         // Leer Suministro.
@@ -48,10 +50,11 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         item2.setDefaultCommand(CMD_PRESS5);
         item2.setItemCommandListener(this);
         fs.append(item2);
-        
+        //fs.addCommand(CMD_BACK);
+        //fs.addCommand(CMD_NEXT);
         fs.setCommandListener(this);
-        display.setCurrent(fs);        
-                                  
+        display.setCurrent(fs);
+
     }
 
     public void commandAction (Command c, Item item) {
@@ -61,21 +64,20 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         }if (c == CMD_PRESS4) {
             doNext();
         }if (c == CMD_PRESS5) {
-            
-            lectura = new LeerConsumo(lect);            
+            lectura = new LeerConsumo(lect, this);
             display.setCurrent(lectura);
+            display.getCurrent();
         }
     }
 
-     public void commandAction (Command c, Displayable d) {
-    
+    public void commandAction (Command c, Displayable d) {
+
     }
 
     /**
      * Signals the MIDlet to terminate and enter the Destroyed state.
      */
     protected void destroyApp (boolean unconditional) {
-                
     }
 
     /**
@@ -104,5 +106,5 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         }
     }
 
-    
+
 }
