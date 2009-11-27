@@ -23,6 +23,11 @@ public class FormSuministro extends Form  {
     // Suministro Actual
     private String currentSuministro = "";
     
+    // Promedio de lectura del suministro
+    private int m_promedioLectura = 0;
+
+
+    
     FormSuministro(String title) {
         super(title);
         // Iniciar todas las etiquetas.
@@ -81,7 +86,15 @@ public class FormSuministro extends Form  {
         setNombre(data[2]);
         setDireccion(data[3]);
         setSerie(data[4]);
+        
+        // Promedio de Lectura
+        m_promedioLectura = Integer.parseInt(data[7]);
+        
         txt = null;
+    }
+
+    public int getPromedio() {
+        return m_promedioLectura;
     }
 
 }
