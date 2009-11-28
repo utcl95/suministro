@@ -5,7 +5,6 @@
 
 package lecturasuministro;
 
-import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
 /**
@@ -19,8 +18,13 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     private TextField consumo;
     private String suministro;
     private TextField obs;
+    private int vobs;
+    private int lactual;
+    
 
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+
+
 
     LeerConsumo(String lect, Suministro ss) {
         super("Lectura de Consumo");
@@ -29,9 +33,18 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     }
 
     public void commandAction (Command c, Item item) {
+        
+        vobs = Integer.parseInt(obs.getString());
+        lactual = Integer.parseInt(consumo.getString());
+        int lanterior = ss.lAnterior();
+        System.out.println("jaqui"+lanterior);
         if (c == CMD_PRESS2) {
-            if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){
-
+            if (vobs == 1){
+                if(lactual > lanterior){
+                    if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+                }else{
+                    ss.mostrarMensaje();
+                }
             }
         }
     }
