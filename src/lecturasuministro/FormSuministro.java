@@ -24,9 +24,9 @@ public class FormSuministro extends Form  {
     private String currentSuministro = "";
     
     // Promedio de lectura del suministro
-    private int m_promedioLectura = 0;
-
-
+    public int m_promedioLectura = 0;
+    public int m_anteriorLectura = 0;
+    
     
     FormSuministro(String title) {
         super(title);
@@ -89,12 +89,19 @@ public class FormSuministro extends Form  {
         
         // Promedio de Lectura
         m_promedioLectura = Integer.parseInt(data[7]);
-        
+        System.out.println("Antes : " + m_anteriorLectura);
+        m_anteriorLectura = Integer.parseInt(data[6].trim());
+        System.out.println("Despues : " + m_anteriorLectura);
         txt = null;
     }
 
     public int getPromedio() {
-        return m_promedioLectura;
+        
+        return this.m_promedioLectura;
     }
 
+    public int getAnterior() {
+        System.out.println("GetAnterio : " + m_anteriorLectura);
+        return m_anteriorLectura;
+    }
 }
