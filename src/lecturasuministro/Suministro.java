@@ -34,6 +34,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         // Leer Suministro.
 
         fs = new FormSuministro("Lectura x Zona");
+        
         fs.setCurrentSuministro(currentItem);
 
         StringItem item = new StringItem("", "Atras", Item.BUTTON);
@@ -66,12 +67,23 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         }if (c == CMD_PRESS5) {
             lectura = new LeerConsumo(lect, this);
             display.setCurrent(lectura);
-            display.getCurrent();
+            
         }
     }
 
     public void commandAction (Command c, Displayable d) {
 
+    }
+
+    public void mostrarMensaje(){
+        String msg = "Error de Observacion";
+        Alert al = new Alert(msg);
+        display.setCurrent(al);
+
+    }
+
+    public int lAnterior(){
+        return fs.getAnterior();
     }
 
     /**
