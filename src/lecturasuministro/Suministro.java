@@ -75,15 +75,31 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
 
     }
 
-    public void mostrarMensaje(){
-        String msg = "Error de Observacion";
-        Alert al = new Alert(msg);
-        display.setCurrent(al);
+    public void mostrarMensaje(String m){
+        String mns = m;
+
+        if(mns.equals("a")){
+            String msg = "Error lectura actual";
+            Alert al = new Alert(msg);
+            display.setCurrent(al);
+        }else if(mns.equals("b")){
+            String msg = "Error, no tiene lectura anterior";
+            Alert al = new Alert(msg);
+            display.setCurrent(al);
+        }else{
+            String msg = "Fuera de rango";
+            Alert al = new Alert(msg);
+            display.setCurrent(al);
+        }
 
     }
 
     public int lAnterior(){
         return fs.getAnterior();
+    }
+
+    public int lPromedio(){
+        return fs.getPromedio();
     }
 
     /**
