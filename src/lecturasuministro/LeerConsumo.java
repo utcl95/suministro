@@ -33,8 +33,10 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     }
 
     public void commandAction (Command c, Item item) {
-        
-        vobs = Integer.parseInt(obs.getString());
+        if(obs.getString().equals(""))
+            vobs = 0;
+        else
+            vobs = Integer.parseInt(obs.getString());
         lactual = Integer.parseInt(consumo.getString());
         int lanterior = ss.lAnterior();
         int promedio = ss.lPromedio();
