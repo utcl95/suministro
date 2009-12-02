@@ -44,6 +44,13 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
         
         if (c == CMD_PRESS2) {
             switch(vobs){
+                case 0:
+                    if(lactual > lanterior){
+                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+                    }else{
+                      ss.mostrarMensaje("a");
+                    }
+                    break;
                 case 1:
                     if(lactual > lanterior){
                       if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
