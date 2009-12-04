@@ -32,6 +32,11 @@ import javax.microedition.rms.RecordStoreException;
  *     // suministro cambiado ok.
  * 
  * setSuministro(index, ssuministro, sconsumo)
+ *
+ * getRecord, devuelve el registro index, como un array de 3 elementos.
+ *
+ * public String[] getRecord(int index)
+ * 
  */
 public class SuministroRMS {
     RecordStore m_rs     = null;
@@ -67,7 +72,7 @@ public class SuministroRMS {
         try {
             dout.writeUTF(asuministro); // Suministro
             dout.writeUTF("00000000");  // Consumo a cero al inicio.
-            dout.writeUTF("00");        // Observacon
+            dout.writeUTF("00");        // Observacion
             dout.close();
             byte[] data = bout.toByteArray();
             m_rs.addRecord(data, 0, data.length); // Añade el registro.
@@ -128,12 +133,12 @@ public class SuministroRMS {
         openRMS();
         try {
             dout.writeUTF(ssuministro); // Suministro
-            dout.writeUTF(sconsumo);    // Consumo a cero al inicio.
-            dout.writeUTF(sobs);    // Consumo a cero al inicio.
+            dout.writeUTF(sconsumo);
+            dout.writeUTF(sobs);
 
             dout.close();
             byte[] data = bout.toByteArray();
-            m_rs.setRecord(index, data, index, index);
+            // m_rs.setRecord(index, data, index, index);
             m_rs.setRecord(index, data, 0, data.length);
             closeRMS();
         } catch (RecordStoreException ex) {
@@ -167,7 +172,7 @@ public class SuministroRMS {
             String mlectura     = din.readUTF();
             String mobs         = din.readUTF();
             din.close();
-            System.out.println(msuministro + " -- " + mlectura);
+            System.out.println(msuministro + " -- " + mlectura + " -- " + mobs );
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (RecordStoreException ex) {
@@ -175,6 +180,10 @@ public class SuministroRMS {
         }
     }
 
+    /**
+     * Devuelve el registro index, como un array de 3 elementos:
+     * suministro, consumo, obs.
+     */
     public String[] getRecord(int index) {
         ByteArrayInputStream bin = null;
         DataInputStream din = null;
@@ -244,8 +253,4 @@ public class SuministroRMS {
       }
       return compare;
    }
-
-
-
-    
 } // end class
