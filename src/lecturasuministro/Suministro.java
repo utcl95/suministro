@@ -9,6 +9,9 @@ import javax.microedition.lcdui.*;
  * @author utcl95
  */
 public class Suministro extends MIDlet implements CommandListener, ItemCommandListener {
+    // Constante que HABILITA, DESHABILITA los test, solo permite realizar los test, no
+    // ejecuta parte alguna del programa.
+    private static final boolean U_TEST = false;
 
     private static final Command CMD_PRESS3 = new Command ("Atras", Command.ITEM, 1);
     private static final Command CMD_PRESS4 = new Command ("Sigte", Command.ITEM, 1);
@@ -29,6 +32,12 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
 
 
     protected void startApp () {
+        // Modificar su valor en la declaracion para la realizacion de test.
+        if(U_TEST) {
+            testSuministroRMS testRMS = new testSuministroRMS();
+            testRMS.doTest();
+            destroyApp(true);
+        }
 
         display = Display.getDisplay(this);
         // Leer Suministro.
