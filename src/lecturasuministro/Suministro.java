@@ -36,7 +36,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         if(U_TEST) {
             testSuministroRMS testRMS = new testSuministroRMS();
             testRMS.doTest();
-            destroyApp(true);
+
+            testConfigData testCD = new testConfigData();
+            testCD.doTest();
         }
 
         display = Display.getDisplay(this);
