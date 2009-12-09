@@ -23,6 +23,14 @@ public class CargaSuministro extends MIDlet {
         cargarSuministros();
 
         String msg = "Suministros Cargados : " + m_nsuministros;
+
+        // Grabar el numero de suministros en el RMS.
+        ConfigData cd = new ConfigData();
+        cd.setConfigData(m_nsuministros);
+        // Solo para prueba.
+        //cd.showRMS();
+        cd = null;
+
         Alert al = new Alert(msg);
         al.setTimeout(Alert.FOREVER);
         display.setCurrent(al); 
