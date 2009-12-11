@@ -80,16 +80,22 @@ private int currentItem = 1;
             destroyApp (false);
             notifyDestroyed ();
         }if (c == CMD_PRESS) {
-            int index = sRMS.searchSuministro(suministro);
-          
-            fs.setCurrentSuministro(index);
-            lectura = new EnviarLecturaSum(suministro, this);
+           int index = sRMS.searchSuministro(suministro);
+           //int index = sRMS.searchSuministro(suministro);
+         if(index != 0){
+             fs.setCurrentSuministro(index);
+             lectura = new EnviarLecturaSum(suministro, this);
             display2.setCurrent(lectura);
+         }else{
+               String msg = "No existe suministro";
+
+                Alert al = new Alert(msg);
+                display2.setCurrent(al);
 
         }
-
     }
-
+}
+    
     public int lAnterior(){
         return fs.getAnterior();
     }
