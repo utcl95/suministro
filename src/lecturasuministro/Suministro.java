@@ -22,7 +22,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
 
     private Display display;
 
-
     private FormSuministro fs = null;
     private LeerConsumo lectura = null;
 
@@ -69,6 +68,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         if (c == CMD_PRESS3) {
             doBack();
         }if (c == CMD_PRESS4) {
+           System.out.println("jaqui");
             doNext();
         }if (c == CMD_PRESS5) {
             lectura = new LeerConsumo(lect, this);
@@ -90,6 +90,10 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             display.setCurrent(al);
         }else if(mns.equals("b")){
             String msg = "Error, no tiene lectura anterior";
+            Alert al = new Alert(msg);
+            display.setCurrent(al);
+        }else if(mns.equals("d")){
+            String msg = "Lectura correcta";
             Alert al = new Alert(msg);
             display.setCurrent(al);
         }else{
