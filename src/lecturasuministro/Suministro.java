@@ -26,11 +26,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private FormSuministro fs = null;
     private LeerConsumo lectura = null;
 
-    // Funciones sobre Suministro:
-    // addSuministro, searchSuministro, setSuministro, showSuministro
-    //SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
-
-
     protected void startApp () {
         // Modificar su valor en la declaracion para la realizacion de test.
         if(U_TEST) {
@@ -130,9 +125,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         int i = currentItem;
         if(i == 1) {
         } else {
-            while(m_rms.tieneData(i) && i > 1) {
+  //          while(m_rms.tieneData(i) && i > 1) {
                 currentItem = currentItem - 1;
-            }
+  //          }
             fs.setCurrentSuministro(currentItem);
 
         }
@@ -146,9 +141,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         int i = currentItem;
         if(i == 1000) {
         } else {
-            while(m_rms.tieneData(i) && i < 1000) {
+//            while(m_rms.tieneData(i) && i < 1000) {
                 currentItem = currentItem + 1;
-            }
+//            }
             fs.setCurrentSuministro(currentItem);
         }
         m_rms = null;
