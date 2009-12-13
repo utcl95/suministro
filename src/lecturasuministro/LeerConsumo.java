@@ -49,18 +49,14 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
             switch(vobs){
                 case 0:
                     if(lactual > lanterior){
-                      ss.mostrarMensaje("d");//if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
                     }else{
                       ss.mostrarMensaje("a");
                     }
                     break;
                 case 1:
                     if(lactual > lanterior){
-                      ss.mostrarMensaje("d");//if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                      StringItem item2 = new StringItem("", "Ingresar", Item.BUTTON);
-                      item2.setDefaultCommand(CMD_PRESS3);
-                      item2.setItemCommandListener(this);
-                      append(item2);
+                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
                     }else{
                       ss.mostrarMensaje("a");
                     }
@@ -81,6 +77,11 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
                     }
                     break;
             }   // end case
+            if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
+              ss.mostrarMensaje("c");
+            }else{
+              if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+            }
         }       // end if
         if (c == CMD_PRESS3){
          if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
