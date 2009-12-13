@@ -46,37 +46,6 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
         int cons_act = lactual - lanterior;
         
         if (c == CMD_PRESS2) {
-            switch(vobs){
-                case 0:
-                    if(lactual > lanterior){
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                    }else{
-                      ss.mostrarMensaje("a");
-                    }
-                    break;
-                case 1:
-                    if(lactual > lanterior){
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                    }else{
-                      ss.mostrarMensaje("a");
-                    }
-                    break;
-                case 2:
-                    if(lanterior != 0){
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                    }else{
-                      ss.mostrarMensaje("b");
-                    }
-                    break;
-                // Todos los casos: 3-16 son semejantes.
-                default:
-                    if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
-                      ss.mostrarMensaje("c");
-                    }else{
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                    }
-                    break;
-            }   // end case
             if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
               ss.mostrarMensaje("c");
             }else{
