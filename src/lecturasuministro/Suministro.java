@@ -126,23 +126,32 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     }
 
     public void doBack() {
+        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
         int i = currentItem;
         if(i == 1) {
         } else {
-            currentItem = currentItem - 1;
+            while(m_rms.tieneData(i) && i > 1) {
+                currentItem = currentItem - 1;
+            }
             fs.setCurrentSuministro(currentItem);
 
         }
-
+        m_rms = null;
     }
 
+    // TODO: Marcar el final de los Suministros.
     public void doNext() {
+        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
+
         int i = currentItem;
         if(i == 1000) {
         } else {
-            currentItem = currentItem + 1;
+            while(m_rms.tieneData(i) && i < 1000) {
+                currentItem = currentItem + 1;
+            }
             fs.setCurrentSuministro(currentItem);
         }
+        m_rms = null;
     }
 
 
