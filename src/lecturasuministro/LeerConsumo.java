@@ -13,7 +13,7 @@ import javax.microedition.lcdui.*;
 public class LeerConsumo extends Form implements CommandListener, ItemCommandListener{
 
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
-
+    private static final Command CMD_PRESS3 = new Command ("Press", Command.ITEM, 1);
     private Suministro ss;
     private TextField consumo;
     private String suministro;
@@ -49,14 +49,18 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
             switch(vobs){
                 case 0:
                     if(lactual > lanterior){
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+                      ss.mostrarMensaje("d");//if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
                     }else{
                       ss.mostrarMensaje("a");
                     }
                     break;
                 case 1:
                     if(lactual > lanterior){
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+                      ss.mostrarMensaje("d");//if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+                      StringItem item2 = new StringItem("", "Ingresar", Item.BUTTON);
+                      item2.setDefaultCommand(CMD_PRESS3);
+                      item2.setItemCommandListener(this);
+                      append(item2);
                     }else{
                       ss.mostrarMensaje("a");
                     }
@@ -78,6 +82,9 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
                     break;
             }   // end case
         }       // end if
+        if (c == CMD_PRESS3){
+         if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+        }
         validarSuministro = null;
     }
 
@@ -93,11 +100,12 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
        append(obs);
 
-       StringItem item = new StringItem("", "Ingresar", Item.BUTTON);
+       StringItem item = new StringItem("", "Validar", Item.BUTTON);
        item.setDefaultCommand(CMD_PRESS2);
        item.setItemCommandListener(this);
        append(item);
 
+       
     }
 
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
