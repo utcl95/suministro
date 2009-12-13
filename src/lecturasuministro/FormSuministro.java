@@ -44,8 +44,11 @@ public class FormSuministro extends Form  {
         append(m_nombre);
         append(m_direccion);
         append(m_serie);
+
         m_title = title;
     }
+
+
 
     public void setSuministro(String ss) {
         m_suministro.setText(ss);
@@ -95,13 +98,12 @@ public class FormSuministro extends Form  {
         txt = null;
     }
 
-    public int getPromedio() {
-        
+    public int getPromedio() {        
         return this.m_promedioLectura;
     }
 
     public int getAnterior() {
-        System.out.println("GetAnterio : " + m_anteriorLectura);
+        System.out.println("GetAnterior : " + m_anteriorLectura);
         return m_anteriorLectura;
     }
 }

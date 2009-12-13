@@ -46,36 +46,11 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
         int cons_act = lactual - lanterior;
         
         if (c == CMD_PRESS2) {
-            switch(vobs){
-                case 0:
-                    if(lactual > lanterior){
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                    }else{
-                      ss.mostrarMensaje("a");
-                    }
-                    break;
-                case 1:
-                    if(lactual > lanterior){
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                    }else{
-                      ss.mostrarMensaje("a");
-                    }
-                    break;
-                case 2:
-                    if(lanterior != 0){
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                    }else{
-                      ss.mostrarMensaje("b");
-                    }
-                    break;
-                default:
-                    if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
-                      ss.mostrarMensaje("c");
-                    }else{
-                      if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                    }
-                    break;
-            } // End Switch
+            if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
+              ss.mostrarMensaje("c");
+            }else{
+              if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+            }
         } // End if
         validarSuministro = null;
     }

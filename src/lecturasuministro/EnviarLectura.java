@@ -40,7 +40,7 @@ public class EnviarLectura extends MIDlet {
             
             for (int i = 1; i <= numRMS; i++) {
                 m_record = sRMS.getRecord(i);
-                m_record[0] = m_record[0].substring(0, 8);
+                m_record[0] = m_record[0].substring(0, 10);
                 m_linea =  m_record[0] + ";" + m_record[1] + ";" +  m_record[2];
                 output.println(m_linea);
             }
