@@ -39,7 +39,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         // Leer Suministro.
 
         fs = new FormSuministro("Lectura x Zona");
-        
+
+        // Verifiar q el actual este sin data, sino avanza al siguiente(s)
+        currentItem = siguienteSinData();
         fs.setCurrentSuministro(currentItem);
 
         StringItem item = new StringItem("", "Atras", Item.BUTTON);
@@ -129,9 +131,10 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         int i = currentItem;
         if(i == 1) {
         } else {
-  //          while(m_rms.tieneData(i) && i > 1) {
+            currentItem = currentItem - 1;
+            while(m_rms.tieneData(currentItem) && i > 1) {
                 currentItem = currentItem - 1;
-  //          }
+            }
             fs.setCurrentSuministro(currentItem);
 
         }
@@ -141,17 +144,32 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     // TODO: Marcar el final de los Suministros.
     public void doNext() {
         SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
-
+        
         int i = currentItem;
         if(i == 1000) {
         } else {
-//            while(m_rms.tieneData(i) && i < 1000) {
+            currentItem = currentItem + 1;
+            while(m_rms.tieneData(currentItem) && i < 1000) {
+                System.out.println("No entra");
                 currentItem = currentItem + 1;
-//            }
+            }
             fs.setCurrentSuministro(currentItem);
         }
         m_rms = null;
     }
 
+    public int siguienteSinData() {
+        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
+        int i = currentItem;
+        if(i == 1000) {
+        } else {            
+            while(m_rms.tieneData(currentItem) && i < 1000) {
+                System.out.println("No entra");
+                currentItem = currentItem + 1;
+            }
+        }
+        m_rms = null;
+        return i;
+    }
 
 }
