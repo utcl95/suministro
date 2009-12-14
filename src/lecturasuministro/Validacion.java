@@ -11,11 +11,11 @@ public class Validacion {
 
     public boolean esValido(int cod_validacion, int lactual, int lanterior, int cons_act, int promedio) {
         boolean bReturn = false;
-        System.out.println("ES VALIDO : " );
-        System.out.println("lactual : " + lactual);
-        System.out.println("lanterior : " + lanterior);
-        System.out.println("cons_actt : " + cons_act);
-        System.out.println("promedio : " + promedio);
+//        System.out.println("ES VALIDO : " );
+//        System.out.println("lactual : " + lactual);
+//        System.out.println("lanterior : " + lanterior);
+//        System.out.println("cons_actt : " + cons_act);
+//        System.out.println("promedio : " + promedio);
 
         bReturn =   (lactual <= lanterior) ||
                     (lanterior == 0) ||
