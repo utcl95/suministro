@@ -29,7 +29,7 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     LeerConsumo(String lect, Suministro ss) {
         super("Lectura de Consumo");
         this.ss = ss;
-        buscarSuministro(lect);
+        leerConsumoSuministro(lect);
     }
 
     public void commandAction (Command c, Item item) {
@@ -58,11 +58,7 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
         validarSuministro = null;
     }
 
-     /**
-     * Buscar Suministro
-     * return True o False si se encuentra el suministro
-     */
-    public void buscarSuministro(String msuministro) {
+    public void leerConsumoSuministro(String msuministro) {
        suministro = msuministro;
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
@@ -74,7 +70,6 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
        item.setDefaultCommand(CMD_PRESS2);
        item.setItemCommandListener(this);
        append(item);
-
        
     }
 
