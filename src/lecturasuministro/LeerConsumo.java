@@ -82,7 +82,7 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
         int index = sRMS.searchSuministro(msuministro);
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
 
-        sRMS.showRMS();
+        //sRMS.showRMS();
         ss.startApp();
 
         return false;

@@ -39,7 +39,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         // Leer Suministro.
 
         fs = new FormSuministro("Lectura x Zona");
-
+        
         // Verifiar q el actual este sin data, sino avanza al siguiente(s)
         currentItem = siguienteSinData();
         fs.setCurrentSuministro(currentItem);
@@ -169,7 +169,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             }
         }
         m_rms = null;
-        return i;
+        return currentItem;
     }
 
 }
