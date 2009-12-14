@@ -104,8 +104,8 @@ public class SuministroRMS {
         openRMS();
         int nextID = recordCount();
         int i=1;
-        System.out.println(nextID+"JAQUI");
-        showRMS();
+        //System.out.println(nextID+"JAQUI");
+        //showRMS();
         while(i<=nextID) {
 
             if(compareSuministro(ssuministro, i)) {
