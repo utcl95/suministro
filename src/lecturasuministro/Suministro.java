@@ -70,8 +70,8 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         if (c == CMD_PRESS3) {
             doBack();
         }if (c == CMD_PRESS4) {
-           System.out.println("jaqui");
-            doNext();
+           //System.out.println("jaqui");
+           doNext();
         }if (c == CMD_PRESS5) {
             lectura = new LeerConsumo(lect, this);
             display.setCurrent(lectura);
@@ -141,16 +141,14 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         m_rms = null;
     }
 
-    // TODO: Marcar el final de los Suministros.
     public void doNext() {
         SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
-        
+        int numeroSuministros = m_rms.recordCount();
         int i = currentItem;
-        if(i == 1000) {
+        if(i == numeroSuministros) {
         } else {
             currentItem = currentItem + 1;
-            while(m_rms.tieneData(currentItem) && i < 1000) {
-                System.out.println("No entra");
+            while(m_rms.tieneData(currentItem) && i <= numeroSuministros) {
                 currentItem = currentItem + 1;
             }
             fs.setCurrentSuministro(currentItem);
