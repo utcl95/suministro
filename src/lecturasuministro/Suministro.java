@@ -25,6 +25,11 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private FormSuministro fs = null;
     private LeerConsumo lectura = null;
 
+    private Alert yesNoAlert;
+
+        private Command softKey1;
+        private Command softKey2;
+        private boolean status;
     protected void startApp () {
         // Modificar su valor en la declaracion para la realizacion de test.
         if(U_TEST) {
@@ -95,13 +100,23 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             Alert al = new Alert(msg);
             display.setCurrent(al);
         }else if(mns.equals("d")){
-            String msg = "Lectura correcta";
+         String msg = "Lectura correcta";
             Alert al = new Alert(msg);
             display.setCurrent(al);
         }else{
-            String msg = "Fuera de rango";
-            Alert al = new Alert(msg);
-            display.setCurrent(al);
+            //String msg = "Fuera de rango";
+           // Alert al = new Alert(msg);
+            //display.setCurrent(al);
+               yesNoAlert = new Alert("Atencion");
+                yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo?");
+                softKey1 = new Command("No", Command.BACK, 1);
+                softKey2 = new Command("Yes", Command.OK, 1);
+                yesNoAlert.addCommand(softKey1);
+                yesNoAlert.addCommand(softKey2);
+                yesNoAlert.setCommandListener(this);
+                display.setCurrent(yesNoAlert);
+                status = false;
+
         }
 
     }

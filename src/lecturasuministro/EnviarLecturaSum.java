@@ -21,7 +21,7 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     private TextField obs;
     private int vobs;
     private int lactual;
-
+    private boolean grabar;
 
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
 
@@ -37,17 +37,23 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
         Validacion validarSuministro = new Validacion();
         if(obs.getString().equals("")){
             vobs = 0;
-        
+        System.out.println(item);
+        System.out.println(c);
         }else
             vobs = Integer.parseInt(obs.getString());
-        lactual = Integer.parseInt(consumo.getString());
-        int lanterior = ss.lAnterior();
-        int promedio = ss.lPromedio();
-        int cons_act = lactual - lanterior;
+            lactual = Integer.parseInt(consumo.getString());
+            int lanterior = ss.lAnterior();
+            int promedio = ss.lPromedio();
+            int cons_act = lactual - lanterior;
         
         if (c == CMD_PRESS2) {
             if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
-              ss.mostrarMensaje("c");
+              grabar = ss.mostrarMensaje("c");
+              System.out.println(grabar);
+              if(grabar == true)
+                  {
+                  if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+                  }
             }else{
               if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
             }

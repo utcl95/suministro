@@ -92,9 +92,9 @@ public class FormSuministro extends Form  {
         
         // Promedio de Lectura
         m_promedioLectura = Integer.parseInt(data[7]);
-        System.out.println("Antes : " + m_anteriorLectura);
+        // Lectura anterior
         m_anteriorLectura = Integer.parseInt(data[6].trim());
-        System.out.println("Despues : " + m_anteriorLectura);
+        
         txt = null;
     }
 
@@ -103,7 +103,6 @@ public class FormSuministro extends Form  {
     }
 
     public int getAnterior() {
-        System.out.println("GetAnterior : " + m_anteriorLectura);
         return m_anteriorLectura;
     }
 }

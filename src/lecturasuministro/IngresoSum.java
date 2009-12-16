@@ -24,24 +24,26 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     private TextField txtsum;
     private String suministro;
     private EnviarLecturaSum lectura = null;
+    private Alert yesNoAlert;
 
-private FormSuministro fs = null;
-    
-private int currentItem = 1;
+    private Command softKey1;
+    private Command softKey2;
+    private boolean status;
+    private FormSuministro fs = null;
+    private boolean grabar;
+
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
-    
+        
     public IngresoSum () {
         firstTime = true;
         mainForm = new Form ("Ingreso Suministro");
     }
 
     protected void startApp () {
-        
-        
+ 
         if (firstTime) {
             fs = new FormSuministro("Lectura x Zona");
 
-            
             display2 = Display.getDisplay (this);
 
             mainForm.append ("BUSQUEDA POR SUMINISTRO");
@@ -59,11 +61,20 @@ private int currentItem = 1;
 
             display2.setCurrent(mainForm);
         }
-
         
     }
 
     public void commandAction (Command c, Displayable s) {
+        status = c.getCommandType() == Command.OK;
+System.out.println("jaquiaction");
+                if (c.getCommandType() == Command.OK) {
+                    System.out.println("OK");
+                    grabar = true;
+
+                } else if (c.getCommandType() == Command.BACK) {
+                    System.out.println("BACK");
+                    display2.setCurrent(lectura);
+                }
     }
 
     protected void destroyApp (boolean unconditional) {
@@ -80,21 +91,19 @@ private int currentItem = 1;
             destroyApp (false);
             notifyDestroyed ();
         }if (c == CMD_PRESS) {
-           int index = sRMS.searchSuministro(suministro);
-           //int index = sRMS.searchSuministro(suministro);
-         if(index != 0){
-             fs.setCurrentSuministro(index);
-             lectura = new EnviarLecturaSum(suministro, this);
-            display2.setCurrent(lectura);
-         }else{
-               String msg = "No existe suministro";
-
+            int index = sRMS.searchSuministro(suministro);
+           
+             if(index != 0){
+                fs.setCurrentSuministro(index);
+                lectura = new EnviarLecturaSum(suministro, this);
+                display2.setCurrent(lectura);
+             }else{
+                String msg = "No existe suministro";
                 Alert al = new Alert(msg);
                 display2.setCurrent(al);
-
+             }
         }
     }
-}
     
     public int lAnterior(){
         return fs.getAnterior();
@@ -104,31 +113,26 @@ private int currentItem = 1;
         return fs.getPromedio();
     }
 
-    public void mostrarMensaje(String m){
+    public boolean mostrarMensaje(String m){
         String mns = m;
 
-        if(mns.equals("a")){
-            String msg = "Error lectura actual";
-            Alert al = new Alert(msg);
-            display2.setCurrent(al);
-        }else if(mns.equals("b")){
-            String msg = "Error, no tiene lectura anterior";
+        if(mns.equals("d")){
+            String msg = "Lectura correcta";
             Alert al = new Alert(msg);
             display2.setCurrent(al);
         }else{
-            String msg = "Fuera de rango";
-            Alert al = new Alert(msg);
-            display2.setCurrent(al);
+            yesNoAlert = new Alert("Atencion");
+            yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo?");
+            softKey1 = new Command("No", Command.BACK, 1);
+            softKey2 = new Command("Yes", Command.OK, 1);
+            yesNoAlert.addCommand(softKey1);
+            yesNoAlert.addCommand(softKey2);
+            yesNoAlert.setCommandListener(this);
+            display2.setCurrent(yesNoAlert);
+            status = false;
+            System.out.println("jaquimensaje");
         }
-
+        return grabar;
     }
-
-     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
-
-        int index = sRMS.searchSuministro(msuministro);
-        sRMS.setSuministro(index, msuministro, mconsumo, mobs);        
-        return false;
-    }
-
-
+    
 }

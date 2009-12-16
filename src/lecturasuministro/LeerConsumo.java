@@ -49,12 +49,13 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
             if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
               ss.mostrarMensaje("c");
             }else{
+              ss.mostrarMensaje("d");
               if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
             }
         }       // end if
-        if (c == CMD_PRESS3){
-         if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-        }
+        
+        
+        
         validarSuministro = null;
     }
 
