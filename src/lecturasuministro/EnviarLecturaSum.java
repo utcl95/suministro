@@ -21,11 +21,8 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     private TextField obs;
     private int vobs;
     private int lactual;
-    private boolean grabar;
-
+    
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
-
-
 
     EnviarLecturaSum(String lect, IngresoSum ss) {
         super("Lectura de Consumo");
@@ -37,8 +34,6 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
         Validacion validarSuministro = new Validacion();
         if(obs.getString().equals("")){
             vobs = 0;
-        System.out.println(item);
-        System.out.println(c);
         }else
             vobs = Integer.parseInt(obs.getString());
             lactual = Integer.parseInt(consumo.getString());
@@ -48,19 +43,19 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
         
         if (c == CMD_PRESS2) {
             if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
-              grabar = ss.mostrarMensaje("c");
-              System.out.println(grabar);
-              if(grabar == true)
-                  {
-                  if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-                  }
+              ss.mostrarMensaje("c");
             }else{
-              if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+              datosConsumo();
             }
         } // End if
         validarSuministro = null;
     }
 
+    public void datosConsumo(){
+        
+        if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+
+    }
      /**
      * Buscar Suministro
      * return True o False si se encuentra el suministro
@@ -77,7 +72,6 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
        item.setDefaultCommand(CMD_PRESS2);
        item.setItemCommandListener(this);
        append(item);
-
     }
 
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {

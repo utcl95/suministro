@@ -66,13 +66,11 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
 
     public void commandAction (Command c, Displayable s) {
         status = c.getCommandType() == Command.OK;
-System.out.println("jaquiaction");
+
                 if (c.getCommandType() == Command.OK) {
-                    System.out.println("OK");
-                    grabar = true;
+                   lectura.datosConsumo();
 
                 } else if (c.getCommandType() == Command.BACK) {
-                    System.out.println("BACK");
                     display2.setCurrent(lectura);
                 }
     }
@@ -104,16 +102,8 @@ System.out.println("jaquiaction");
              }
         }
     }
-    
-    public int lAnterior(){
-        return fs.getAnterior();
-    }
 
-    public int lPromedio(){
-        return fs.getPromedio();
-    }
-
-    public boolean mostrarMensaje(String m){
+   public boolean mostrarMensaje(String m){
         String mns = m;
 
         if(mns.equals("d")){
@@ -130,9 +120,15 @@ System.out.println("jaquiaction");
             yesNoAlert.setCommandListener(this);
             display2.setCurrent(yesNoAlert);
             status = false;
-            System.out.println("jaquimensaje");
         }
         return grabar;
     }
     
+    public int lAnterior(){
+        return fs.getAnterior();
+    }
+
+    public int lPromedio(){
+        return fs.getPromedio();
+    }
 }
