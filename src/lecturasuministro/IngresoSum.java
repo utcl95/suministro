@@ -25,7 +25,6 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     private String suministro;
     private EnviarLecturaSum lectura = null;
     private Alert yesNoAlert;
-
     private Command softKey1;
     private Command softKey2;
     private boolean status;
@@ -67,12 +66,15 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     public void commandAction (Command c, Displayable s) {
         status = c.getCommandType() == Command.OK;
 
-                if (c.getCommandType() == Command.OK) {
-                   lectura.datosConsumo();
+            if (c.getCommandType() == Command.OK) {
+                display2.setCurrent(mainForm);
+                lectura.datosConsumo();
+                
 
-                } else if (c.getCommandType() == Command.BACK) {
-                    display2.setCurrent(lectura);
-                }
+            } else if (c.getCommandType() == Command.BACK) {
+                display2.setCurrent(lectura);
+                
+            }
     }
 
     protected void destroyApp (boolean unconditional) {
@@ -94,6 +96,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
              if(index != 0){
                 fs.setCurrentSuministro(index);
                 lectura = new EnviarLecturaSum(suministro, this);
+                txtsum.setString("");
                 display2.setCurrent(lectura);
              }else{
                 String msg = "No existe suministro";
