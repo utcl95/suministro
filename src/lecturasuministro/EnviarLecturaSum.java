@@ -18,6 +18,7 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     private IngresoSum ss;
     private TextField consumo;
     private String suministro;
+    private String sumanterior;
     private TextField obs;
     private int vobs;
     private int lactual;
@@ -62,9 +63,13 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
      */
     public void buscarSuministro(String msuministro) {
        suministro = msuministro;
+       sumanterior = Integer.toString(ss.lAnterior());
+
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
+       append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
        append(consumo);
+       
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
        append(obs);
 
@@ -77,9 +82,7 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
         int index = sRMS.searchSuministro(msuministro);
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
-
         sRMS.showRMS();
-        ss.startApp();
 
         return false;
     }
@@ -88,11 +91,9 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     }
 
     public void destroyApp(boolean unconditional) {
-
     }
 
     public void commandAction(Command c, Displayable d) {
-
     }
 }
 

@@ -18,9 +18,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     
     private boolean firstTime;
     private Form mainForm;
-   
     private Display display2;
- 
     private TextField txtsum;
     private String suministro;
     private EnviarLecturaSum lectura = null;
@@ -69,11 +67,9 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
             if (c.getCommandType() == Command.OK) {
                 display2.setCurrent(mainForm);
                 lectura.datosConsumo();
-                
 
             } else if (c.getCommandType() == Command.BACK) {
                 display2.setCurrent(lectura);
-                
             }
     }
 
@@ -106,7 +102,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
         }
     }
 
-   public boolean mostrarMensaje(String m){
+   public void mostrarMensaje(String m){
         String mns = m;
 
         if(mns.equals("d")){
@@ -124,7 +120,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
             display2.setCurrent(yesNoAlert);
             status = false;
         }
-        return grabar;
+        
     }
     
     public int lAnterior(){

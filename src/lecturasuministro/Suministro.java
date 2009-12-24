@@ -19,17 +19,15 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
 
     // Actual Elemento en pantalla (Suministro)
     private int currentItem = 1;
-
     private Display display;
-
     private FormSuministro fs = null;
     private LeerConsumo lectura = null;
-
+    //variables para alerta
     private Alert yesNoAlert;
+    private Command softKey1;
+    private Command softKey2;
+    private boolean status;
 
-        private Command softKey1;
-        private Command softKey2;
-        private boolean status;
     protected void startApp () {
         // Modificar su valor en la declaracion para la realizacion de test.
         if(U_TEST) {
@@ -63,8 +61,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         item2.setDefaultCommand(CMD_PRESS5);
         item2.setItemCommandListener(this);
         fs.append(item2);
-        //fs.addCommand(CMD_BACK);
-        //fs.addCommand(CMD_NEXT);
+        
         fs.setCommandListener(this);
         display.setCurrent(fs);
 
@@ -75,8 +72,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         if (c == CMD_PRESS3) {
             doBack();
         }if (c == CMD_PRESS4) {
-           //System.out.println("jaqui");
-           doNext();
+            doNext();
         }if (c == CMD_PRESS5) {
             lectura = new LeerConsumo(lect, this);
             display.setCurrent(lectura);
@@ -85,40 +81,35 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     }
 
     public void commandAction (Command c, Displayable d) {
+    status = c.getCommandType() == Command.OK;
 
+        if (c.getCommandType() == Command.OK) {
+            display.setCurrent(fs);
+            lectura.datosConsumo();
+
+        } else if (c.getCommandType() == Command.BACK) {
+            display.setCurrent(lectura);
+        }
     }
 
     public void mostrarMensaje(String m){
         String mns = m;
 
-        if(mns.equals("a")){
-            String msg = "Error lectura actual";
-            Alert al = new Alert(msg);
-            display.setCurrent(al);
-        }else if(mns.equals("b")){
-            String msg = "Error, no tiene lectura anterior";
-            Alert al = new Alert(msg);
-            display.setCurrent(al);
-        }else if(mns.equals("d")){
-         String msg = "Lectura correcta";
+        if(mns.equals("d")){
+            String msg = "Lectura correcta";
             Alert al = new Alert(msg);
             display.setCurrent(al);
         }else{
-            //String msg = "Fuera de rango";
-           // Alert al = new Alert(msg);
-            //display.setCurrent(al);
-               yesNoAlert = new Alert("Atencion");
-                yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo?");
-                softKey1 = new Command("No", Command.BACK, 1);
-                softKey2 = new Command("Yes", Command.OK, 1);
-                yesNoAlert.addCommand(softKey1);
-                yesNoAlert.addCommand(softKey2);
-                yesNoAlert.setCommandListener(this);
-                display.setCurrent(yesNoAlert);
-                status = false;
-
+            yesNoAlert = new Alert("Atencion");
+            yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo?");
+            softKey1 = new Command("No", Command.BACK, 1);
+            softKey2 = new Command("Yes", Command.OK, 1);
+            yesNoAlert.addCommand(softKey1);
+            yesNoAlert.addCommand(softKey2);
+            yesNoAlert.setCommandListener(this);
+            display.setCurrent(yesNoAlert);
+            status = false;
         }
-
     }
 
     public int lAnterior(){

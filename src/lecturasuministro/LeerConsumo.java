@@ -13,19 +13,16 @@ import javax.microedition.lcdui.*;
 public class LeerConsumo extends Form implements CommandListener, ItemCommandListener{
 
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
-    private static final Command CMD_PRESS3 = new Command ("Press", Command.ITEM, 1);
     private Suministro ss;
     private TextField consumo;
     private String suministro;
     private TextField obs;
     private int vobs;
     private int lactual;
-    
+    private String sumanterior;
 
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
-
-
-
+    
     LeerConsumo(String lect, Suministro ss) {
         super("Lectura de Consumo");
         this.ss = ss;
@@ -49,20 +46,25 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
             if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
               ss.mostrarMensaje("c");
             }else{
-              ss.mostrarMensaje("d");
-              if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+              datosConsumo();
             }
         }       // end if
-        
-        
         
         validarSuministro = null;
     }
 
+     public void datosConsumo(){
+
+        if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
+
+    }
+
     public void leerConsumoSuministro(String msuministro) {
        suministro = msuministro;
+       sumanterior = Integer.toString(ss.lAnterior());
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
+       append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
        append(consumo);
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
        append(obs);
@@ -77,8 +79,6 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
         int index = sRMS.searchSuministro(msuministro);
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
-
-        //sRMS.showRMS();
         ss.startApp();
 
         return false;
@@ -88,10 +88,8 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     }
 
     public void destroyApp(boolean unconditional) {
-
     }
 
     public void commandAction(Command c, Displayable d) {
-
     }
 }
