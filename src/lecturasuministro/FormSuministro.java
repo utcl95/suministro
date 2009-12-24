@@ -67,8 +67,9 @@ public class FormSuministro extends Form  {
     }
 
     public void setDireccion(String sd) {
-        int nLen = sd.length();
-        m_direccion.setText(sd.substring(0, nLen-2));
+        int nl = sd.length();
+        sd = sd.substring(0, nl-2);
+        m_direccion.setText(sd);
     }
 
     public void setSerie(String ss) {
