@@ -168,7 +168,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         if(i == 1000) {
         } else {            
             while(m_rms.tieneData(currentItem) && i < 1000) {
-                System.out.println("No entra");
+                // System.out.println("No entra");
                 currentItem = currentItem + 1;
             }
         }

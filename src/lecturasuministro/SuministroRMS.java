@@ -54,7 +54,7 @@ public class SuministroRMS {
         String data[] = new String[3];
         data = getRecord(index);
         bReturn = (data[1].equals("00000000")) ? false : true;
-        System.out.println("Tiene Data : " + bReturn);
+        // System.out.println("Tiene Data : " + bReturn);
         return bReturn;
     }
 
@@ -128,8 +128,8 @@ public class SuministroRMS {
             din = new DataInputStream(bin);
 
             String msuministro  = din.readUTF();
-            System.out.println("RMS");
-            System.out.println(msuministro);
+            // System.out.println("RMS");
+            // System.out.println(msuministro);
             // String mlectura     = din.readUTF();
             din.close();
             if(csuministro.equals(msuministro)) {

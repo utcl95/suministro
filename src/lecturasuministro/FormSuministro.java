@@ -67,7 +67,8 @@ public class FormSuministro extends Form  {
     }
 
     public void setDireccion(String sd) {
-        m_direccion.setText(sd);
+        int nLen = sd.length();
+        m_direccion.setText(sd.substring(0, nLen-2));
     }
 
     public void setSerie(String ss) {
@@ -80,7 +81,7 @@ public class FormSuministro extends Form  {
         String data[] = txt.split(m_linea);
 
         setSuministro(data[0]);
-        System.out.println(data[0]);
+        // System.out.println(data[0]);
         
         // Setea el suministro actual
         currentSuministro = data[0];
