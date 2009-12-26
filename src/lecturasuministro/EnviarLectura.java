@@ -34,6 +34,7 @@ public class EnviarLectura extends MIDlet {
             int numRMS = sRMS.recordCount();
             //System.out.println(numRMS);
             FileConnection connection = (FileConnection) Connector.open("file:///SDCard//lecturas.txt", Connector.WRITE );
+            //FileConnection connection = (FileConnection) Connector.open("file:///e:/lecturas.txt", Connector.WRITE );
             connection.create();
             OutputStream out = connection.openOutputStream();
             PrintStream output = new PrintStream(out);

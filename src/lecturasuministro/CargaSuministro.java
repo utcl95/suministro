@@ -5,6 +5,10 @@
 
 package lecturasuministro;
 
+import java.io.IOException;
+import java.io.InputStream;
+import javax.microedition.io.Connector;
+import javax.microedition.io.file.FileConnection;
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.*;
@@ -46,26 +50,61 @@ public class CargaSuministro extends MIDlet {
      * Cargar suministros a leer, 1000 aprox.
      */
     public boolean cargarSuministros() {
-        // Estos son los suministros que van a ser leidos.
-        
-        String m_linea = "";
+        FileConnection ptr_file = null;
         String m_temp = "";
-        int len = 0;
-        TextFile txt = new TextFile("file:///SDCard//solosuministros.txt");
-        int lineas = txt.numLineas() - 1;
+        StringBuffer sb = new StringBuffer();
+        InputStream is = null;
+        int num = 0;
+        int ch;
+        int len  = 0;
+        //TextFile txt = new TextFile("file:///SDCard//solosuministros.txt");
+        //TextFile txt = new TextFile("file:///e:/solosuministros.txt");
+
         // Numero de Suministros.
-        m_nsuministros = lineas;
-        for(int i=1; i<=lineas; i++){
-            m_linea = txt.readLine(i);
-            // System.out.println(i + " : " + m_linea.substring(0, 10));
-            m_temp = m_linea.trim();
-            len = m_temp.length();
-            if(len < 10) {
-            } else {
-                sRMS.addSuministro(m_temp);
+        m_nsuministros = 0;
+
+        // Abrir el archivo.
+        try {
+            ptr_file = (FileConnection) Connector.open("file:///SDCard//solosuministros.txt", Connector.READ);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        
+        try {
+            is = ptr_file.openInputStream();            
+            
+            while((ch=is.read()) != -1) {
+                if (ch == '\n') {
+                    m_temp = sb.toString().trim();
+                    sRMS.addSuministro(m_temp);
+                    num++;
+                    //System.out.println(num + " : " + m_temp);
+                    len = sb.length();
+                    sb.delete(0, len);
+                } else {                    
+                    sb.append((char)ch);
+                }
+            }
+            m_nsuministros = num;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
-        			// Alerta hasta que oprima boton
+
+        // Cierra el archivo.
+        try {
+            ptr_file.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        is = null;
         
         return true;
     }

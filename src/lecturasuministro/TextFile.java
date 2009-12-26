@@ -88,19 +88,19 @@ public class TextFile {
         return sLine;
     }
 
-    private String rLine(InputStream is, int fc, int line) {
+    private String rLine(InputStream is, int fc, int xline) {
         StringBuffer sb = new StringBuffer();
-        int ch;        
+        int xch;
         try {
             //ch = is.read();
-            while ((ch=is.read()) != '\n') {
-                if(line==1) {
+            while ((xch=is.read()) != '\n') {
+                if(xline==1) {
                     sb.append((char)fc);
-                    line++;
+                    xline++;
                 }
-                if(ch == -1)
+                if(xch == -1)
                     break;
-                sb.append((char)ch);
+                sb.append((char)xch);
                 
                 //ch = is.read();
             }

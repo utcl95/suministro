@@ -78,6 +78,7 @@ public class FormSuministro extends Form  {
 
     public void setCurrentSuministro(int cs) {
         TextFile txt = new TextFile("file:///SDCard//suministros.txt");
+        //TextFile txt = new TextFile("file:///e:/suministros.txt");
         String m_linea = txt.readLine(cs);
         String data[] = txt.split(m_linea);
 
