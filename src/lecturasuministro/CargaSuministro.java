@@ -66,6 +66,7 @@ public class CargaSuministro extends MIDlet {
         // Abrir el archivo.
         try {
             ptr_file = (FileConnection) Connector.open("file:///SDCard//solosuministros.txt", Connector.READ);
+            //ptr_file = (FileConnection) Connector.open("file:///e:/solosuministros.txt", Connector.READ);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

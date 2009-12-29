@@ -61,14 +61,15 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
 
     public void leerConsumoSuministro(String msuministro) {
        suministro = msuministro;
-       sumanterior = Integer.toString(ss.lAnterior());
+
+       //sumanterior = Integer.toString(ss.lAnterior());
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
-       append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
+       //append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
        append(consumo);
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
        append(obs);
-
+       
        StringItem item = new StringItem("", "Validar", Item.BUTTON);
        item.setDefaultCommand(CMD_PRESS2);
        item.setItemCommandListener(this);
