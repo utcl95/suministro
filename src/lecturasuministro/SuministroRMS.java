@@ -148,12 +148,14 @@ public class SuministroRMS {
         DataOutputStream        dout = new DataOutputStream(bout);
         // Añadir "0" al inicio de numeros menores a 9.
         String s = "";
-        int n = Integer.parseInt(sobs);
-        if( n < 10) {
-            s = "00" + Integer.toString(n);
-            s = s.substring(1,3);
+        if(sobs.trim().length() > 0) {
+            int n = Integer.parseInt(sobs);
+            if( n < 10 && n > 0) {
+                s = "00" + Integer.toString(n);
+                s = s.substring(1,3);
+            }
+            sobs = s;
         }
-        sobs = s;
         openRMS();
         try {
             dout.writeUTF(ssuministro); // Suministro
