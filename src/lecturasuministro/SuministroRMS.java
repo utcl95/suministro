@@ -146,6 +146,14 @@ public class SuministroRMS {
     public boolean setSuministro(int index, String ssuministro, String sconsumo, String sobs) {
         ByteArrayOutputStream   bout = new ByteArrayOutputStream();
         DataOutputStream        dout = new DataOutputStream(bout);
+        // Añadir "0" al inicio de numeros menores a 9.
+        String s = "";
+        int n = Integer.parseInt(sobs);
+        if( n < 10) {
+            s = "00" + Integer.toString(n);
+            s = s.substring(1,3);
+        }
+        sobs = s;
         openRMS();
         try {
             dout.writeUTF(ssuministro); // Suministro
