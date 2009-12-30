@@ -92,7 +92,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         }
     }
 
-    public void mostrarMensaje(String m){
+    public void mostrarMensaje(String m, int lectura_actual){
         String mns = m;
 
         if(mns.equals("d")){
@@ -101,7 +101,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
             display.setCurrent(al);
         }else{
             yesNoAlert = new Alert("Atencion");
-            yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo?");
+            yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo : " + lectura_actual);
             softKey1 = new Command("No", Command.BACK, 1);
             softKey2 = new Command("Yes", Command.OK, 1);
             yesNoAlert.addCommand(softKey1);
