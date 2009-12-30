@@ -29,6 +29,7 @@ public class EnviarLectura extends MIDlet {
     public void sendData() {
         String[] m_record = new String[3];
         String m_linea = "";
+        char cr = 13;
         try {
             SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
             int numRMS = sRMS.recordCount();
@@ -43,7 +44,7 @@ public class EnviarLectura extends MIDlet {
                 m_record = sRMS.getRecord(i);
                 if(!m_record[1].equals("00000000")) {
                     m_record[0] = m_record[0].substring(0, 8);
-                    m_linea =  m_record[0] + ";" + m_record[1] + ";" +  m_record[2];
+                    m_linea =  m_record[0] + ";" + m_record[1] + ";" +  m_record[2] + cr;
                     output.println(m_linea);
                 }
             }
