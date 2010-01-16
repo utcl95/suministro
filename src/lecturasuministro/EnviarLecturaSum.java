@@ -67,7 +67,7 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
 
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
-       append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
+       //append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
        append(consumo);
        
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
