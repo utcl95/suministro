@@ -41,29 +41,34 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         display = Display.getDisplay(this);
         // Leer Suministro.
 
-        fs = new FormSuministro("Lectura x Zona");
+        //fs = new FormSuministro("Lectura x Zona");
         
-        // Verifiar q el actual este sin data, sino avanza al siguiente(s)
+        // Probar con un formulario en un canvas.
+        canvasForm cf = new canvasForm();
+        
+        // Verificar q el actual este sin data, sino avanza al siguiente(s)
         currentItem = siguienteSinData();
-        fs.setCurrentSuministro(currentItem);
+        //fs.setCurrentSuministro(currentItem);
 
-        StringItem item = new StringItem("", "Atras", Item.BUTTON);
-        item.setDefaultCommand(CMD_PRESS3);
-        item.setItemCommandListener(this);
-        fs.append(item);
+        cf.setCurrentSuministro(currentItem);
 
-        StringItem item1 = new StringItem("", "Siguiente", Item.BUTTON);
-        item1.setDefaultCommand(CMD_PRESS4);
-        item1.setItemCommandListener(this);
-        fs.append(item1);
-
-        StringItem item2 = new StringItem("", "Lectura", Item.BUTTON);
-        item2.setDefaultCommand(CMD_PRESS5);
-        item2.setItemCommandListener(this);
-        fs.append(item2);
-        
-        fs.setCommandListener(this);
-        display.setCurrent(fs);
+//        StringItem item = new StringItem("", "Atras", Item.BUTTON);
+//        item.setDefaultCommand(CMD_PRESS3);
+//        item.setItemCommandListener(this);
+//        fs.append(item);
+//
+//        StringItem item1 = new StringItem("", "Siguiente", Item.BUTTON);
+//        item1.setDefaultCommand(CMD_PRESS4);
+//        item1.setItemCommandListener(this);
+//        fs.append(item1);
+//
+//        StringItem item2 = new StringItem("", "Lectura", Item.BUTTON);
+//        item2.setDefaultCommand(CMD_PRESS5);
+//        item2.setItemCommandListener(this);
+//        fs.append(item2);
+//
+//        fs.setCommandListener(this);
+        display.setCurrent(cf);
 
     }
 
