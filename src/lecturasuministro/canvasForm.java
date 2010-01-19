@@ -98,6 +98,7 @@ public class canvasForm extends Canvas {
             String data[] = txt.split(m_linea);
 
             setSuministro(data[0]);
+            m_current = cs;
             // System.out.println(data[0]);
 
             // Setea el suministro actual
