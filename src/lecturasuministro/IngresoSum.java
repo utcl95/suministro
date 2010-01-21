@@ -18,6 +18,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     
     private boolean firstTime;
     private Form mainForm;
+    private Form mainForm2;
     private Display display2;
     private TextField txtsum;
     private String suministro;
@@ -29,7 +30,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     private FormSuministro fs = null;
     private boolean grabar;
     private canvasForm canvas = null;
-
+    
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
         
     public IngresoSum () {
@@ -77,6 +78,12 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     protected void destroyApp (boolean unconditional) {
     }
 
+    public void buscarSuministro(){
+
+        display2.setCurrent(lectura);
+
+ }
+
     protected void pauseApp () {
     }
 
@@ -95,9 +102,10 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
                 lectura = new EnviarLecturaSum(suministro, this);
                 txtsum.setString("");
                 //display2.setCurrent(lectura);
-                canvas =  new canvasForm();
+                canvas =  new canvasForm(this);
                 canvas.setCurrentSuministro(index);
                 display2.setCurrent(canvas);
+                //consum = new ingresarConsumo(this);
                
              }else{
                 String msg = "No existe suministro";
