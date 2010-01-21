@@ -31,6 +31,14 @@ public class canvasForm extends Canvas {
     // Promedio de lectura del suministro
     public int m_promedioLectura = 0;
     public int m_anteriorLectura = 0;
+    private IngresoSum ingreso;
+
+    canvasForm(){
+    }
+
+    canvasForm(IngresoSum ingreso){
+        this.ingreso = ingreso;
+    }
 
     protected void keyPressed(int keyCode) {
         if (keyCode > 0) {
@@ -44,6 +52,13 @@ public class canvasForm extends Canvas {
         if(getGameAction(keyCode) == 2) m_current--;
         setCurrentSuministro(m_current);
         repaint();
+        // Ingresar consumo
+        if(getGameAction(keyCode) == FIRE)
+           // consumo =  new ingresarConsumo();
+        ingreso.buscarSuministro();
+               // canvas.setCurrentSuministro(index);
+               // display2.setCurrent(canvas);;
+            
       }
 
       public void paint(Graphics g) {
@@ -96,7 +111,7 @@ public class canvasForm extends Canvas {
             //TextFile txt = new TextFile("file:///e:/suministros.txt");
             String m_linea = txt.readLine(cs);
             String data[] = txt.split(m_linea);
-
+            System.out.println("jaqui:"+cs);
             setSuministro(data[0]);
             m_current = cs;
             // System.out.println(data[0]);
