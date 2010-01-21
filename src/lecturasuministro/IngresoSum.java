@@ -30,6 +30,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     private FormSuministro fs = null;
     private boolean grabar;
     private canvasForm canvas = null;
+    private String sumCanvas;
     
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
         
@@ -71,17 +72,19 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
                 lectura.datosConsumo();
 
             } else if (c.getCommandType() == Command.BACK) {
-                display2.setCurrent(lectura);
+                //display2.setCurrent(lectura);
             }
     }
 
     protected void destroyApp (boolean unconditional) {
     }
 
-    public void buscarSuministro(){
-
+    public void buscarSuministro(String sumActual){
+        sumCanvas  = sumActual;
+        
+        lectura = new EnviarLecturaSum(sumCanvas, this);
+        txtsum.setString("");
         display2.setCurrent(lectura);
-
  }
 
     protected void pauseApp () {
@@ -96,17 +99,12 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
             notifyDestroyed ();
         }if (c == CMD_PRESS) {
             int index = sRMS.searchSuministro(suministro);
-           System.out.println(index);
+           
              if(index != 0){
-                fs.setCurrentSuministro(index);
-                lectura = new EnviarLecturaSum(suministro, this);
-                txtsum.setString("");
-                //display2.setCurrent(lectura);
                 canvas =  new canvasForm(this);
                 canvas.setCurrentSuministro(index);
                 display2.setCurrent(canvas);
-                //consum = new ingresarConsumo(this);
-               
+                          
              }else{
                 String msg = "No existe suministro";
                 Alert al = new Alert(msg);
