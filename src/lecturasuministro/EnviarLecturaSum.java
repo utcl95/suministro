@@ -28,7 +28,9 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     EnviarLecturaSum(String lect, IngresoSum ss) {
         super("Lectura de Consumo");
         this.ss = ss;
+        System.out.println("jaquiformnew:" + lect);
         buscarSuministro(lect);
+
     }
 
     public void commandAction (Command c, Item item) {
@@ -64,7 +66,7 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     public void buscarSuministro(String msuministro) {
        suministro = msuministro;
        sumanterior = Integer.toString(ss.lAnterior());
-
+       System.out.println("jaquiform:" + suministro);
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
        //append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
