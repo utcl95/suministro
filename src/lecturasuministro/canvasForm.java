@@ -53,12 +53,8 @@ public class canvasForm extends Canvas {
         setCurrentSuministro(m_current);
         repaint();
         // Ingresar consumo
-        if(getGameAction(keyCode) == FIRE)
-           // consumo =  new ingresarConsumo();
-        ingreso.buscarSuministro();
-               // canvas.setCurrentSuministro(index);
-               // display2.setCurrent(canvas);;
-            
+        if(getGameAction(keyCode) == FIRE){
+            ingreso.buscarSuministro(m_suministro);}
       }
 
       public void paint(Graphics g) {
