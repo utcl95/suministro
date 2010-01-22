@@ -18,7 +18,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     private static final Command CMD_BACK = new Command ("Back", Command.BACK, 1);
 
     private static final Command CMD_PRESS = new Command ("Buscar", Command.ITEM, 1);
-    
+    private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
     private boolean firstTime;
     private Form mainForm;
     private Form mainForm2;
@@ -85,6 +85,8 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
             } else if (c.getCommandType() == Command.EXIT) {
                         destroyApp (false);
                         notifyDestroyed ();
+            } else if (c.getCommandType() == Command.CANCEL){
+                        display2.setCurrent(canvas);
             }
     }
 
@@ -96,6 +98,8 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
         
         lectura = new EnviarLecturaSum(sumCanvas, this);
         txtsum.setString("");
+        lectura.addCommand(CMD_CANCEL);
+        lectura.setCommandListener(this);
         display2.setCurrent(lectura);
  }
 
@@ -115,7 +119,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
              if(index != 0){
                 canvas.setCurrentSuministro(index);
                 display2.setCurrent(canvas);
-                          
+                
              }else{
                 String msg = "No existe suministro";
                 Alert al = new Alert(msg);
@@ -152,4 +156,6 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     public int lPromedio(){
         return fs.getPromedio();
     }
+
+    
 }
