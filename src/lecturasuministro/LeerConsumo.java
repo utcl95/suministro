@@ -22,10 +22,12 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     private String sumanterior;
 
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+    private String lect;
     
     LeerConsumo(String lect, Suministro ss) {
         super("Lectura de Consumo");
         this.ss = ss;
+        this.lect = lect;
         leerConsumoSuministro(lect);
     }
 
@@ -42,7 +44,8 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
         int promedio = ss.lPromedio();
         int cons_act = lactual - lanterior;
         
-        if (c == CMD_PRESS2) {
+        if (c == CMD_PRESS2){
+            
             if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
               ss.mostrarMensaje("c", lactual);
             }else{
