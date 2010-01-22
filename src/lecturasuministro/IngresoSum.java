@@ -14,6 +14,9 @@ import javax.microedition.midlet.MIDlet;
 public class IngresoSum extends MIDlet implements CommandListener, ItemCommandListener {
     private Command exitCommand = new Command ("Exit", Command.EXIT, 1);
 
+    private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
+    private static final Command CMD_BACK = new Command ("Back", Command.BACK, 1);
+
     private static final Command CMD_PRESS = new Command ("Buscar", Command.ITEM, 1);
     
     private boolean firstTime;
@@ -59,6 +62,12 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
             mainForm.setCommandListener (this);
             firstTime = false;
 
+            canvas =  new canvasForm(this);
+            canvas.addCommand(CMD_BACK);
+            canvas.setCommandListener(this);
+
+            
+
             display2.setCurrent(mainForm);
         }
         
@@ -71,8 +80,11 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
                 display2.setCurrent(mainForm);
                 lectura.datosConsumo();
 
-            } else if (c.getCommandType() == Command.BACK) {
-                //display2.setCurrent(lectura);
+            } else if (c.getCommandType() == Command.BACK) {                
+                        display2.setCurrent(mainForm);
+            } else if (c.getCommandType() == Command.EXIT) {
+                        destroyApp (false);
+                        notifyDestroyed ();
             }
     }
 
@@ -101,7 +113,6 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
             int index = sRMS.searchSuministro(suministro);
            
              if(index != 0){
-                canvas =  new canvasForm(this);
                 canvas.setCurrentSuministro(index);
                 display2.setCurrent(canvas);
                           

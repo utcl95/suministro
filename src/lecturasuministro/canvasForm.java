@@ -14,6 +14,7 @@ import javax.microedition.lcdui.Graphics;
 
 
 public class canvasForm extends Canvas {
+
     public int number = 0;
     String m_title = "";
     private String m_suministro;
