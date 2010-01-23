@@ -88,6 +88,8 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
                         notifyDestroyed ();
             } else if (c.getCommandType() == Command.CANCEL){
                         display2.setCurrent(canvas);
+            }else if (c.getCommandType() == Command.STOP){
+                        display2.setCurrent(lectura);
             }
     }
 
@@ -139,7 +141,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
         }else{
             yesNoAlert = new Alert("Atencion");
             yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo?");
-            softKey1 = new Command("No", Command.BACK, 1);
+            softKey1 = new Command("No", Command.STOP, 1);
             softKey2 = new Command("Yes", Command.OK, 1);
             yesNoAlert.addCommand(softKey1);
             yesNoAlert.addCommand(softKey2);
