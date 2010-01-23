@@ -13,8 +13,8 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     // ejecuta parte alguna del programa.
     private static final boolean U_TEST = false;
 
-    private static final Command CMD_PRESS3 = new Command ("Atras", Command.ITEM, 1);
-    private static final Command CMD_PRESS4 = new Command ("Sigte", Command.ITEM, 1);
+    private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
+
     private static final Command CMD_PRESS5 = new Command ("Consumo", Command.ITEM, 1);
 
     // Actual Elemento en pantalla (Suministro)
