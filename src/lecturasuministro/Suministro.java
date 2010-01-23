@@ -12,15 +12,14 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     // Constante que HABILITA, DESHABILITA los test, solo permite realizar los test, no
     // ejecuta parte alguna del programa.
     private static final boolean U_TEST = false;
-
-    private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
-
-    private static final Command CMD_PRESS5 = new Command ("Consumo", Command.ITEM, 1);
+    private static final Command CMD_BACK = new Command ("Back", Command.BACK, 1);
+    private static final Command CMD_PRESS = new Command ("Buscar", Command.ITEM, 1);
+    private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
 
     // Actual Elemento en pantalla (Suministro)
     private int currentItem = 1;
     private Display display;
-    private FormSuministro fs = null;
+    //private FormSuministro fs = null;
     private LeerConsumo lectura = null;
     //variables para alerta
     private Alert yesNoAlert;
@@ -28,6 +27,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private Command softKey2;
     private boolean status;
     private String sumCanvas;
+    private canvasForm2 cf;
 
     protected void startApp () {
         // Modificar su valor en la declaracion para la realizacion de test.
@@ -42,11 +42,11 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         display = Display.getDisplay(this);
         // Leer Suministro.
 
-        fs = new FormSuministro("Lectura x Zona");
+        //fs = new FormSuministro("Lectura x Zona");
         
         // Probar con un formulario en un canvas.
-        canvasForm2 cf = new canvasForm2(this);
-        
+        cf = new canvasForm2(this);
+        cf.addCommand(CMD_BACK);
         // Verificar q el actual este sin data, sino avanza al siguiente(s)
         //currentItem = siguienteSinData();
         //fs.setCurrentSuministro(currentItem);
@@ -77,29 +77,37 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         sumCanvas  = sumActual;
 
         lectura = new LeerConsumo(sumCanvas, this);
+        lectura.addCommand(CMD_CANCEL);
         lectura.setCommandListener(this);
         display.setCurrent(lectura);
     }
 
     public void commandAction (Command c, Item item) {
-        String lect = fs.getSuministro();
-        if (c == CMD_PRESS5) {
-            lectura = new LeerConsumo(lect, this);
-            display.setCurrent(lectura);
-            
-        }
+//        String lect = cf.getSuministro();
+//        if (c == CMD_PRESS) {
+//            lectura = new LeerConsumo(lect, this);
+//            display.setCurrent(lectura);
+//
+//        }
     }
 
     public void commandAction (Command c, Displayable d) {
     status = c.getCommandType() == Command.OK;
 
-        if (c.getCommandType() == Command.OK) {
-            display.setCurrent(fs);
-            lectura.datosConsumo();
+            if (c.getCommandType() == Command.OK) {
+                cf.doNext();
+                display.setCurrent(cf);
+                //lectura.datosConsumo();
+                }else if (c.getCommandType() == Command.BACK) {
+                        destroyApp (false);
+                        notifyDestroyed ();
 
-        } else if (c.getCommandType() == Command.BACK) {
-            display.setCurrent(lectura);
-        }
+
+            }  else if (c.getCommandType() == Command.CANCEL){
+                        display.setCurrent(cf);
+            }else if (c.getCommandType() == Command.STOP){
+                        display.setCurrent(lectura);
+            }
     }
 
     public void mostrarMensaje(String m, int lectura_actual){
@@ -112,7 +120,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         }else{
             yesNoAlert = new Alert("Atencion");
             yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo : " + lectura_actual);
-            softKey1 = new Command("No", Command.BACK, 1);
+            softKey1 = new Command("No", Command.STOP, 1);
             softKey2 = new Command("Yes", Command.OK, 1);
             yesNoAlert.addCommand(softKey1);
             yesNoAlert.addCommand(softKey2);
@@ -123,11 +131,11 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     }
 
     public int lAnterior(){
-        return fs.getAnterior();
+        return cf.getAnterior();
     }
 
     public int lPromedio(){
-        return fs.getPromedio();
+        return cf.getPromedio();
     }
 
     /**
