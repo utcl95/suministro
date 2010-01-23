@@ -30,7 +30,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     private Command softKey1;
     private Command softKey2;
     private boolean status;
-    private FormSuministro fs = null;
+    //private FormSuministro fs = null;
     private boolean grabar;
     private canvasForm canvas = null;
     private String sumCanvas;
@@ -45,7 +45,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     protected void startApp () {
  
         if (firstTime) {
-            fs = new FormSuministro("Lectura x Zona");
+            //fs = new FormSuministro("Lectura x Zona");
 
             display2 = Display.getDisplay (this);
 
@@ -153,11 +153,11 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     }
     
     public int lAnterior(){
-        return fs.getAnterior();
+        return canvas.getAnterior();
     }
 
     public int lPromedio(){
-        return fs.getPromedio();
+        return canvas.getPromedio();
     }
     
 }

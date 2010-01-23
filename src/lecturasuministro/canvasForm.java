@@ -176,4 +176,12 @@ public class canvasForm extends Canvas {
         setCurrentSuministro(1);
         //repaint();
     }
+
+    public int getPromedio() {
+        return this.m_promedioLectura;
+    }
+
+    public int getAnterior() {
+        return m_anteriorLectura;
+    }
 }
