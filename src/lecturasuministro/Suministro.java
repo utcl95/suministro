@@ -42,7 +42,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         display = Display.getDisplay(this);
         // Leer Suministro.
 
-        //fs = new FormSuministro("Lectura x Zona");
+        fs = new FormSuministro("Lectura x Zona");
         
         // Probar con un formulario en un canvas.
         canvasForm2 cf = new canvasForm2(this);
@@ -50,9 +50,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         // Verificar q el actual este sin data, sino avanza al siguiente(s)
         //currentItem = siguienteSinData();
         //fs.setCurrentSuministro(currentItem);
-
+        cf.setCommandListener(this);
         cf.setCurrentSuministro(currentItem);
-
+        
 //        StringItem item = new StringItem("", "Atras", Item.BUTTON);
 //        item.setDefaultCommand(CMD_PRESS3);
 //        item.setItemCommandListener(this);
@@ -72,12 +72,15 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         display.setCurrent(cf);
 
     }
-public void buscarSuministro(String sumActual){
+
+    public void buscarSuministro(String sumActual){
         sumCanvas  = sumActual;
 
         lectura = new LeerConsumo(sumCanvas, this);
+        lectura.setCommandListener(this);
         display.setCurrent(lectura);
- }
+    }
+
     public void commandAction (Command c, Item item) {
         String lect = fs.getSuministro();
         if (c == CMD_PRESS5) {
