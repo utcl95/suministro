@@ -48,11 +48,11 @@ public class canvasForm extends Canvas {
           System.out.println("keyPressed action " + getGameAction(keyCode));
         }
         // Derecha +
-        if(getGameAction(keyCode) == 5) m_current++;
+        if(getGameAction(keyCode) == 5) doNext();
         // Izquierda -
-        if(getGameAction(keyCode) == 2) m_current--;
-        setCurrentSuministro(m_current);
-        repaint();
+        if(getGameAction(keyCode) == 2) doBack();
+        //setCurrentSuministro(m_current);
+        //repaint();
         // Ingresar consumo
         if(getGameAction(keyCode) == 6){
             ingreso.buscarSuministro(m_suministro);}
@@ -130,4 +130,50 @@ public class canvasForm extends Canvas {
 
             txt = null;
         }
+
+        public void doBack() {
+        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
+        int i = m_current;
+        if(i == 1) {
+        } else {
+            m_current = m_current - 1;
+            while(m_rms.tieneData(m_current) && i > 1) {
+                m_current = m_current - 1;
+            }
+            m_rms = null;
+            setCurrentSuministro(m_current);
+        }
+        
+    }
+
+    public void doNext() {
+        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
+        int numeroSuministros = m_rms.recordCount();
+        int i = m_current;
+        if(i == numeroSuministros) {
+        } else {
+            m_current = m_current + 1;
+            while(m_rms.tieneData(m_current) && i <= numeroSuministros) {
+                m_current = m_current + 1;
+            }
+            m_rms = null;
+            setCurrentSuministro(m_current);
+        }        
+    }
+
+    public void siguienteSinData() {
+        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
+        int i = m_current;
+        if(i == 1000) {
+        } else {
+            while(m_rms.tieneData(m_current) && i < 1000) {
+                // System.out.println("No entra");
+                m_current = m_current + 1;
+                System.out.println("No entra" + m_current);
+            }
+        }
+        m_rms = null;
+        setCurrentSuministro(1);
+        //repaint();
+    }
 }
