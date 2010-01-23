@@ -48,7 +48,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         canvasForm2 cf = new canvasForm2(this);
         
         // Verificar q el actual este sin data, sino avanza al siguiente(s)
-        currentItem = siguienteSinData();
+        //currentItem = siguienteSinData();
         //fs.setCurrentSuministro(currentItem);
 
         cf.setCurrentSuministro(currentItem);
@@ -80,11 +80,7 @@ public void buscarSuministro(String sumActual){
  }
     public void commandAction (Command c, Item item) {
         String lect = fs.getSuministro();
-        if (c == CMD_PRESS3) {
-            doBack();
-        }if (c == CMD_PRESS4) {
-            doNext();
-        }if (c == CMD_PRESS5) {
+        if (c == CMD_PRESS5) {
             lectura = new LeerConsumo(lect, this);
             display.setCurrent(lectura);
             
@@ -143,48 +139,6 @@ public void buscarSuministro(String sumActual){
     protected void pauseApp () {
     }
 
-    public void doBack() {
-        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
-        int i = currentItem;
-        if(i == 1) {
-        } else {
-            currentItem = currentItem - 1;
-            while(m_rms.tieneData(currentItem) && i > 1) {
-                currentItem = currentItem - 1;
-            }
-            fs.setCurrentSuministro(currentItem);
-
-        }
-        m_rms = null;
-    }
-
-    public void doNext() {
-        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
-        int numeroSuministros = m_rms.recordCount();
-        int i = currentItem;
-        if(i == numeroSuministros) {
-        } else {
-            currentItem = currentItem + 1;
-            while(m_rms.tieneData(currentItem) && i <= numeroSuministros) {
-                currentItem = currentItem + 1;
-            }
-            fs.setCurrentSuministro(currentItem);
-        }
-        m_rms = null;
-    }
-
-    public int siguienteSinData() {
-        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
-        int i = currentItem;
-        if(i == 1000) {
-        } else {            
-            while(m_rms.tieneData(currentItem) && i < 1000) {
-                // System.out.println("No entra");
-                currentItem = currentItem + 1;
-            }
-        }
-        m_rms = null;
-        return currentItem;
-    }
+    
 
 }
