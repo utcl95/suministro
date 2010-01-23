@@ -47,11 +47,11 @@ public class canvasForm2 extends Canvas {
           System.out.println("keyPressed action " + getGameAction(keyCode));
         }
         // Derecha +
-        if(getGameAction(keyCode) == 5) m_current++;
+        if(getGameAction(keyCode) == 5) doNext();
         // Izquierda -
-        if(getGameAction(keyCode) == 2) m_current--;
-        setCurrentSuministro(m_current);
-        repaint();
+        if(getGameAction(keyCode) == 2) doBack();
+        //setCurrentSuministro(m_current);
+        //repaint();
         // Ingresar consumo
         if(getGameAction(keyCode) == 6){
             ss.buscarSuministro(m_suministro);}
