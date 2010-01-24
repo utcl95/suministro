@@ -137,6 +137,12 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     public int lPromedio(){
         return cf.getPromedio();
     }
+    
+    // Dibuja el Canvas despues de grabar.
+    public void repaintCanvasAfterSave() {
+        cf.doNext();
+        display.setCurrent(cf);
+    }
 
     /**
      * Signals the MIDlet to terminate and enter the Destroyed state.

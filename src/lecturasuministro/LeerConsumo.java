@@ -83,8 +83,8 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
         int index = sRMS.searchSuministro(msuministro);
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
-        ss.startApp();
-
+        //ss.startApp();
+        ss.repaintCanvasAfterSave();
         return false;
     }
 
