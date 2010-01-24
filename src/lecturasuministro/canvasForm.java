@@ -43,9 +43,9 @@ public class canvasForm extends Canvas {
 
     protected void keyPressed(int keyCode) {
         if (keyCode > 0) {
-          System.out.println("keyPressed " + ((char) keyCode));
+          
         } else {
-          System.out.println("keyPressed action " + getGameAction(keyCode));
+          
         }
         // Derecha +
         if(getGameAction(keyCode) == 5) doNext();
@@ -108,10 +108,9 @@ public class canvasForm extends Canvas {
             //TextFile txt = new TextFile("file:///e:/suministros.txt");
             String m_linea = txt.readLine(cs);
             String data[] = txt.split(m_linea);
-            System.out.println("jaqui:"+cs);
             setSuministro(data[0]);
             m_current = cs;
-            // System.out.println(data[0]);
+            
 
             // Setea el suministro actual
             currentSuministro = data[0];
@@ -167,9 +166,9 @@ public class canvasForm extends Canvas {
         if(i == 1000) {
         } else {
             while(m_rms.tieneData(m_current) && i < 1000) {
-                // System.out.println("No entra");
+                ;
                 m_current = m_current + 1;
-                System.out.println("No entra" + m_current);
+                
             }
         }
         m_rms = null;
