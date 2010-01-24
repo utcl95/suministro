@@ -83,7 +83,7 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
         int index = sRMS.searchSuministro(msuministro);
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
-        sRMS.showRMS();
+        //sRMS.showRMS();
         ss.repaintCanvasAfterSave();
         return false;
     }
