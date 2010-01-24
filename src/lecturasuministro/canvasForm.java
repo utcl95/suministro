@@ -222,19 +222,18 @@ public class canvasForm extends Canvas {
         }        
     }
 
-    public void siguienteSinData() {
+    public int siguienteSinData(int i) {
         SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
-        int i = m_current;
-        if(i == 1000) {
+        int numeroSuministros = m_rms.recordCount();
+        int l_siguiente = i;
+        if(i == numeroSuministros) {
         } else {
-            while(m_rms.tieneData(m_current) && i < 1000) {
-                m_current = m_current + 1;
-                
+            while(m_rms.tieneData(l_siguiente) && i < numeroSuministros) {
+                l_siguiente = l_siguiente + 1;
             }
         }
         m_rms = null;
-        setCurrentSuministro(1);
-        //repaint();
+        return l_siguiente;
     }
 
     public int getPromedio() {

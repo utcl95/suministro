@@ -51,6 +51,8 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         //currentItem = siguienteSinData();
         //fs.setCurrentSuministro(currentItem);
         cf.setCommandListener(this);
+
+        currentItem = cf.siguienteSinData(currentItem);
         cf.setCurrentSuministro(currentItem);
         
 //        StringItem item = new StringItem("", "Atras", Item.BUTTON);
