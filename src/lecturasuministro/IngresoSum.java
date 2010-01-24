@@ -159,5 +159,11 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     public int lPromedio(){
         return canvas.getPromedio();
     }
+
+    // Dibuja el Canvas despues de grabar.
+    public void repaintCanvasAfterSave() {
+        canvas.doNext();
+        display2.setCurrent(canvas);
+    }
     
 }
