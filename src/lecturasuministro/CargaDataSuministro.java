@@ -70,7 +70,7 @@ public class CargaDataSuministro extends MIDlet {
             while((ch=is.read()) != -1) {
                 if (ch == '\n') {
                     m_temp = sb.toString().trim();
-                    sRMS.addSuministro(m_temp);
+                    //sRMS.addSuministro(m_temp);
                     num++;
                     //System.out.println(num + " : " + m_temp);
                     len = sb.length();
