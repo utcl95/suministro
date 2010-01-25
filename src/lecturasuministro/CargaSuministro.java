@@ -57,8 +57,6 @@ public class CargaSuministro extends MIDlet {
         int num = 0;
         int ch;
         int len  = 0;
-        //TextFile txt = new TextFile("file:///SDCard//solosuministros.txt");
-        //TextFile txt = new TextFile("file:///e:/solosuministros.txt");
 
         // Numero de Suministros.
         m_nsuministros = 0;
@@ -67,12 +65,6 @@ public class CargaSuministro extends MIDlet {
         try {
             ptr_file = (FileConnection) Connector.open("file:///SDCard//solosuministros.txt", Connector.READ);
             //ptr_file = (FileConnection) Connector.open("file:///e:/solosuministros.txt", Connector.READ);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        
-        try {
             is = ptr_file.openInputStream();            
             
             while((ch=is.read()) != -1) {
@@ -88,6 +80,9 @@ public class CargaSuministro extends MIDlet {
                 }
             }
             m_nsuministros = num;
+
+            // Cierra el archivo.
+            ptr_file.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
@@ -97,14 +92,6 @@ public class CargaSuministro extends MIDlet {
                 ex.printStackTrace();
             }
         }
-
-        // Cierra el archivo.
-        try {
-            ptr_file.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
         is = null;
         
         return true;
