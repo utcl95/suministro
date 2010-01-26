@@ -58,7 +58,7 @@ public class SuministroRMS {
         return bReturn;
     }
 
-    private void openRMS() {
+    public void openRMS() {
         try {
             m_rs = RecordStore.openRecordStore(m_name, true);
         } catch (RecordStoreException ex) {
@@ -66,7 +66,7 @@ public class SuministroRMS {
         }
     }
 
-    private void closeRMS() {
+    public void closeRMS() {
         try {
             m_rs.closeRecordStore();
         } catch (RecordStoreException ex) {
@@ -80,7 +80,7 @@ public class SuministroRMS {
     public boolean addSuministro(String asuministro) {
         ByteArrayOutputStream   bout = new ByteArrayOutputStream();
         DataOutputStream        dout = new DataOutputStream(bout);
-        openRMS();
+        //openRMS();
         try {
             dout.writeUTF(asuministro); // Suministro
             dout.writeUTF("00000000");  // Consumo a cero al inicio.
@@ -88,7 +88,7 @@ public class SuministroRMS {
             dout.close();
             byte[] data = bout.toByteArray();
             m_rs.addRecord(data, 0, data.length); // Añade el registro.
-            closeRMS();
+            //closeRMS();
             return true;
         } catch (RecordStoreException ex) {
             ex.printStackTrace();

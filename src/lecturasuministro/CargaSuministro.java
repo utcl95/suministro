@@ -60,7 +60,7 @@ public class CargaSuministro extends MIDlet {
 
         // Numero de Suministros.
         m_nsuministros = 0;
-
+        sRMS.openRMS();
         // Abrir el archivo.
         try {
             ptr_file = (FileConnection) Connector.open("file:///SDCard//solosuministros.txt", Connector.READ);
@@ -93,7 +93,7 @@ public class CargaSuministro extends MIDlet {
             }
         }
         is = null;
-        
+        sRMS.closeRMS();
         return true;
     }
 }
