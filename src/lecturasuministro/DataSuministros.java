@@ -17,8 +17,12 @@ public class DataSuministros {
         m_name = name;
     }
 
+    public void setNameRMS(String name) {
+        m_name = name;
+    }
 
-    private void openRMS() {
+
+    public void openRMS() {
         try {
             m_rs = RecordStore.openRecordStore(m_name, true);
         } catch (RecordStoreException ex) {
@@ -26,7 +30,7 @@ public class DataSuministros {
         }
     }
 
-    private void closeRMS() {
+    public void closeRMS() {
         try {
             m_rs.closeRecordStore();
         } catch (RecordStoreException ex) {
@@ -40,7 +44,7 @@ public class DataSuministros {
     public boolean addSuministro(String[] dataSuministro) {
         ByteArrayOutputStream   bout = new ByteArrayOutputStream();
         DataOutputStream        dout = new DataOutputStream(bout);
-        openRMS();
+        //openRMS();
         try {
             dout.writeUTF(dataSuministro[0]);  // Suministro
             dout.writeUTF(dataSuministro[1]);  // Zona
@@ -52,7 +56,7 @@ public class DataSuministros {
             dout.close();
             byte[] data = bout.toByteArray();
             m_rs.addRecord(data, 0, data.length); // Añade el registro.
-            closeRMS();
+            //closeRMS();
             return true;
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
@@ -64,16 +68,20 @@ public class DataSuministros {
     }
 
     /**
-     * Devuelve el registro index, como un array de 3 elementos:
-     * suministro, consumo, obs.
+     * Devuelve el registro index.
      */
     public String[] getRecord(int index) {
         ByteArrayInputStream bin = null;
         DataInputStream din = null;
         String m_rms[] = new String[7];
+
+        String m_namerms = getNameFile(index);
+        int delta = getDelta(index);
+        setNameRMS(m_namerms);
+        
         openRMS();
         try {
-            byte[] data = m_rs.getRecord(index);
+            byte[] data = m_rs.getRecord(delta);
 
             bin = new ByteArrayInputStream(data);
             din = new DataInputStream(bin);
@@ -138,5 +146,24 @@ public class DataSuministros {
       }
       return count;
    }
+
+   private String getNameFile(int i) {
+        String name = "DATA";
+        String sufix = "";
+        int n = i / 100;
+        if((n < 10) && (n >= 0)) {
+            sufix = "00" + Integer.toString(n);
+            sufix = sufix.substring(1,3);
+        } else {
+            sufix = Integer.toString(n);
+        }
+        return (name+sufix);
+    }
+
+    private int getDelta(int i) {
+        int dd = i % 100;
+        if(i<100) return dd;
+        else return (dd+1);
+    }
 
 } // end class
