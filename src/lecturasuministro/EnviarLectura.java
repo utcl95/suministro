@@ -10,13 +10,18 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
+import javax.microedition.lcdui.Alert;
+import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.*;
 
 /**
  * @author utcl95
  */
 public class EnviarLectura extends MIDlet {
+    private Display display;
+
     public void startApp() {
+        display = Display.getDisplay(this);
         sendData();
     }
 
@@ -53,5 +58,9 @@ public class EnviarLectura extends MIDlet {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        Alert al = new Alert("Archivo de Lecturas Generado...");
+        al.setTimeout(Alert.FOREVER);
+        display.setCurrent(al);
     }
 }
