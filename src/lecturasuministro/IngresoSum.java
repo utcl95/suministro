@@ -78,7 +78,7 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
 
             if (c.getCommandType() == Command.OK) {
                 lectura.datosConsumo();
-                canvas.doNext();
+                //canvas.doNext();
                 display2.setCurrent(canvas);
                 
 
