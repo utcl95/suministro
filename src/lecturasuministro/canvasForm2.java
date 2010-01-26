@@ -9,10 +9,6 @@ package lecturasuministro;
  *
  * @author Juan
  */
-import java.io.IOException;
-import java.io.InputStream;
-import javax.microedition.io.Connector;
-import javax.microedition.io.file.FileConnection;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
 
@@ -36,6 +32,7 @@ public class canvasForm2 extends Canvas {
     public int m_promedioLectura = 0;
     public int m_anteriorLectura = 0;
     private Suministro ss;
+    private DataSuministros dataRMS = new DataSuministros("DATA00");
 
     canvasForm2(){
     }
@@ -45,11 +42,6 @@ public class canvasForm2 extends Canvas {
     }
 
     protected void keyPressed(int keyCode) {
-        if (keyCode > 0) {
-          
-        } else {
-          
-        }
         // Derecha +
         if(getGameAction(keyCode) == 5) doNext();
         // Izquierda -
@@ -97,8 +89,8 @@ public class canvasForm2 extends Canvas {
         }
 
         public void setDireccion(String sd) {
-            int nl = sd.length();
-            sd = sd.substring(0, nl-2);
+            //int nl = sd.length();
+            //sd = sd.substring(0, nl-2);
             m_direccion = sd;
         }
 
@@ -109,92 +101,29 @@ public class canvasForm2 extends Canvas {
         public void setCurrentSuministro(int cs) {
             String m_url = "file:///SDCard//suministros.txt";
             //String m_url = "file:///e:/suministros.txt";
-            TextFile txt = new TextFile(m_url);
-
-            // readline inicio
-            //String m_linea = txt.readLine(cs);
-            FileConnection ptr_file = null;
-            InputStream is_rl = null;
-            String m_linea = "";
-            int num = 0; int ch; int line=0;
-
-            line = cs;
-            try {
-                ptr_file = (FileConnection) Connector.open(m_url, Connector.READ);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-            try {
-                is_rl = ptr_file.openInputStream();
-                ch = is_rl.read();
-                while (ch != -1) {
-                    if (ch == '\n') {
-                        num++;
-                    }
-
-                    if(line == (num+1)) {
-                        // Inicio rLine
-                        //m_linea = rLine(is_rl, ch, line);
-                        StringBuffer sb = new StringBuffer();
-                        int xch;
-                        try {
-                            //ch = is.read();
-                            while ((xch=is_rl.read()) != '\n') {
-                                if(line==1) {
-                                    sb.append((char)ch);
-                                    line++;
-                                }
-                                if(xch == -1)
-                                    break;
-                                sb.append((char)xch);
-
-                                //ch = is.read();
-                            }
-
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                        m_linea = sb.toString();
-                        // Fin rLine
-                        break;
-                    }
-                    ch = is_rl.read();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-            try {
-                ptr_file.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            is_rl = null;
-            // readline fin
-
-            String data[] = txt.split(m_linea);
+            
+            String data[] = dataRMS.getRecord(cs);
             
             setSuministro(data[0]);
-            m_current = cs;
-            
-
+            m_current = cs;            
+            //System.out.println(data[7]);
             // Setea el suministro actual
             currentSuministro = data[0];
-
+            
             setZona(data[1]);
             setNombre(data[2]);
             setDireccion(data[3]);
             setSerie(data[4]);
+            
             // Mostrar los datos.
             repaint();
-
+            
             // Promedio de Lectura
-            m_promedioLectura = Integer.parseInt(data[7]);
+            m_promedioLectura = Integer.parseInt(data[6]);
             // Lectura anterior
-            m_anteriorLectura = Integer.parseInt(data[6].trim());
+            m_anteriorLectura = Integer.parseInt(data[5].trim());
 
-            txt = null;
+          
         }
 
         public void doBack() {
@@ -238,6 +167,7 @@ public class canvasForm2 extends Canvas {
             }
         }
         m_rms = null;
+        //System.out.println(l_siguiente);
         return l_siguiente;
     }
 
