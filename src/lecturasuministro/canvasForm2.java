@@ -114,16 +114,14 @@ public class canvasForm2 extends Canvas {
             setNombre(data[2]);
             setDireccion(data[3]);
             setSerie(data[4]);
-            
-            // Mostrar los datos.
-            repaint();
-            
+
             // Promedio de Lectura
             m_promedioLectura = Integer.parseInt(data[6]);
             // Lectura anterior
             m_anteriorLectura = Integer.parseInt(data[5].trim());
-
-          
+            
+            // Mostrar los datos.
+            repaint();
         }
 
         public void doBack() {
