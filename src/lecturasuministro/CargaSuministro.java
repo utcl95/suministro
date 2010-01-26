@@ -71,7 +71,7 @@ public class CargaSuministro extends MIDlet {
                 if (ch == '\n') {
                     m_temp = sb.toString().trim();
                     sRMS.addSuministro(m_temp);
-                    num++;
+                    num = num + 1;
                     //System.out.println(num + " : " + m_temp);
                     len = sb.length();
                     sb.delete(0, len);
@@ -79,6 +79,7 @@ public class CargaSuministro extends MIDlet {
                     sb.append((char)ch);
                 }
             }
+            
             m_nsuministros = num;
 
             // Cierra el archivo.

@@ -83,6 +83,7 @@ public class CargaDataSuministro extends MIDlet {
                     sb.append((char)ch);
                 }
             }
+            m_nsuministros = num_linea;
             ptr_file.close();
             
         } catch (IOException ex) {
