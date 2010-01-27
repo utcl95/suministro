@@ -104,16 +104,36 @@ public class SuministroRMS {
         openRMS();
         int nextID = recordCount();
         int i=1;
+        // Variables de Compare
+        ByteArrayInputStream bin = null;
+        DataInputStream din = null;
+
         //System.out.println(nextID+"JAQUI");
         //showRMS();
         while(i<=nextID) {
+             // Inicio Compare
+            try {
+                byte[] data = m_rs.getRecord(i);
 
-            if(compareSuministro(ssuministro, i)) {
-                closeRMS();
-                return i;
+                bin = new ByteArrayInputStream(data);
+                din = new DataInputStream(bin);
+
+                String msuministro  = din.readUTF();
+                din.close();
+                if(ssuministro.equals(msuministro)) {
+                    closeRMS();
+                    return i;
+                }
+                bin = null; // Para evitar errores.
+                din = null; // Para evitar errores.
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (RecordStoreException ex) {
+                ex.printStackTrace();
             }
+             // Fin Compare
             ++i;
-        }
+        } // end while
         closeRMS();
         return 0;
     }
