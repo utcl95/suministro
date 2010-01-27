@@ -107,25 +107,37 @@ public class SuministroRMS {
         // Variables de Compare
         ByteArrayInputStream bin = null;
         DataInputStream din = null;
+        String msuministro = "";
+
+        // getRecord
+        byte[] data = null;
+        String m_rms[] = new String[3];
 
         //System.out.println(nextID+"JAQUI");
         //showRMS();
         while(i<=nextID) {
              // Inicio Compare
             try {
-                byte[] data = m_rs.getRecord(i);
-
+                // Inicio getRecord
+                data = m_rs.getRecord(i);
                 bin = new ByteArrayInputStream(data);
                 din = new DataInputStream(bin);
 
-                String msuministro  = din.readUTF();
+                m_rms[0] = din.readUTF();
+                m_rms[1] = din.readUTF();
+                m_rms[2] = din.readUTF();
                 din.close();
+                // Fin getRecord
+
+                msuministro  = m_rms[0];
                 if(ssuministro.equals(msuministro)) {
                     closeRMS();
                     return i;
                 }
                 bin = null; // Para evitar errores.
                 din = null; // Para evitar errores.
+                msuministro = "";
+                data = null;
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (RecordStoreException ex) {
