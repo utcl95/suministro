@@ -166,5 +166,10 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
         canvas.doNext();
         display2.setCurrent(canvas);
     }
+
+    public int getIdSuministro() {
+        int i = canvas.getCurrentSuministroPosition();
+        return i;
+    }
     
 }

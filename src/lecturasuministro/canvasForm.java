@@ -106,8 +106,9 @@ public class canvasForm extends Canvas {
             String data[] = dataRMS.getRecord(cs);
 
             setSuministro(data[0]);
+            // Numero de suministro, como id.
             m_current = cs;
-            //System.out.println(data[7]);
+            //System.out.println("Linea : " + cs);
             // Setea el suministro actual
             currentSuministro = data[0];
 
@@ -175,5 +176,9 @@ public class canvasForm extends Canvas {
 
     public int getAnterior() {
         return m_anteriorLectura;
+    }
+
+    public int getCurrentSuministroPosition() {
+        return m_current;
     }
 }

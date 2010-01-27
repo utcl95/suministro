@@ -81,7 +81,8 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     // Graba el consumo y obs a RMS.
     /* TODO: Revisar boolean ... */
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
-        int index = sRMS.searchSuministro(msuministro);
+        //int index = sRMS.searchSuministro(msuministro);
+        int index = ss.getIdSuministro();
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
         //sRMS.showRMS();
         ss.repaintCanvasAfterSave();
