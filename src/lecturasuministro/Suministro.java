@@ -159,6 +159,9 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     protected void pauseApp () {
     }
 
-    
+    public int getIdSuministro() {
+        int i = cf.getCurrentSuministroPosition();
+        return i;
+    }
 
 }

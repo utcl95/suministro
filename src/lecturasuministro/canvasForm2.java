@@ -176,4 +176,8 @@ public class canvasForm2 extends Canvas {
     public int getAnterior() {
         return m_anteriorLectura;
     }
+
+    public int getCurrentSuministroPosition() {
+        return m_current;
+    }
 }
