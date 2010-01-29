@@ -19,6 +19,7 @@ import javax.microedition.midlet.*;
  */
 public class CargaDataSuministro extends MIDlet {
     DataSuministros sRMS = new DataSuministros("DATA00");
+    RMS_Ordenados rmsOrden = new RMS_Ordenados("ORDENADOS");
     private Display display;
     private int m_nsuministros = 0;
     private String m_namerms = "";
@@ -26,9 +27,13 @@ public class CargaDataSuministro extends MIDlet {
     public void startApp() {
         display = Display.getDisplay(this);
 
-        cargarSuministros();
-
+        // Datos del Suministro
+        cargarSuministros(); 
         String msg = "Suministros Cargados : " + m_nsuministros;
+
+        // Suministros ordenados.
+        cargarSuministrosOrdenados();
+
 
         Alert al = new Alert(msg);
         al.setTimeout(Alert.FOREVER);
@@ -90,6 +95,53 @@ public class CargaDataSuministro extends MIDlet {
             ex.printStackTrace();
         }
         sRMS.closeRMS();
+        is = null;
+        return true;
+    }
+
+    /**
+     * Cargar suministros ordenados.
+     */
+    public boolean cargarSuministrosOrdenados() {
+        FileConnection ptr_file = null;
+        String m_linea = "";
+        StringBuffer sb = new StringBuffer();
+        String m_data[] = null;
+        InputStream is = null;
+        int num_linea = 1;
+        int ch;
+        int len  = 0;
+
+        // Numero de Suministros.
+        m_nsuministros = 0;
+
+        // Abrir el RMS.
+        rmsOrden.openRMS();
+        
+        try {
+            ptr_file = (FileConnection) Connector.open("file:///SDCard//suministrosordenados.txt", Connector.READ);
+            //ptr_file = (FileConnection) Connector.open("file:///e:/suministrosordenados.txt", Connector.READ);
+            is = ptr_file.openInputStream();
+
+            while((ch=is.read()) != -1) {
+                if (ch == '\n') {
+                    m_linea = sb.toString().trim(); // Linea
+                    m_data = split_linea(m_linea);  // Divide la Linea en partes.
+                    rmsOrden.addSuministro(m_data);     // Añade al RMS.
+                    num_linea = num_linea + 1;
+                    len = sb.length();
+                    sb.delete(0, len);
+                } else {
+                    sb.append((char)ch);
+                }
+            }
+            m_nsuministros = num_linea;
+            ptr_file.close();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        rmsOrden.closeRMS();
         is = null;
         return true;
     }

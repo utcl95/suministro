@@ -34,7 +34,8 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
     private boolean grabar;
     private canvasForm canvas = null;
     private String sumCanvas;
-    
+
+    RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
         
     public IngresoSum () {
@@ -118,7 +119,9 @@ public class IngresoSum extends MIDlet implements CommandListener, ItemCommandLi
             destroyApp (false);
             notifyDestroyed ();
         }if (c == CMD_PRESS) {
-            int index = sRMS.searchSuministro(suministro);
+            // Busqueda
+            //int index = sRMS.searchSuministro(suministro);
+            int index = rms_orden.buscar(suministro);
            
              if(index != 0){
                 canvas.setCurrentSuministro(index);
