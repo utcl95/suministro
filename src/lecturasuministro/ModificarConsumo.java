@@ -28,6 +28,8 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     private boolean status;
 
     RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
+    int currentIdSuministro = 0;
+
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
     private TextField consum2;
     private TextField obs;
@@ -71,7 +73,9 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     public void commandAction(Command c, Item item) {
         if (c == CMD_PRESS) {
             suministro = consum.getString();
+            // Id de Suministro.
             int index = rms_orden.buscar(suministro);
+            currentIdSuministro = index;
             boolean data = sRMS.tieneData(index);
             if(data == true){
                 sc = new SetConsumo(suministro, this);
@@ -115,7 +119,7 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     }
 
     public int getIdSuministro() {
-        int i = canvas.getCurrentSuministroPosition();
+        int i = currentIdSuministro;
         return i;
     }
 }
