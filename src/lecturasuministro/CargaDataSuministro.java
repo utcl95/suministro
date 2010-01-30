@@ -18,7 +18,7 @@ import javax.microedition.midlet.*;
  * @author Juan
  */
 public class CargaDataSuministro extends MIDlet {
-    DataSuministros sRMS = new DataSuministros("DATA00");
+    DataSuministros dataRMS = new DataSuministros("DATA00");
     RMS_Ordenados rmsOrden = new RMS_Ordenados("ORDENADOS");
     private Display display;
     private int m_nsuministros = 0;
@@ -28,7 +28,7 @@ public class CargaDataSuministro extends MIDlet {
         display = Display.getDisplay(this);
 
         // Datos del Suministro
-        cargarSuministros(); 
+        cargarDataSuministros();
         String msg = "Suministros Cargados : " + m_nsuministros;
 
         // Suministros ordenados.
@@ -47,9 +47,9 @@ public class CargaDataSuministro extends MIDlet {
     }
 
     /**
-     * Cargar suministros a leer, 1500 aprox.
+     * Cargar Datos de Suministros
      */
-    public boolean cargarSuministros() {
+    public boolean cargarDataSuministros() {
         FileConnection ptr_file = null;
         String m_linea = "";
         StringBuffer sb = new StringBuffer();
@@ -63,7 +63,7 @@ public class CargaDataSuministro extends MIDlet {
         m_nsuministros = 0;
 
         // Abrir el RMS.
-        sRMS.openRMS();
+        dataRMS.openRMS();
         try {
             ptr_file = (FileConnection) Connector.open("file:///SDCard//suministros.txt", Connector.READ);
             //ptr_file = (FileConnection) Connector.open("file:///e:/suministros.txt", Connector.READ);
@@ -75,12 +75,12 @@ public class CargaDataSuministro extends MIDlet {
                     m_data = split_linea(m_linea);  // Divide la Linea en partes.
                     // Busca el nombre correcto, 100 por RMS.
                     if((num_linea%100) == 0) {
-                        sRMS.closeRMS();
+                        dataRMS.closeRMS();
                         m_namerms = getNameFile(num_linea);
-                        sRMS.setNameRMS(m_namerms);
-                        sRMS.openRMS();
+                        dataRMS.setNameRMS(m_namerms);
+                        dataRMS.openRMS();
                     }
-                    sRMS.addSuministro(m_data);     // Añade al RMS.
+                    dataRMS.addSuministro(m_data);     // Añade al RMS.
                     num_linea = num_linea + 1;
                     len = sb.length();
                     sb.delete(0, len);
@@ -94,7 +94,7 @@ public class CargaDataSuministro extends MIDlet {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        sRMS.closeRMS();
+        dataRMS.closeRMS();
         is = null;
         return true;
     }
