@@ -14,14 +14,14 @@ import javax.microedition.midlet.*;
 public class ModificarConsumo extends MIDlet implements CommandListener, ItemCommandListener{
     private boolean firstTime;
     private Form mainForm;
-    private Form mainForm2;
     private Display display2;
     private TextField consum;
+    private static final Command CMD_BACK = new Command ("Back", Command.BACK, 1);
     private static final Command CMD_PRESS = new Command ("Buscar", Command.ITEM, 1);
     private static final Command CMD_PRESS2 = new Command ("Ingresar", Command.ITEM, 1);
+    private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
     private String suministro;
     private SetConsumo sc;
-    private canvasForm canvas = null;
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
@@ -54,10 +54,11 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
 
             mainForm.append(item);
             mainForm.setCommandListener (this);
+            mainForm.addCommand (CMD_EXIT);
             firstTime = false;
 
             display2.setCurrent(mainForm);
-            canvas = new canvasForm ();
+            
         }
     }
 
@@ -76,6 +77,11 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
 
             } else if (c.getCommandType() == Command.STOP){
                 display2.setCurrent(sc);
+            }else if (c.getCommandType() == Command.BACK) {
+                        display2.setCurrent(mainForm);
+            } else if (c.getCommandType() == Command.EXIT) {
+                        destroyApp (false);
+                        notifyDestroyed ();
             }
     }
 
@@ -89,6 +95,7 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
             if(data == true){
                 consum.setString("");
                 sc = new SetConsumo(suministro, this);
+                sc.addCommand(CMD_BACK);
                 sc.setCommandListener(this);
                 display2.setCurrent(sc);
             }else{
@@ -122,17 +129,21 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     public int lAnterior(){
         String data[] = dataRMS.getRecord(index);
         int anterior = Integer.parseInt(data[5].trim());
-        System.out.println("jaqui:"+anterior);
         return anterior;
     }
 
     public int lPromedio(){
         String data[] = dataRMS.getRecord(index);
         int promedio = Integer.parseInt(data[6]);
-        System.out.println("jaqui:"+promedio);
         return promedio;
     }
 
+    public String lActual(){
+        String data[] = sRMS.getRecord(index);
+        String actual = data[1].trim();
+        return actual;
+    }
+    
     public int getIdSuministro() {
         int i = currentIdSuministro;
         return i;
