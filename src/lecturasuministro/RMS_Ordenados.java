@@ -124,7 +124,6 @@ public class RMS_Ordenados {
          closeRMS();
       }
       catch (Exception e) {
-         System.out.println(e);
          e.printStackTrace();
       }
       return count;
@@ -141,13 +140,11 @@ public class RMS_Ordenados {
         String so[] = new String[2];
         int inicio = 1;
         int fin = 0;
-        System.out.println(m_dato);
         try {
             fin = m_rs.getNumRecords();
         } catch (RecordStoreNotOpenException ex) {
             ex.printStackTrace();
         }
-
         int pos;
         while (inicio <= fin) {
          pos = (inicio+fin) / 2;
