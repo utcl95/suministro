@@ -65,16 +65,15 @@ public class SetConsumo extends Form implements CommandListener, ItemCommandList
 
     public void leerConsumoSuministro(String msuministro) {
        suministro = msuministro;
-
-       //sumanterior = Integer.toString(ss.lAnterior());
+       String lectura = new String(ss.lActual());
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
-       //append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
+       consumo.setString(lectura);
        append(consumo);
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
        append(obs);
 
-       StringItem item = new StringItem("", "Validar", Item.BUTTON);
+       StringItem item = new StringItem("", "Corregir", Item.BUTTON);
        item.setDefaultCommand(CMD_PRESS2);
        item.setItemCommandListener(this);
        append(item);
@@ -82,11 +81,8 @@ public class SetConsumo extends Form implements CommandListener, ItemCommandList
     }
 
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
-        //int index = sRMS.searchSuministro(msuministro);
         int index = ss.getIdSuministro();
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
-        //ss.startApp();
-        //ss.repaintCanvasAfterSave();
         return false;
     }
 
