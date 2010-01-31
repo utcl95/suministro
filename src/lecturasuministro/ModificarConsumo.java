@@ -26,14 +26,14 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     private Command softKey1;
     private Command softKey2;
     private boolean status;
+    private int index;
 
     RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
+    private DataSuministros dataRMS = new DataSuministros("DATA00");
     int currentIdSuministro = 0;
 
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
-    private TextField consum2;
-    private TextField obs;
-
+    
     public ModificarConsumo () {
         firstTime = true;
         mainForm = new Form ("Busqueda...");
@@ -68,18 +68,27 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     }
 
     public void commandAction(Command c, Displayable d) {
+         status = c.getCommandType() == Command.OK;
+
+        if (c.getCommandType() == Command.OK) {
+                sc.datosConsumo();
+                display2.setCurrent(mainForm);
+
+            } else if (c.getCommandType() == Command.STOP){
+                display2.setCurrent(sc);
+            }
     }
 
     public void commandAction(Command c, Item item) {
         if (c == CMD_PRESS) {
             suministro = consum.getString();
             // Id de Suministro.
-            int index = rms_orden.buscar(suministro);
+            index = rms_orden.buscar(suministro);
             currentIdSuministro = index;
             boolean data = sRMS.tieneData(index);
             if(data == true){
+                consum.setString("");
                 sc = new SetConsumo(suministro, this);
-                //sc.addCommand(CMD_CANCEL);
                 sc.setCommandListener(this);
                 display2.setCurrent(sc);
             }else{
@@ -111,11 +120,17 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     }
 
     public int lAnterior(){
-        return canvas.getAnterior();
+        String data[] = dataRMS.getRecord(index);
+        int anterior = Integer.parseInt(data[5].trim());
+        System.out.println("jaqui:"+anterior);
+        return anterior;
     }
 
     public int lPromedio(){
-        return canvas.getPromedio();
+        String data[] = dataRMS.getRecord(index);
+        int promedio = Integer.parseInt(data[6]);
+        System.out.println("jaqui:"+promedio);
+        return promedio;
     }
 
     public int getIdSuministro() {
