@@ -142,7 +142,7 @@ public class CargaSuministro extends MIDlet implements CommandListener {
         StringBuffer sb = new StringBuffer();
         String m_data[] = null;
         InputStream is = null;
-        int num_linea = 0;
+        int num_linea = 1; // Para sincronizar con la busqueda.
         int ch;
         int len  = 0;
 
