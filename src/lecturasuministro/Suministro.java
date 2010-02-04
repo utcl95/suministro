@@ -31,13 +31,6 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
 
     protected void startApp () {
         // Modificar su valor en la declaracion para la realizacion de test.
-        if(U_TEST) {
-            testSuministroRMS testRMS = new testSuministroRMS();
-            testRMS.doTest();
-
-            testConfigData testCD = new testConfigData();
-            testCD.doTest();
-        }
 
         display = Display.getDisplay(this);
         // Leer Suministro.
