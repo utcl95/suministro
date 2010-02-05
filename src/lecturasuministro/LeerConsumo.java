@@ -13,26 +13,36 @@ import javax.microedition.lcdui.*;
 public class LeerConsumo extends Form implements CommandListener, ItemCommandListener{
 
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
-    private Suministro ss;
+    private Suministro obj_suministro = null;
+    private BusquedaSuministro obj_busquedasuministro = null;
+
     private TextField consumo;
     private String suministro;
     private TextField obs;
     private int vobs;
     private int lactual;
-    private String sumanterior;
 
     RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
     private String lect;
     
-    LeerConsumo(String lect, Suministro ss) {
+    LeerConsumo(String lect, Suministro sumin) {
         super("Lectura de Consumo");
-        this.ss = ss;
+        this.obj_suministro = sumin;
+        this.lect = lect;
+        leerConsumoSuministro(lect);
+    }
+
+    LeerConsumo(String lect, BusquedaSuministro bs) {
+        super("Lectura de Consumo");
+        this.obj_busquedasuministro = bs;
         this.lect = lect;
         leerConsumoSuministro(lect);
     }
 
     public void commandAction (Command c, Item item) {
         Validacion validarSuministro = new Validacion();
+        int lanterior = 0;
+        int promedio = 0;
         
         if(obs.getString().equals(""))
             vobs = 0;
@@ -40,14 +50,23 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
             vobs = Integer.parseInt(obs.getString());
         
         lactual = Integer.parseInt(consumo.getString());
-        int lanterior = ss.lAnterior();
-        int promedio = ss.lPromedio();
+
+        if(obj_busquedasuministro == null) {
+            lanterior = obj_suministro.lAnterior();
+            promedio = obj_suministro.lPromedio();
+
+        } else {
+            lanterior = obj_busquedasuministro.lAnterior();
+            promedio = obj_busquedasuministro.lPromedio();
+        }
         int cons_act = lactual - lanterior;
-        
         if (c == CMD_PRESS2){
             
             if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
-              ss.mostrarMensaje("c", lactual);
+                if(obj_busquedasuministro == null)
+                    obj_suministro.mostrarMensaje("c", lactual);
+                else
+                    obj_busquedasuministro.mostrarMensaje("c", lactual);
             }else{
               datosConsumo();
             }
@@ -64,12 +83,10 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
 
     public void leerConsumoSuministro(String msuministro) {
        suministro = msuministro;
-
-       //sumanterior = Integer.toString(ss.lAnterior());
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
-       //append(new TextField("Lect Anterior", sumanterior, 20, TextField.UNEDITABLE));
        append(consumo);
+
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
        append(obs);
        
@@ -81,11 +98,12 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     }
 
     public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
-        //int index = sRMS.searchSuministro(msuministro);
-        int index = ss.getIdSuministro();
+        int index = obj_suministro.getIdSuministro();
         sRMS.setSuministro(index, msuministro, mconsumo, mobs);
-        //ss.startApp();
-        ss.repaintCanvasAfterSave();
+        if(obj_busquedasuministro == null)
+            obj_suministro.repaintCanvasAfterSave();
+        else
+            obj_busquedasuministro.repaintCanvasAfterSave();
         return false;
     }
 

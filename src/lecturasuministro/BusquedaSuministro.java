@@ -24,7 +24,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private Display display2;
     private TextField txtsum;
     private String suministro;
-    private EnviarLecturaSum lectura = null;
+    private LeerConsumo lectura = null;
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
@@ -96,7 +96,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     public void buscarSuministro(String sumActual){
         sumCanvas  = sumActual;
 
-        lectura = new EnviarLecturaSum(sumCanvas, this);
+        lectura = new LeerConsumo(sumCanvas, this);
         txtsum.setString("");
         lectura.addCommand(CMD_CANCEL);
         lectura.setCommandListener(this);
