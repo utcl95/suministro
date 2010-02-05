@@ -22,7 +22,7 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
     private int vobs;
     private int lactual;
     
-    SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
 
     EnviarLecturaSum(String lect, BusquedaSuministro ss) {
         super("Lectura de Consumo");

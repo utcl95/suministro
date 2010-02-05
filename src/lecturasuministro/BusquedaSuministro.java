@@ -32,7 +32,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private String sumCanvas;
 
     RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
-    SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
 
     public BusquedaSuministro () {
         firstTime = true;

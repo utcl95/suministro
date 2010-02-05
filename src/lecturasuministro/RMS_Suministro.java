@@ -24,25 +24,25 @@ import javax.microedition.rms.RecordStoreException;
  *
  * setSuministro, cambia el consumo de acuerdo al suministro y al index
  * Ejemplo:
- * 
+ *
  * ssuministro = "12345678";
  * consumo    = "563251"
  * index = searchSuministro(ssuministro)
  * if(setSuministro(index, ssuministro, consumo))
  *     // suministro cambiado ok.
- * 
+ *
  * setSuministro(index, ssuministro, sconsumo)
  *
  * getRecord, devuelve el registro index, como un array de 3 elementos.
  *
  * public String[] getRecord(int index)
- * 
+ *
  */
-public class SuministroRMS {
+public class RMS_Suministro {
     RecordStore m_rs     = null;
     String      m_name   = "";
 
-    SuministroRMS(String name) {
+    RMS_Suministro(String name) {
         m_name = name;
     }
 
@@ -262,11 +262,11 @@ public class SuministroRMS {
             ex.printStackTrace();
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
-        }        
+        }
         return m_rms;
     }
 
-    
+
     public int recordCount()  {
       int count = 0;
       try  {
@@ -301,7 +301,7 @@ public class SuministroRMS {
 
             din.close();
             if(mlectura.equals("00000000"))
-                compare = compare+1;            
+                compare = compare+1;
         }
         closeRMS();
       }

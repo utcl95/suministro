@@ -29,10 +29,10 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     private int index;
 
     RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
-    private DataSuministros dataRMS = new DataSuministros("DATA00");
+    private RMS_DataSuministros dataRMS = new RMS_DataSuministros("DATA00");
     int currentIdSuministro = 0;
 
-    SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
     
     public ModificarConsumo () {
         firstTime = true;

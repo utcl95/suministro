@@ -9,11 +9,11 @@ import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
 
-public class DataSuministros {
+public class RMS_DataSuministros {
     RecordStore m_rs     = null;
     String      m_name   = "";
 
-    DataSuministros(String name) {
+    RMS_DataSuministros(String name) {
         m_name = name;
     }
 
@@ -78,7 +78,7 @@ public class DataSuministros {
         String m_namerms = getNameFile(index);
         int delta = getDelta(index);
         setNameRMS(m_namerms);
-        
+
         openRMS();
         try {
             byte[] data = m_rs.getRecord(delta);

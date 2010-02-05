@@ -22,9 +22,9 @@ import javax.microedition.midlet.*;
  * @author Carlos
  */
 public class CargaSuministro extends MIDlet implements CommandListener {
-    SuministroRMS sRMS      = new SuministroRMS("SUMINISTROS");
+    RMS_Suministro sRMS      = new RMS_Suministro("SUMINISTROS");
     RMS_Ordenados rmsOrden  = new RMS_Ordenados("ORDENADOS");
-    DataSuministros dataRMS = new DataSuministros("DATA00");
+    RMS_DataSuministros dataRMS = new RMS_DataSuministros("DATA00");
     
 
     private Display display;

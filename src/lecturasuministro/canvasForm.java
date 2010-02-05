@@ -35,7 +35,7 @@ public class canvasForm extends Canvas {
     private BusquedaSuministro ingreso = null;
     private Suministro ss = null;
     
-    private DataSuministros dataRMS = new DataSuministros("DATA00");
+    private RMS_DataSuministros dataRMS = new RMS_DataSuministros("DATA00");
 
     canvasForm(){
     }
@@ -137,7 +137,7 @@ public class canvasForm extends Canvas {
         }
 
         public void doBack() {
-        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
+        RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
         int i = m_current;
         if(i == 1) {
         } else {
@@ -152,7 +152,7 @@ public class canvasForm extends Canvas {
     }
 
     public void doNext() {
-        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
+        RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
         int numeroSuministros = m_rms.recordCount();
         int i = m_current;
         if(i == numeroSuministros) {
@@ -167,7 +167,7 @@ public class canvasForm extends Canvas {
     }
 
     public int siguienteSinData(int i) {
-        SuministroRMS m_rms = new SuministroRMS("SUMINISTROS");
+        RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
         int numeroSuministros = m_rms.recordCount();
         int l_siguiente = i;
         if(i == numeroSuministros) {

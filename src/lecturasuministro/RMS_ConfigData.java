@@ -11,15 +11,15 @@ import javax.microedition.rms.RecordStoreException;
 
 /**
  * @author utcl95
- * 
+ *
  */
 
-public class ConfigData {
+public class RMS_ConfigData {
     private RecordStore m_rs     = null;
     private String      m_name   = "";
     private int         m_ts     = 0; // Total de Suministros a Leer
 
-    ConfigData() {
+    RMS_ConfigData() {
         m_name = "config_data";
     }
 
@@ -43,7 +43,7 @@ public class ConfigData {
 
             // Numero de Suministros
             m_ts = totalSuministros;
-            
+
             closeRMS();
             return true;
         } catch (RecordStoreException ex) {
@@ -89,7 +89,7 @@ public class ConfigData {
             totalSuministros   = din.readInt();
             din.close();
             closeRMS();
-            
+
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (RecordStoreException ex) {
@@ -125,7 +125,7 @@ public class ConfigData {
     public boolean addLeidos() {
         ByteArrayOutputStream   bout = new ByteArrayOutputStream();
         DataOutputStream        dout = new DataOutputStream(bout);
-        
+
         // Suministros Leidos hasta el momento y total a leer.
         int currentLeidos = getSuministrosLeidos();
         int totalLeer     = getTotalSuministros();

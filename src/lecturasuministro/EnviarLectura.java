@@ -36,7 +36,7 @@ public class EnviarLectura extends MIDlet {
         String m_linea = "";
         char cr = 13;
         try {
-            SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+            RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
             int numRMS = sRMS.recordCount();
             //System.out.println(numRMS);
             FileConnection connection = (FileConnection) Connector.open("file:///SDCard//lecturas.txt", Connector.WRITE );

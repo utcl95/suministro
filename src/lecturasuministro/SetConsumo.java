@@ -22,7 +22,7 @@ public class SetConsumo extends Form implements CommandListener, ItemCommandList
     private int lactual;
     private String sumanterior;
 
-    SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
     private String lect;
 
     SetConsumo(String lect, ModificarConsumo ss) {

@@ -21,7 +21,7 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
     private int lactual;
     private String sumanterior;
 
-    SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
+    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
     private String lect;
     
     LeerConsumo(String lect, Suministro ss) {
