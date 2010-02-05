@@ -15,17 +15,16 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
 
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
 
-    private IngresoSum ss;
+    private BusquedaSuministro ss;
     private TextField consumo;
     private String suministro;
-    private String sumanterior;
     private TextField obs;
     private int vobs;
     private int lactual;
     
     SuministroRMS sRMS = new SuministroRMS("SUMINISTROS");
 
-    EnviarLecturaSum(String lect, IngresoSum ss) {
+    EnviarLecturaSum(String lect, BusquedaSuministro ss) {
         super("Lectura de Consumo");
         this.ss = ss;
         buscarSuministro(lect);
@@ -64,7 +63,6 @@ public class EnviarLecturaSum extends Form implements CommandListener, ItemComma
      */
     public void buscarSuministro(String msuministro) {
        suministro = msuministro;
-       sumanterior = Integer.toString(ss.lAnterior());
        consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
        append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
        append(consumo);

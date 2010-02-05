@@ -32,23 +32,23 @@ public class canvasForm extends Canvas {
     // Promedio de lectura del suministro
     public int m_promedioLectura = 0;
     public int m_anteriorLectura = 0;
-    private IngresoSum ingreso;
+    private BusquedaSuministro ingreso;
     private DataSuministros dataRMS = new DataSuministros("DATA00");
 
     canvasForm(){
     }
 
-    canvasForm(IngresoSum ingreso){
+    canvasForm(BusquedaSuministro ingreso){
         this.ingreso = ingreso;
     }
 
     protected void keyPressed(int keyCode) {
         // Derecha +
         if(getGameAction(keyCode) == 5) doNext();
+
         // Izquierda -
         if(getGameAction(keyCode) == 2) doBack();
-        //setCurrentSuministro(m_current);
-        //repaint();
+
         // Ingresar consumo
         if(getGameAction(keyCode) == 6){
             ingreso.buscarSuministro(m_suministro);}
