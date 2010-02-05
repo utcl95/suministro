@@ -27,7 +27,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     private Command softKey2;
     private boolean status;
     private String sumCanvas;
-    private canvasForm2 cf;
+    private canvasForm cf;
 
     protected void startApp () {
         // Modificar su valor en la declaracion para la realizacion de test.
@@ -38,7 +38,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         //fs = new FormSuministro("Lectura x Zona");
         
         // Probar con un formulario en un canvas.
-        cf = new canvasForm2(this);
+        cf = new canvasForm(this);
         cf.addCommand(CMD_BACK);
         // Verificar q el actual este sin data, sino avanza al siguiente(s)
         //currentItem = siguienteSinData();

@@ -62,5 +62,8 @@ public class EnviarLectura extends MIDlet {
         Alert al = new Alert("Archivo de Lecturas Generado...");
         al.setTimeout(Alert.FOREVER);
         display.setCurrent(al);
+        // Borrar de memoria.
+        destroyApp (false);
+        notifyDestroyed();
     }
 }
