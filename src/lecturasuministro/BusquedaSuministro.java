@@ -73,7 +73,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     public void commandAction (Command c, Displayable s) {
 
             if (c.getCommandType() == Command.OK) {
-                lectura.datosConsumo();
+                lectura.grabarConsumo();
                 //canvas.doNext();
                 display2.setCurrent(canvas);
 

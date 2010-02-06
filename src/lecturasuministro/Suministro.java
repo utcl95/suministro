@@ -90,7 +90,7 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
     status = c.getCommandType() == Command.OK;
 
             if (c.getCommandType() == Command.OK) {
-                lectura.datosConsumo();
+                lectura.grabarConsumo();
                 //cf.doNext();
                 display.setCurrent(cf);
                 
