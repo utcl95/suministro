@@ -51,6 +51,17 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
         
         lactual = Integer.parseInt(consumo.getString());
 
+        if (vobs  >= 0 && vobs <= 20){        
+            
+        }else {
+            if(obj_busquedasuministro == null)
+                {System.out.println("jaqui1111");
+                obj_suministro.mostrarAlerta();}
+            else if(obj_suministro == null)
+                {System.out.println("jaqui2222");
+                obj_busquedasuministro.mostrarAlertaObs();}
+        }
+
         if(obj_busquedasuministro == null) {
             lanterior = obj_suministro.lAnterior();
             promedio = obj_suministro.lPromedio();
