@@ -126,6 +126,12 @@ public class Suministro extends MIDlet implements CommandListener, ItemCommandLi
         }
     }
 
+    public void mostrarAlerta(){
+        Alert al1 = new Alert("Atención");
+        al1.setString("Observación Incorrecta.");
+        display.setCurrent(al1);
+    }
+
     public int lAnterior(){
         return cf.getAnterior();
     }
