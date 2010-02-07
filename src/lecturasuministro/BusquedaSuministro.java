@@ -169,5 +169,11 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         return i;
     }
 
+    public void mostrarAlertaObs(){
+        Alert al2 = new Alert("Atención");
+        al2.setString("Observación Incorrecta.");
+        display2.setCurrent(al2);
+    }
+
 }
 
