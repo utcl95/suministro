@@ -12,8 +12,9 @@ import javax.microedition.midlet.MIDlet;
 /**
  * CustomItem demo
  */
-public class BusqedaSuministro extends MIDlet implements CommandListener {
+public class BusqedaSuministro extends MIDlet implements CommandListener, ItemCommandListener {
     private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
+    private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
     private Display display;
     private boolean firstTime;
     private Form mainForm;
@@ -27,9 +28,13 @@ public class BusqedaSuministro extends MIDlet implements CommandListener {
         if (firstTime) {
             display = Display.getDisplay (this);
             mainForm.append (new FormCanvas ("Suministro", Display.getDisplay (this)));
-            mainForm.append (new TextField ("Consumo", null, 10, 0));
-            mainForm.append (new TextField ("Observación", null, 10, 0));
-            
+            mainForm.append (new TextField ("Consumo   ", "", 12, TextField.NUMERIC));
+            mainForm.append (new TextField ("Obs", "", 2, TextField.NUMERIC));
+
+            StringItem item = new StringItem("", "Ingresar", Item.BUTTON);
+            item.setDefaultCommand(CMD_PRESS2);
+            item.setItemCommandListener(this);
+            mainForm.append(item);
             mainForm.addCommand (CMD_EXIT);
             mainForm.setCommandListener (this);
             firstTime = false;
@@ -49,5 +54,8 @@ public class BusqedaSuministro extends MIDlet implements CommandListener {
     }
 
     protected void pauseApp () {
+    }
+
+    public void commandAction(Command c, Item item) {
     }
 }
