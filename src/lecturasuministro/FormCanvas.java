@@ -85,7 +85,6 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     protected void paint (Graphics g, int w, int h) {
-
         g.setColor(0xffffff);
         g.fillRect(0, 0, w, h);
         g.setColor(0x000000);
@@ -93,7 +92,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         // Suministro y Zona
         g.drawString(m_suministro + " " + m_zona,   0, 0, Graphics.TOP | Graphics.LEFT);
         // Cliente
-        g.drawString(m_nombre,          0, 25, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_nombre,       0, 25, Graphics.TOP | Graphics.LEFT);
         // Direccion
         g.drawString(m_direccion,    0, 50, Graphics.TOP | Graphics.LEFT);
         // Serie Suministro
@@ -121,7 +120,6 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                     }
                     else {
                         location = LOWER;
-
                         return false;
                     }
                 }
@@ -129,7 +127,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 break;
 
             case Canvas.UP:
-System.out.println("arriba");
+                System.out.println("arriba");
                 if (location == LOWER) {
                     location = IN;
                 }
@@ -147,9 +145,6 @@ System.out.println("arriba");
                 }
 
                 break;
-
-
-
 
             case Canvas.LEFT:
                 System.out.println("izqierda");
@@ -180,8 +175,8 @@ System.out.println("arriba");
                     m_rms = null;
                     setCurrentSuministro(m_current);
                  }
-            }
-        }
+            } // end switch
+        } // end if
        
         visRect_inout[0] = currentX;
         visRect_inout[1] = currentY;
@@ -211,23 +206,23 @@ System.out.println("arriba");
         return currentSuministro;
     }
 
-        public void setZona(String sz) {
-            m_zona = sz;
-        }
+    public void setZona(String sz) {
+        m_zona = sz;
+    }
 
-        public void setNombre(String sn) {
-            m_nombre = sn;
-        }
+    public void setNombre(String sn) {
+        m_nombre = sn;
+    }
 
-        public void setDireccion(String sd) {
-            //int nl = sd.length();
-            //sd = sd.substring(0, nl-2);
-            m_direccion = sd;
-        }
+    public void setDireccion(String sd) {
+        //int nl = sd.length();
+        //sd = sd.substring(0, nl-2);
+        m_direccion = sd;
+    }
 
-        public void setSerie(String ss) {
-            m_serie = ss;
-        }
+    public void setSerie(String ss) {
+        m_serie = ss;
+    }
 
     public void setCurrentSuministro(int cs) {
             String m_url = "file:///SDCard//suministros.txt";
