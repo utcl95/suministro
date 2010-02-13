@@ -73,7 +73,10 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
 
         if (c.getCommandType() == Command.OK) {
                 sc.datosConsumo();
-                display2.setCurrent(mainForm);
+                // Volver al menu principal
+                destroyApp (false);
+                notifyDestroyed();
+                //display2.setCurrent(mainForm);
 
             } else if (c.getCommandType() == Command.STOP){
                 display2.setCurrent(sc);
