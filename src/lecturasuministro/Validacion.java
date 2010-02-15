@@ -17,7 +17,7 @@ public class Validacion {
 //        System.out.println("cons_actt : " + cons_act);
 //        System.out.println("promedio : " + promedio);
 
-        bReturn =   (lactual <= lanterior) ||
+        bReturn =   (lactual < lanterior) ||
                     (lanterior == 0) ||
                     ((cons_act <= 10) && (promedio > 4 * cons_act) && (promedio > 20)) ||
                     ((cons_act > 10) && (cons_act <= 30) && ( promedio >= 2.75 * cons_act || promedio <= 0.4 * cons_act )) ||
