@@ -250,4 +250,16 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             // Mostrar los datos.
             repaint();
         }
+
+    public int getPromedio() {
+        return this.m_promedioLectura;
+    }
+
+    public int getAnterior() {
+        return m_anteriorLectura;
+    }
+
+    public int getCurrentSuministroPosition() {
+        return m_current;
+    }
 }

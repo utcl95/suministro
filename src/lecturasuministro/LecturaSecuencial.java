@@ -12,7 +12,7 @@ import javax.microedition.midlet.MIDlet;
 /**
  * CustomItem demo
  */
-public class BusqedaSuministro extends MIDlet implements CommandListener, ItemCommandListener {
+public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCommandListener {
     private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
     private Display display;
@@ -29,8 +29,8 @@ public class BusqedaSuministro extends MIDlet implements CommandListener, ItemCo
     private String suministro;
     RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
     private FormCanvas objCanvas;
-    
-    public BusqedaSuministro () {
+
+    public LecturaSecuencial () {
         firstTime = true;
         mainForm = new Form ("Custom Item");
     }
@@ -51,10 +51,10 @@ public class BusqedaSuministro extends MIDlet implements CommandListener, ItemCo
             mainForm.addCommand (CMD_EXIT);
             mainForm.setCommandListener (this);
             firstTime = false;
-            
+
         }
         display.setCurrent (mainForm);
-        
+
     }
 
     public void commandAction (Command c, Displayable d) {
@@ -82,9 +82,9 @@ public class BusqedaSuministro extends MIDlet implements CommandListener, ItemCo
 
     public void commandAction(Command c, Item item) {
     Validacion validarSuministro = new Validacion();
-    
+
     suministro = objCanvas.getSuministro();
-    
+
         int lanterior = 0;
         int promedio = 0;
 
@@ -100,7 +100,7 @@ public class BusqedaSuministro extends MIDlet implements CommandListener, ItemCo
         }else {
            mostrarAlerta();
         }
-      
+
         lanterior = objCanvas.getAnterior();
         promedio = objCanvas.getPromedio();
         int cons_act = lactual - lanterior;
@@ -118,12 +118,12 @@ public class BusqedaSuministro extends MIDlet implements CommandListener, ItemCo
 
      public void grabarConsumo(){
         int index = 0;
-      
+
             index = getIdSuministro();
-      
+
         sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
         //repaintCanvasAfterSave();
-      
+
     }
 
      public void mostrarAlerta(){
