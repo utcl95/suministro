@@ -10,7 +10,7 @@ import javax.microedition.midlet.MIDlet;
 
 
 /**
- * CustomItem demo
+ * Lectura Secuencial de Suministro.
  */
 public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCommandListener {
     private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
@@ -95,7 +95,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             lactual = Integer.parseInt(consumo.getString());
         }
 
-        if (vobs  >= 0 && vobs <= 20){
+        if (vobs  > 0 && vobs <= 40){
 
         }else {
            mostrarAlerta();
@@ -106,7 +106,10 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
         int cons_act = lactual - lanterior;
 
         if (c == CMD_PRESS2){
-            if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
+            boolean esValido = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+            if(vobs > 0 && vobs <= 40) esValido = true;
+            
+            if(!esValido ) {
                 mostrarMensaje("c", lactual);
             }else{
                 grabarConsumo();
