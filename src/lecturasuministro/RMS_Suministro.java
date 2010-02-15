@@ -53,7 +53,7 @@ public class RMS_Suministro {
         boolean bReturn = false;
         String data[] = new String[3];
         data = getRecord(index);
-        bReturn = (data[1].equals("00000000")) ? false : true;
+        bReturn = (data[1].equals("00000000") || data[2].equals("00")) ? false : true;
         // System.out.println("Tiene Data : " + bReturn);
         return bReturn;
     }

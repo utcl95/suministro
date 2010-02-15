@@ -117,8 +117,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             // Busqueda
             //int index = sRMS.searchSuministro(suministro);
             int index = rms_orden.buscar(suministro);
-
-             if(index != 0){
+            boolean suministroConData = sRMS.tieneData(index);
+            
+             if(index != 0 && !suministroConData){
                 canvas.setCurrentSuministro(index);
                 display2.setCurrent(canvas);
 
