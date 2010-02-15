@@ -51,7 +51,7 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
         
         lactual = Integer.parseInt(consumo.getString());
 
-        if (vobs  >= 0 && vobs <= 20){        
+        if (vobs  >= 1 && vobs <= 40){
             
         }else {
             if(obj_busquedasuministro == null)
