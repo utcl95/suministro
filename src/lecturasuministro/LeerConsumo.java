@@ -59,7 +59,7 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
                 obj_suministro.mostrarAlerta();}
             else if(obj_suministro == null)
                 {System.out.println("jaqui2222");
-                obj_busquedasuministro.mostrarAlertaObs();}
+                }
         }
 
         if(obj_busquedasuministro == null) {
@@ -67,8 +67,8 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
             promedio = obj_suministro.lPromedio();
 
         } else {
-            lanterior = obj_busquedasuministro.lAnterior();
-            promedio = obj_busquedasuministro.lPromedio();
+//            lanterior = obj_busquedasuministro.lAnterior();
+//            promedio = obj_busquedasuministro.lPromedio();
         }
         int cons_act = lactual - lanterior;
         if (c == CMD_PRESS2){
@@ -91,13 +91,13 @@ public class LeerConsumo extends Form implements CommandListener, ItemCommandLis
         if(obj_busquedasuministro == null)
             index = obj_suministro.getIdSuministro();
         else
-            index = obj_busquedasuministro.getIdSuministro();
+//            index = obj_busquedasuministro.getIdSuministro();
 
         sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
         if(obj_busquedasuministro == null)
             obj_suministro.repaintCanvasAfterSave();
-        else
-            obj_busquedasuministro.repaintCanvasAfterSave();
+//        else
+//            obj_busquedasuministro.repaintCanvasAfterSave();
     }
 
     public void leerConsumoSuministro(String msuministro) {

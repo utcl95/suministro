@@ -56,15 +56,14 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
 
     public FormCanvas (String title, Display d) {
+
         super (title);
         display = d;
         setDefaultCommand (CMD_EDIT);
         setItemCommandListener (this);
-
         int interactionMode = getInteractionModes ();
         horz = ((interactionMode & CustomItem.TRAVERSE_HORIZONTAL) != 0);
         vert = ((interactionMode & CustomItem.TRAVERSE_VERTICAL) != 0);
-
         setCurrentSuministro(cs);
     }
 
@@ -262,4 +261,5 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     public int getCurrentSuministroPosition() {
         return m_current;
     }
+
 }
