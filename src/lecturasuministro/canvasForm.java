@@ -73,7 +73,7 @@ public class canvasForm extends Canvas {
         g.setColor(0x000000);
 
         // Suministro y Zona
-        g.drawString(m_suministro + " " + m_zona,   0, 0, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_suministro + "--" + m_zona,   0, 0, Graphics.TOP | Graphics.LEFT);
         // Cliente
         g.drawString(m_nombre,          0, 25, Graphics.TOP | Graphics.LEFT);
         // Direccion
