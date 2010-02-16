@@ -58,14 +58,12 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             item.setItemCommandListener(this);
             mainForm.append(item);
 
-            mainForm.addCommand (exitCommand);
+            mainForm.addCommand (CMD_CANCEL);
             mainForm.setCommandListener (this);
             display2.setCurrent(mainForm);
             
             mainForm2 = new Form ("respuesta");
-            System.out.println("jaqui1");
             mainForm2.append ("INGRESO CONSUMO");
-            System.out.println("jaqui2");
             objCanvas = new FormCanvas ("Suministro", Display.getDisplay (this));
             mainForm2.append (objCanvas);
             consumo = new TextField("Consumo   ", "", 12, TextField.NUMERIC);
@@ -86,11 +84,16 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 grabarConsumo();
                 consumo.setString("");
                 obs.setString("");                
-                display2.setCurrent(mainForm);
-                
-            }else if (c.getCommandType() == Command.STOP){
                 display2.setCurrent(mainForm2);
-        }
+                
+            }if (c.getCommandType() == Command.STOP){
+                display2.setCurrent(mainForm2);
+
+            }if (c.getCommandType() == Command.EXIT){
+                txtsum.setString("");
+                display2.setCurrent(mainForm);
+
+            }
     }
 
     protected void destroyApp (boolean unconditional) {
@@ -101,7 +104,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
         lectura = new LeerConsumo(sumCanvas, this);
         txtsum.setString("");
-        lectura.addCommand(CMD_CANCEL);
+        //lectura.addCommand(CMD_CANCEL);
         lectura.setCommandListener(this);
         display2.setCurrent(lectura);
  }
@@ -113,7 +116,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
         suministro = txtsum.getString();
 
-        if (c == exitCommand) {
+        if (c == CMD_CANCEL) {
             destroyApp (false);
             notifyDestroyed ();
         }if (c == CMD_PRESS) {
@@ -172,7 +175,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             index = getIdSuministro();
 
         sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
-        //repaintCanvasAfterSave();
+        repaintCanvasAfterSave();
 
     }
 
@@ -206,8 +209,8 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
     // Dibuja el Canvas despues de grabar.
     public void repaintCanvasAfterSave() {
-        canvas.doNext();
-        display2.setCurrent(canvas);
+        objCanvas.doNext();
+        //display2.setCurrent(canvas);
     }
 
     public void mostrarAlerta(){
