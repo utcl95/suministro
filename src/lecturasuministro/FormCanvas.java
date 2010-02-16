@@ -113,7 +113,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 }
                 else {
                     if (currentY < (rows - 1)) {
-                        currentY++;
+                        currentY = currentY + 7;
                         repaint (currentX * dx, (currentY - 1) * dy, dx, dy);
                         repaint (currentX * dx, currentY * dy, dx, dy);
                     }
