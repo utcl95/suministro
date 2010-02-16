@@ -262,4 +262,19 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         return m_current;
     }
 
+    public void doNext() {
+        RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
+        int numeroSuministros = m_rms.recordCount();
+        int i = m_current;
+        if(i == numeroSuministros) {
+        } else {
+            m_current = m_current + 1;
+            while(m_rms.tieneData(m_current) && i <= numeroSuministros) {
+                m_current = m_current + 1;
+            }
+            m_rms = null;
+            setCurrentSuministro(m_current);
+        }
+    }
+
 }
