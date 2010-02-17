@@ -27,7 +27,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private TextField consumo;
     private TextField obs;
     private String suministro;
-    //private LeerConsumo lectura = null;
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
@@ -115,64 +114,65 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     public void commandAction(Command c, Item item) {
 
         suministro = txtsum.getString();
-
+        Validacion validarSuministro = new Validacion();
+        
         if (c == CMD_CANCEL) {
             destroyApp (false);
             notifyDestroyed ();
+
         }if (c == CMD_PRESS) {
             // Busqueda
             //int index = sRMS.searchSuministro(suministro);
             int index = rms_orden.buscar(suministro);
             boolean suministroConData = sRMS.tieneData(index);
-
-             if(index != 0 && !suministroConData){
+            if(index != 0 && !suministroConData){
                 display2.setCurrent (mainForm2);
-
-             }else{
+                objCanvas.setCurrentSuministro(index);
+            }else{
                 String msg = "No existe suministro";
                 Alert al = new Alert(msg);
                 display2.setCurrent(al);
-             }
-        }
+            }
 
-        Validacion validarSuministro = new Validacion();
-        suministro = objCanvas.getSuministro();
+        }if (c == CMD_PRESS2){
 
-        int lanterior = 0;
-        int promedio = 0;
+            suministro = objCanvas.getSuministro();
 
-        if(obs.getString().equals("")){
-            vobs = 0;
-        }else{
-            vobs = Integer.parseInt(obs.getString());
-            lactual = Integer.parseInt(consumo.getString());
-        }
+            int lanterior = 0;
+            int promedio = 0;
 
-        if (vobs  >= 0 && vobs <= 20){
+            if(obs.getString().equals("")){
+                vobs = 0;
+            }else{
+                vobs = Integer.parseInt(obs.getString());
+                lactual = Integer.parseInt(consumo.getString());
+            }
 
-        }else {
-           mostrarAlerta();
-        }
+            if (vobs  > 0 && vobs <= 40){
 
-        lanterior = objCanvas.getAnterior();
-        promedio = objCanvas.getPromedio();
-        int cons_act = lactual - lanterior;
+            }else {
+                 mostrarAlerta();
+            }
 
-        if (c == CMD_PRESS2){
+            lanterior = objCanvas.getAnterior();
+            promedio = objCanvas.getPromedio();
+            int cons_act = lactual - lanterior;
+
+
             if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
                 mostrarMensaje("c", lactual);
             }else{
                 grabarConsumo();
             }
-        }       // end if
+         }       // end if
 
-        validarSuministro = null;
-    }
+     validarSuministro = null;
+   }
 
    public void grabarConsumo(){
         int index = 0;
 
-            index = getIdSuministro();
+        index = getIdSuministro();
 
         sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
         repaintCanvasAfterSave();
@@ -214,6 +214,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     }
 
     public void mostrarAlerta(){
+        System.out.println("jaqui1");
         Alert al1 = new Alert("Atención");
         al1.setString("Observación Incorrecta.");
         display2.setCurrent(al1);
