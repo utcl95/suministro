@@ -179,7 +179,8 @@ public class RMS_Suministro {
         ByteArrayOutputStream   bout = new ByteArrayOutputStream();
         DataOutputStream        dout = new DataOutputStream(bout);
         // Añadir "0" al inicio de numeros menores a 9.
-        String s = "";
+        
+        String s = sobs;
         if(sobs.trim().length() > 0) {
             int n = Integer.parseInt(sobs);
             if( n < 10 && n > 0) {
