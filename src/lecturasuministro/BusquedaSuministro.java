@@ -27,15 +27,16 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private TextField consumo;
     private TextField obs;
     private String suministro;
-    private LeerConsumo lectura = null;
+    //private LeerConsumo lectura = null;
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
+    //private canvasForm canvas = null;
     private String sumCanvas;
     private FormCanvas objCanvas;
     private int vobs;
     private int lactual;
-    
+
     RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
     RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
 
@@ -60,7 +61,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             mainForm.addCommand (CMD_CANCEL);
             mainForm.setCommandListener (this);
             display2.setCurrent(mainForm);
-            
+
             mainForm2 = new Form ("respuesta");
             mainForm2.append ("INGRESO CONSUMO");
             objCanvas = new FormCanvas ("Suministro", Display.getDisplay (this));
@@ -82,9 +83,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             if (c.getCommandType() == Command.OK) {
                 grabarConsumo();
                 consumo.setString("");
-                obs.setString("");                
+                obs.setString("");
                 display2.setCurrent(mainForm2);
-                
+
             }if (c.getCommandType() == Command.STOP){
                 display2.setCurrent(mainForm2);
 
@@ -98,15 +99,15 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     protected void destroyApp (boolean unconditional) {
     }
 
-    public void buscarSuministro(String sumActual){
-        sumCanvas  = sumActual;
-
-        lectura = new LeerConsumo(sumCanvas, this);
-        txtsum.setString("");
-        //lectura.addCommand(CMD_CANCEL);
-        lectura.setCommandListener(this);
-        display2.setCurrent(lectura);
- }
+//    public void buscarSuministro(String sumActual){
+//        sumCanvas  = sumActual;
+//
+//        lectura = new LeerConsumo(sumCanvas, this);
+//        txtsum.setString("");
+//        //lectura.addCommand(CMD_CANCEL);
+//        lectura.setCommandListener(this);
+//        display2.setCurrent(lectura);
+// }
 
     protected void pauseApp () {
     }
@@ -123,7 +124,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             //int index = sRMS.searchSuministro(suministro);
             int index = rms_orden.buscar(suministro);
             boolean suministroConData = sRMS.tieneData(index);
-            
+
              if(index != 0 && !suministroConData){
                 display2.setCurrent (mainForm2);
 
@@ -147,7 +148,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             lactual = Integer.parseInt(consumo.getString());
         }
 
-        if (vobs  > 0 && vobs <= 40){
+        if (vobs  >= 0 && vobs <= 20){
 
         }else {
            mostrarAlerta();
@@ -158,10 +159,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         int cons_act = lactual - lanterior;
 
         if (c == CMD_PRESS2){
-            boolean esValido = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
-            if(vobs > 0 && vobs <= 40) esValido = true;
-
-            if(!esValido ) {
+            if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
                 mostrarMensaje("c", lactual);
             }else{
                 grabarConsumo();
@@ -225,6 +223,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         int i = objCanvas.getCurrentSuministroPosition();
         return i;
     }
-  
+
 }
 
