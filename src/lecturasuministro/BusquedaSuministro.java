@@ -148,7 +148,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             lactual = Integer.parseInt(consumo.getString());
         }
 
-        if (vobs  >= 0 && vobs <= 20){
+        if (vobs  > 0 && vobs <= 40){
 
         }else {
            mostrarAlerta();
@@ -159,7 +159,10 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         int cons_act = lactual - lanterior;
 
         if (c == CMD_PRESS2){
-            if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
+            boolean esValido = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+            if(vobs > 0 && vobs <= 40) esValido = true;
+
+            if(!esValido ) {
                 mostrarMensaje("c", lactual);
             }else{
                 grabarConsumo();
