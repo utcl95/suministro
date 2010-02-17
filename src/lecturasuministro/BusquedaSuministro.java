@@ -31,7 +31,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
-    private canvasForm canvas = null;
     private String sumCanvas;
     private FormCanvas objCanvas;
     private int vobs;
@@ -203,11 +202,11 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     }
 
     public int lAnterior(){
-        return canvas.getAnterior();
+        return objCanvas.getAnterior();
     }
 
     public int lPromedio(){
-        return canvas.getPromedio();
+        return objCanvas.getPromedio();
     }
 
     // Dibuja el Canvas despues de grabar.
