@@ -92,7 +92,11 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 txtsum.setString("");
                 display2.setCurrent(mainForm);
 
-            }
+            }if (c == CMD_CANCEL) {
+                destroyApp (false);
+                notifyDestroyed ();
+
+        }
     }
 
     protected void destroyApp (boolean unconditional) {
@@ -116,11 +120,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         suministro = txtsum.getString();
         Validacion validarSuministro = new Validacion();
         
-        if (c == CMD_CANCEL) {
-            destroyApp (false);
-            notifyDestroyed ();
-
-        }if (c == CMD_PRESS) {
+        if (c == CMD_PRESS) {
             // Busqueda
             //int index = sRMS.searchSuministro(suministro);
             int index = rms_orden.buscar(suministro);
