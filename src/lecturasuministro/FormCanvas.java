@@ -89,7 +89,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         g.setColor(0x000000);
 
         // Suministro y Zona
-        g.drawString(m_suministro + " " + m_zona,   0, 0, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_suministro + "--" + m_zona,   0, 0, Graphics.TOP | Graphics.LEFT);
         // Cliente
         g.drawString(m_nombre,       0, 25, Graphics.TOP | Graphics.LEFT);
         // Direccion
@@ -106,18 +106,11 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
           switch (dir) {
 
                case Canvas.DOWN:
-                System.out.println("abajo");
-
                 if (location == UPPER) {
                     location = IN;
                 }
                 else {
                     if (currentY < (rows - 1)) {
-                        currentY = currentY + 7;
-                        repaint (currentX * dx, (currentY - 1) * dy, dx, dy);
-                        repaint (currentX * dx, currentY * dy, dx, dy);
-                    }
-                    else {
                         location = LOWER;
                         return false;
                     }
@@ -126,7 +119,6 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 break;
 
             case Canvas.UP:
-                System.out.println("arriba");
                 if (location == LOWER) {
                     location = IN;
                 }
@@ -146,8 +138,6 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 break;
 
             case Canvas.LEFT:
-                System.out.println("izqierda");
-
                 if(i == 1) {
                 } else {
                     m_current = m_current - 1;
@@ -161,7 +151,6 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 break;
 
             case Canvas.RIGHT:
-                System.out.println("derecha");
                  // m_rms = new RMS_Suministro("SUMINISTROS");
                  int numeroSuministros = m_rms.recordCount();
                 
