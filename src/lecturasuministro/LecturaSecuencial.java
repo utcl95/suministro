@@ -107,7 +107,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
 
         if (c == CMD_PRESS2){
             boolean esValido = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
-            if(vobs > 0 && vobs <= 40) esValido = true;
+            //if(vobs > 0 && vobs <= 40) esValido = true;
             
             if(!esValido ) {
                 mostrarMensaje("c", lactual);
