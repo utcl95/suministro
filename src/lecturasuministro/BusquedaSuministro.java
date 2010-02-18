@@ -47,7 +47,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     protected void startApp () {
 
             display2 = Display.getDisplay (this);
-            mainForm = new Form ("String Item Demo");
+            mainForm = new Form ("");
             mainForm.append ("BUSQUEDA POR SUMINISTRO");
             txtsum = new TextField ("Suministro", "", 15, TextField.NUMERIC);
             mainForm.append (txtsum);
@@ -61,7 +61,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             mainForm.setCommandListener (this);
             display2.setCurrent(mainForm);
 
-            mainForm2 = new Form ("respuesta");
+            mainForm2 = new Form ("");
             mainForm2.append ("INGRESO CONSUMO");
             objCanvas = new FormCanvas ("Suministro", Display.getDisplay (this));
             mainForm2.append (objCanvas);
@@ -141,15 +141,20 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             int lanterior = 0;
             int promedio = 0;
 
-            if(obs.getString().equals("")){
+            if(obs.getString().equals("")) {
                 vobs = 0;
-            }else{
-                vobs = Integer.parseInt(obs.getString());
+            } else {
+                vobs = Integer.parseInt(obs.getString());                
+            }
+
+            // Consumo puede ser 0, cuando se presenta algun problema.
+            if(consumo.getString().equals("")) {
+                lactual = 0;
+            } else {
                 lactual = Integer.parseInt(consumo.getString());
             }
 
-            if (vobs  >= 0 && vobs <= 40){
-
+            if (vobs >= 0 && vobs <= 40){
             }else {
                  mostrarAlerta();
             }
@@ -158,13 +163,22 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             promedio = objCanvas.getPromedio();
             int cons_act = lactual - lanterior;
 
-            boolean esValido = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
-            if(vobs > 0 && vobs <= 40) esValido = true;
+            // Validaciones
+            boolean esValido = false;
+            boolean suministroEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+            boolean obsEsValido = (vobs > 0 && vobs <= 40);
+            boolean obsEsCero = (vobs == 0);
+            //TODO: Si consumo=0 y obs tiene valor añadir mensaje.
+            if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) ))
+                esValido = true;
 
             if(!esValido ) {
                 mostrarMensaje("c", lactual);
             }else{
                 grabarConsumo();
+                consumo.setString("");
+                obs.setString("");
+                display2.setCurrent(mainForm2);
             }
          }       // end if
 
