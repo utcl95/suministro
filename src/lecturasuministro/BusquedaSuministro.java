@@ -175,6 +175,13 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         index = getIdSuministro();
 
         sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
+//        int nObs = Integer.parseInt(obs.getString());
+//        String msg = "Suministro : " + suministro + "\n" +
+//                    "Consumo : " + consumo.getString() + "\n" +
+//                    "Observacion : " + getObservacion(nObs);
+//        Alert recordSaved = new Alert(msg);
+//        recordSaved.setTimeout(100);
+//        display2.setCurrent(recordSaved);
         repaintCanvasAfterSave();
 
     }
@@ -220,9 +227,17 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         display2.setCurrent(al1);
      }
 
-     public int getIdSuministro() {
+    public int getIdSuministro() {
         int i = objCanvas.getCurrentSuministroPosition();
         return i;
+    }
+
+    public String getObservacion(int i) {
+        String[] observacion = {"OO", "AL", "MI", "MO", "MT", "SM", "MS", "TI", "LC", "PI", "NU",
+                                      "MM", "BY", "CM", "ST", "DL", "FR", "NS", "CY", "DI", "DC",
+                                      "EX", "ES", "FC", "MA", "MD", "ME", "EA", "MF", "TR", "SE",
+                                      "CV", "RI", "LR", "CE", "AY", "PR", "PC", "LD", "MC", "TD"};
+        return observacion[i];
     }
 
 }
