@@ -95,7 +95,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             lactual = Integer.parseInt(consumo.getString());
         }
 
-        if (vobs  > 0 && vobs <= 40){
+        if (vobs  >= 0 && vobs <= 40){
 
         }else {
            mostrarAlerta();
