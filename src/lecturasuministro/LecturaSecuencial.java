@@ -32,7 +32,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
 
     public LecturaSecuencial () {
         firstTime = true;
-        mainForm = new Form ("Custom Item");
+        mainForm = new Form ("Ingreso Secuencial");
     }
 
     protected void startApp () {
@@ -64,7 +64,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
         }
 
         if (c.getCommandType() == Command.OK) {
-            grabarConsumo();
+            grabarConsumo();            
             consumo.setString("");
             obs.setString("");
             display.setCurrent(mainForm);
@@ -113,6 +113,9 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
                 mostrarMensaje("c", lactual);
             }else{
                 grabarConsumo();
+                consumo.setString("");
+                obs.setString("");
+                display.setCurrent(mainForm);
             }
         }       // end if
 
@@ -125,7 +128,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             index = getIdSuministro();
 
         sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
-        //repaintCanvasAfterSave();
+        repaintCanvasAfterSave();
 
     }
 
@@ -162,5 +165,11 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
      public int getIdSuministro() {
         int i = objCanvas.getCurrentSuministroPosition();
         return i;
+    }
+
+        // Dibuja el Canvas despues de grabar.
+    public void repaintCanvasAfterSave() {
+        objCanvas.doNext();
+        //display.setCurrent(mainForm);
     }
 }
