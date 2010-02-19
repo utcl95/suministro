@@ -12,11 +12,10 @@ import javax.microedition.midlet.MIDlet;
  * @author Jaqui
  */
 public class BusquedaSuministro extends MIDlet implements CommandListener, ItemCommandListener {
-    private static final Command exitCommand = new Command ("Salir", Command.EXIT, 1);
     private static final Command CMD_BACK = new Command ("Regresar", Command.BACK, 1);
-    private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
-    private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
-    private static final Command CMD_PRESS = new Command ("Buscar", Command.ITEM, 1);
+    private static final Command CMD_EXIT = new Command ("Salir", Command.EXIT, 1);
+    private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
+    private static final Command CMD_BUSCAR = new Command ("Buscar", Command.ITEM, 1);
     private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
 
     private boolean firstTime;
@@ -30,8 +29,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
-    //private canvasForm canvas = null;
-    private String sumCanvas;
     private FormCanvas objCanvas;
     private int vobs;
     private int lactual;
@@ -53,7 +50,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             mainForm.append (txtsum);
 
             StringItem item = new StringItem("", "Buscar", Item.BUTTON);
-            item.setDefaultCommand(CMD_PRESS);
+            item.setDefaultCommand(CMD_BUSCAR);
             item.setItemCommandListener(this);
             mainForm.append(item);
 
@@ -70,7 +67,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             mainForm2.append(consumo);
             mainForm2.append (obs);
             StringItem item2 = new StringItem("", "Ingresar", Item.BUTTON);
-            item2.setDefaultCommand(CMD_PRESS2);
+            item2.setDefaultCommand(CMD_GRABAR);
             item2.setItemCommandListener(this);
             mainForm2.append(item2);
             mainForm2.addCommand (CMD_EXIT);
@@ -102,16 +99,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     protected void destroyApp (boolean unconditional) {
     }
 
-//    public void buscarSuministro(String sumActual){
-//        sumCanvas  = sumActual;
-//
-//        lectura = new LeerConsumo(sumCanvas, this);
-//        txtsum.setString("");
-//        //lectura.addCommand(CMD_CANCEL);
-//        lectura.setCommandListener(this);
-//        display2.setCurrent(lectura);
-// }
-
     protected void pauseApp () {
     }
 
@@ -120,21 +107,26 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         suministro = txtsum.getString();
         Validacion validarSuministro = new Validacion();
         
-        if (c == CMD_PRESS) {
+        if (c == CMD_BUSCAR) {
+            // No realizar la busqueda.
+            if( suministro.trim().length() < 6 )
+                return;
+
             // Busqueda
-            //int index = sRMS.searchSuministro(suministro);
             int index = rms_orden.buscar(suministro);
-            boolean suministroConData = sRMS.tieneData(index);
-            if(index != 0 && !suministroConData){
-                display2.setCurrent (mainForm2);
-                objCanvas.setCurrentSuministro(index);
-            }else{
-                String msg = "No existe suministro";
+            if (index == 0) {
+                String msg = "No existe suministro o YA tiene Lectura";
                 Alert al = new Alert(msg);
                 display2.setCurrent(al);
+            } else {
+                boolean suministroConData = sRMS.tieneData(index);
+                if(index != 0 && !suministroConData) {
+                    display2.setCurrent (mainForm2);
+                    objCanvas.setCurrentSuministro(index);
+                }
             }
 
-        }if (c == CMD_PRESS2){
+        }if (c == CMD_GRABAR){
 
             suministro = objCanvas.getSuministro();
 
