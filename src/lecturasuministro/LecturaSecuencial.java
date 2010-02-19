@@ -86,39 +86,41 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
     public void commandAction(Command c, Item item) {
     Validacion validarSuministro = new Validacion();
 
-    suministro = objCanvas.getSuministro();
-
-        int lanterior = 0;
-        int promedio = 0;
-
-        if(obs.getString().equals("")){
-            vobs = 0;
-        }else{
-            vobs = Integer.parseInt(obs.getString());
-            lactual = Integer.parseInt(consumo.getString());
-        }
-
-        if (vobs  >= 0 && vobs <= 40){
-
-        }else {
-           mostrarAlerta();
-        }
-
-        lanterior = objCanvas.getAnterior();
-        promedio = objCanvas.getPromedio();
-        int cons_act = lactual - lanterior;
-
+    
         if (c == CMD_PRESS2){
-            boolean esValido = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
-            //if(vobs > 0 && vobs <= 40) esValido = true;
-            
-            if(!esValido ) {
-                mostrarMensaje("c", lactual);
+
+            suministro = objCanvas.getSuministro();
+
+            int lanterior = 0;
+            int promedio = 0;
+
+            if(obs.getString().equals("")){
+                vobs = 0;
             }else{
-                grabarConsumo();
-                consumo.setString("");
-                obs.setString("");
-                display.setCurrent(mainForm);
+                vobs = Integer.parseInt(obs.getString());
+                lactual = Integer.parseInt(consumo.getString());
+            }
+
+            if (vobs  >= 0 && vobs <= 40){
+            
+                lanterior = objCanvas.getAnterior();
+                promedio = objCanvas.getPromedio();
+                int cons_act = lactual - lanterior;
+
+                boolean esValido = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+                //if(vobs > 0 && vobs <= 40) esValido = true;
+
+                if(!esValido ) {
+                    mostrarMensaje("c", lactual);
+                }else{
+                    grabarConsumo();
+                    consumo.setString("");
+                    obs.setString("");
+                    display.setCurrent(mainForm);
+                }
+
+            }else {
+               mostrarAlerta();
             }
         }       // end if
 
