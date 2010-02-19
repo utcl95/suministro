@@ -35,8 +35,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     String m_title = "";
     private String m_suministro;
     private String m_zona;
-    private String m_nombre;
-    private String m_direccion;
+    private String m_direccion1;
+    private String m_direccion2;
     private String m_serie;
     // Suministro Actual
     private String currentSuministro = "";
@@ -91,9 +91,9 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         // Suministro y Zona
         g.drawString(m_suministro + "--" + m_zona,   0, 0, Graphics.TOP | Graphics.LEFT);
         // Cliente
-        g.drawString(m_nombre,       0, 25, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_direccion1,       0, 25, Graphics.TOP | Graphics.LEFT);
         // Direccion
-        g.drawString(m_direccion,    0, 50, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_direccion2,    0, 50, Graphics.TOP | Graphics.LEFT);
         // Serie Suministro
         g.drawString(m_serie,        0, 75, Graphics.TOP | Graphics.LEFT);
 
@@ -198,14 +198,20 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         m_zona = sz;
     }
 
-    public void setNombre(String sn) {
-        m_nombre = sn;
-    }
+//    public void setNombre(String sn) {
+//        m_nombre = sn;
+//    }
 
-    public void setDireccion(String sd) {
+    public void setDireccion1(String sd1) {
         //int nl = sd.length();
         //sd = sd.substring(0, nl-2);
-        m_direccion = sd;
+        m_direccion1 = sd1;
+    }
+    
+    public void setDireccion2(String sd2) {
+        //int nl = sd.length();
+        //sd = sd.substring(0, nl-2);
+        m_direccion2 = sd2;
     }
 
     public void setSerie(String ss) {
@@ -217,6 +223,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             //String m_url = "file:///e:/suministros.txt";
 
             String data1[] = dataRMS.getRecord(cs);
+            String dir1;
+            String dir2;
 
             setSuministro(data1[0]);
             // Numero de suministro, como id.
@@ -226,8 +234,12 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             currentSuministro = data1[0];
 
             setZona(data1[1]);
-            setNombre(data1[2]);
-            setDireccion(data1[3]);
+            dir2 = data1[3].substring(16, 32);
+            dir1 = data1[3].substring(0, 16);
+            System.out.println(dir1);
+            System.out.println(dir2);
+            setDireccion1(dir1);
+            setDireccion2(dir2);
             setSerie(data1[4]);
           
             // Promedio de Lectura
