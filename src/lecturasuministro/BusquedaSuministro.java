@@ -115,8 +115,10 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             // Busqueda
             int index = rms_orden.buscar(suministro);
             if (index == 0) {
-                String msg = "No existe suministro o YA tiene Lectura";
-                Alert al = new Alert(msg);
+                String msg = "No existe suministro"+"\n"+
+                             "o Ya tiene Lectura";
+                Alert al = new Alert("Atencion");
+                al.setString(msg);
                 display2.setCurrent(al);
             } else {
                 boolean suministroConData = sRMS.tieneData(index);
@@ -147,31 +149,33 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             }
 
             if (vobs >= 0 && vobs <= 40){
+           
+                lanterior = objCanvas.getAnterior();
+                promedio = objCanvas.getPromedio();
+                int cons_act = lactual - lanterior;
+
+                // Validaciones
+                boolean esValido = false;
+                boolean suministroEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+                boolean obsEsValido = (vobs > 0 && vobs <= 40);
+                boolean obsEsCero = (vobs == 0);
+                //TODO: Si consumo=0 y obs tiene valor añadir mensaje.
+                if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) ))
+                    esValido = true;
+
+                if(!esValido ) {
+                    mostrarMensaje("c", lactual);
+                }else{
+                    grabarConsumo();
+                    consumo.setString("");
+                    obs.setString("");
+                    display2.setCurrent(mainForm2);
+                }
+                
             }else {
                  mostrarAlerta();
             }
 
-            lanterior = objCanvas.getAnterior();
-            promedio = objCanvas.getPromedio();
-            int cons_act = lactual - lanterior;
-
-            // Validaciones
-            boolean esValido = false;
-            boolean suministroEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
-            boolean obsEsValido = (vobs > 0 && vobs <= 40);
-            boolean obsEsCero = (vobs == 0);
-            //TODO: Si consumo=0 y obs tiene valor añadir mensaje.
-            if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) ))
-                esValido = true;
-
-            if(!esValido ) {
-                mostrarMensaje("c", lactual);
-            }else{
-                grabarConsumo();
-                consumo.setString("");
-                obs.setString("");
-                display2.setCurrent(mainForm2);
-            }
          }       // end if
 
      validarSuministro = null;
