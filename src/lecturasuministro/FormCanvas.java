@@ -17,7 +17,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     private int rows = 5;
     private int cols = 3;
     private int dx = 80;
-    private int dy = 20;
+    private int dy = 18;
     private int location = UPPER;
     private int currentX = 0;
     private int currentY = 0;
@@ -91,11 +91,11 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         // Suministro y Zona
         g.drawString(m_suministro + "--" + m_zona,   0, 0, Graphics.TOP | Graphics.LEFT);
         // Cliente
-        g.drawString(m_direccion1,       0, 25, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_direccion1,       0, 20, Graphics.TOP | Graphics.LEFT);
         // Direccion
-        g.drawString(m_direccion2,    0, 50, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_direccion2,    0, 40, Graphics.TOP | Graphics.LEFT);
         // Serie Suministro
-        g.drawString(m_serie,        0, 75, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_serie,        0, 60, Graphics.TOP | Graphics.LEFT);
 
    }
 
