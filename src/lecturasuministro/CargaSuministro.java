@@ -230,7 +230,7 @@ public class CargaSuministro extends MIDlet implements CommandListener {
 
         try {
             urlToSuministrosOrdenados = urlToFile + "suministrosordenados.txt";
-            ptr_file = (FileConnection) Connector.open("file:///SDCard//suministrosordenados.txt", Connector.READ);
+            ptr_file = (FileConnection) Connector.open(urlToSuministrosOrdenados, Connector.READ);
             is = ptr_file.openInputStream();
 
             while((ch=is.read()) != -1) {
