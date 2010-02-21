@@ -234,7 +234,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             currentSuministro = data1[0];
 
             setZona(data1[1]);
-            dir2 = data1[3].substring(16, 32);
+            dir2 = data1[3].substring(16, 32).trim();
             dir1 = data1[3].substring(0, 16);
             System.out.println(dir1);
             System.out.println(dir2);
