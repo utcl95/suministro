@@ -33,13 +33,13 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
 
     public LecturaSecuencial () {
         firstTime = true;
-        mainForm = new Form ("Ingreso Secuencial");
+        mainForm = new Form ("");
     }
 
     protected void startApp () {
         if (firstTime) {
             display = Display.getDisplay (this);
-            objCanvas = new FormCanvas ("Suministro", Display.getDisplay (this));
+            objCanvas = new FormCanvas ("", Display.getDisplay (this));
             currentItem = objCanvas.siguienteSinData(currentItem);
             objCanvas.setCurrentSuministro(currentItem);
             mainForm.append (objCanvas);
