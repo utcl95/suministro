@@ -33,10 +33,16 @@ public class CargaSuministro extends MIDlet implements CommandListener {
     private int m_nsuministros = 0;
     private String m_namerms = "";
 
+    private String urlToFile = "";
+
     private static final Command exitCommand = new Command ("Salir", Command.EXIT, 1);
 
     public void startApp() {
         display = Display.getDisplay(this);
+
+        // Un solo lugar para modificar el path a los archivos en el emulador y en el celular.
+        // urlToFile = "file:///e:/";
+        urlToFile = "file:///SDCard//";
 
         sRMS.openRMS();
         int numDatos = sRMS.recordCount();
@@ -82,6 +88,9 @@ public class CargaSuministro extends MIDlet implements CommandListener {
     public boolean cargarSuministros() {
         FileConnection ptr_file = null;
         String m_temp = "";
+
+        String urlToSoloSuministros = "";
+
         StringBuffer sb = new StringBuffer();
         InputStream is = null;
         int num = 0;
@@ -92,8 +101,8 @@ public class CargaSuministro extends MIDlet implements CommandListener {
         sRMS.openRMS();
         // Abrir el archivo.
         try {
-            ptr_file = (FileConnection) Connector.open("file:///SDCard//solosuministros.txt", Connector.READ);
-            //ptr_file = (FileConnection) Connector.open("file:///e:/solosuministros.txt", Connector.READ);
+            urlToSoloSuministros = urlToFile + "solosuministros.txt";
+            ptr_file = (FileConnection) Connector.open(urlToSoloSuministros, Connector.READ);
             is = ptr_file.openInputStream();            
             
             while((ch=is.read()) != -1) {
@@ -141,6 +150,9 @@ public class CargaSuministro extends MIDlet implements CommandListener {
         String m_linea = "";
         StringBuffer sb = new StringBuffer();
         String m_data[] = null;
+
+        String urlToSuministros = "";
+
         InputStream is = null;
         int num_linea = 1; // Para sincronizar con la busqueda.
         int ch;
@@ -152,8 +164,8 @@ public class CargaSuministro extends MIDlet implements CommandListener {
         // Abrir el RMS.
         dataRMS.openRMS();
         try {
-            ptr_file = (FileConnection) Connector.open("file:///SDCard//suministros.txt", Connector.READ);
-            //ptr_file = (FileConnection) Connector.open("file:///e:/suministros.txt", Connector.READ);
+            urlToSuministros = urlToFile + "suministros.txt";
+            ptr_file = (FileConnection) Connector.open(urlToSuministros, Connector.READ);
             is = ptr_file.openInputStream();
 
             while((ch=is.read()) != -1) {
@@ -202,6 +214,9 @@ public class CargaSuministro extends MIDlet implements CommandListener {
         String m_linea = "";
         StringBuffer sb = new StringBuffer();
         String m_data[] = null;
+
+        String urlToSuministrosOrdenados = "";
+
         InputStream is = null;
         int num_linea = 0;
         int ch;
@@ -214,8 +229,8 @@ public class CargaSuministro extends MIDlet implements CommandListener {
         rmsOrden.openRMS();
 
         try {
+            urlToSuministrosOrdenados = urlToFile + "suministrosordenados.txt";
             ptr_file = (FileConnection) Connector.open("file:///SDCard//suministrosordenados.txt", Connector.READ);
-            //ptr_file = (FileConnection) Connector.open("file:///e:/suministrosordenados.txt", Connector.READ);
             is = ptr_file.openInputStream();
 
             while((ch=is.read()) != -1) {
