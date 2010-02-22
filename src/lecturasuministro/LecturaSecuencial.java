@@ -21,6 +21,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
+    private Command softKey3;
     private boolean status;
     private TextField consumo;
     private TextField obs;
@@ -72,6 +73,12 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             obs.setString("");
             display.setCurrent(mainForm);
 
+        }if (c.getCommandType() == Command.HELP) {
+            grabarConsumo();
+            consumo.setString("");
+            obs.setString("");
+            display.setCurrent(mainForm);
+
         }else if (c.getCommandType() == Command.STOP){
             display.setCurrent(mainForm);
         }
@@ -102,28 +109,29 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             
             lactual = Integer.parseInt(consumo.getString());
 
-            if (vobs  >= 0 && vobs <= 40){
-            
-                lanterior = objCanvas.getAnterior();
-                promedio = objCanvas.getPromedio();
-                int cons_act = lactual - lanterior;
+            lanterior = objCanvas.getAnterior();
+            promedio = objCanvas.getPromedio();
+            int cons_act = lactual - lanterior;
 
-                boolean esValido = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
-                //if(vobs > 0 && vobs <= 40) esValido = true;
+            boolean esValido = false;
+            boolean suministroEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+            boolean obsEsValido = (vobs > 0 && vobs <= 40);
+            boolean obsEsCero = (vobs == 0);
 
-                if(!esValido ) {
-                    mostrarMensaje("c", lactual);
-                }else{
-                    grabarConsumo();
-                    consumo.setString("");
-                    obs.setString("");
-                    display.setCurrent(mainForm);
-                }
+            if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
 
-            }else {
-               mostrarAlerta();
             }
-        }       // end if
+            if((lactual==0 && !obsEsValido) || (!suministroEsValido && !obsEsValido)){
+                 mostrarMensaje(2, lactual);
+            }
+            if((lactual==0 && obsEsValido) || (!suministroEsValido && obsEsValido)){
+                 mostrarMensaje(3, lactual);
+            }
+            if(suministroEsValido && obsEsValido ){
+                mostrarMensaje(1, lactual);
+            }
+
+       }       // end if
 
         validarSuministro = null;
     }
@@ -144,28 +152,33 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
         display.setCurrent(al1);
      }
 
-     public void mostrarMensaje(String m, int lectura_actual){
-        String mns = m;
-
-        if(mns.equals("d")){
-            String msg = "Lectura correcta";
-            Alert al = new Alert(msg);
-            System.out.println("jaqui4");
-            display.setCurrent(al);
-            System.out.println("jaqui5");
-        }else{
-            yesNoAlert = new Alert("Atencion");
-            yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo : " + lectura_actual);
-            softKey1 = new Command("No", Command.STOP, 1);
-            softKey2 = new Command("Yes", Command.OK, 1);
-            yesNoAlert.addCommand(softKey1);
-            yesNoAlert.addCommand(softKey2);
-            yesNoAlert.setCommandListener(this);
-            System.out.println("jaqui6");
-            display.setCurrent(yesNoAlert);
-            System.out.println("jaqui7");
-            status = false;
-        }
+     public void mostrarMensaje(int num_mensaje, int lectura_actual){
+        switch(num_mensaje) {
+            case 1:
+                String msg = "Lectura correcta: "+lectura_actual+
+                        " .Obs: "+vobs;
+                Alert al = new Alert(msg);
+                softKey3 = new Command("Salir", Command.HELP, 1);
+                al.addCommand(softKey3);
+                al.setCommandListener(this);
+                display.setCurrent(al);
+                break;
+            case 2:
+                String msg1 = "Consumo y observacion incorrectos";
+                Alert al1 = new Alert(msg1);
+                display.setCurrent(al1);
+                break;
+            case 3:
+                yesNoAlert = new Alert("Atencion");
+                yesNoAlert.setString("Consumo Incorrecto: " + lectura_actual+ " Obs:"+vobs+". Desea guardar?");
+                softKey1 = new Command("No", Command.STOP, 1);
+                softKey2 = new Command("Yes", Command.OK, 1);
+                yesNoAlert.addCommand(softKey1);
+                yesNoAlert.addCommand(softKey2);
+                yesNoAlert.setCommandListener(this);
+                display.setCurrent(yesNoAlert);
+                break;
+        } // end case
     }
 
      public int getIdSuministro() {
