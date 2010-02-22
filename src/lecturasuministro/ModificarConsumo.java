@@ -183,7 +183,10 @@ class SetConsumo extends Form implements CommandListener, ItemCommandListener{
         else
             vobs = Integer.parseInt(obs.getString());
 
-        lactual = Integer.parseInt(consumo.getString());
+        if(consumo.getString().equals(""))
+            lactual = 0;
+        else
+           lactual = Integer.parseInt(consumo.getString());
         int lanterior = ss.lAnterior();
         int promedio = ss.lPromedio();
         int cons_act = lactual - lanterior;
