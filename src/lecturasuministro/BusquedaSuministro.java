@@ -181,6 +181,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             if(suministroEsValido && obsEsValido ){
                 mostrarMensaje(1, lactual);
             }
+            if(suministroEsValido && !obsEsValido){
+                mostrarMensaje(4, lactual);
+            }
 
          } // end if
 
@@ -222,6 +225,11 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 yesNoAlert.addCommand(softKey2);
                 yesNoAlert.setCommandListener(this);
                 display2.setCurrent(yesNoAlert);
+                break;
+            case 4:
+                String msg2 = "Observacion incorrecta";
+                Alert al2 = new Alert(msg2);
+                display2.setCurrent(al2);
                 break;
         } // end case
     }
