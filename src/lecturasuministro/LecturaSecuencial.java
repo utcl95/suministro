@@ -130,6 +130,9 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             if(suministroEsValido && obsEsValido ){
                 mostrarMensaje(1, lactual);
             }
+            if(suministroEsValido && !obsEsValido){
+                mostrarMensaje(4, lactual);
+            }
 
        }       // end if
 
@@ -177,6 +180,11 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
                 yesNoAlert.addCommand(softKey2);
                 yesNoAlert.setCommandListener(this);
                 display.setCurrent(yesNoAlert);
+                break;
+             case 4:
+                String msg2 = "Observacion incorrecta";
+                Alert al2 = new Alert(msg2);
+                display.setCurrent(al2);
                 break;
         } // end case
     }
