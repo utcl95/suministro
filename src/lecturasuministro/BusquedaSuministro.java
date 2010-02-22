@@ -167,15 +167,15 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             boolean suministroEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
             boolean obsEsValido = (vobs > 0 && vobs <= 40);
             boolean obsEsCero = (vobs == 0);
-            //TODO: Si consumo=0 y obs tiene valor añadir mensaje.
+
             if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) ))
                 esValido = true;
             if((lactual==0 && !obsEsValido) && (!esValido && !obsEsValido))
-                 mostrarMensaje("e", lactual);
+                 mostrarMensaje(2, lactual);
             if((lactual==0 && obsEsValido) && (!esValido && obsEsValido))
-                 mostrarMensaje("c", lactual);
+                 mostrarMensaje(3, lactual);
             if(esValido ){
-                mostrarMensaje("d", lactual);
+                mostrarMensaje(1, lactual);
                 grabarConsumo();
                 consumo.setString("");
                 obs.setString("");
@@ -193,40 +193,34 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         index = getIdSuministro();
 
         sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
-//        int nObs = Integer.parseInt(obs.getString());
-//        String msg = "Suministro : " + suministro + "\n" +
-//                    "Consumo : " + consumo.getString() + "\n" +
-//                    "Observacion : " + getObservacion(nObs);
-//        Alert recordSaved = new Alert(msg);
-//        recordSaved.setTimeout(100);
-//        display2.setCurrent(recordSaved);
         repaintCanvasAfterSave();
 
     }
 
-   public void mostrarMensaje(String m, int lectura_actual){
-        String mns = m;
-
-        if(mns.equals("d")){
-            String msg = "Lectura correcta: "+lectura_actual+
+   public void mostrarMensaje(int num_mensaje, int lectura_actual){
+        switch(num_mensaje) {
+            case 1:
+                String msg = "Lectura correcta: "+lectura_actual+
                         "obs: "+vobs;
-            Alert al = new Alert(msg);
-            display2.setCurrent(al);
-        }if(mns.equals("e")){
-            String msg1 = "Consumo y observacion incorrectos";
-            Alert al1 = new Alert(msg1);
-            display2.setCurrent(al1);
-        }else{
-            yesNoAlert = new Alert("Atencion");
-            yesNoAlert.setString("Consumo: " + lectura_actual+ " Obs:"+vobs+". Desea guardar?");
-            softKey1 = new Command("No", Command.STOP, 1);
-            softKey2 = new Command("Yes", Command.OK, 1);
-            yesNoAlert.addCommand(softKey1);
-            yesNoAlert.addCommand(softKey2);
-            yesNoAlert.setCommandListener(this);
-            display2.setCurrent(yesNoAlert);
-        }
-
+                Alert al = new Alert(msg);
+                display2.setCurrent(al);
+                break;
+            case 2:
+                String msg1 = "Consumo y observacion incorrectos";
+                Alert al1 = new Alert(msg1);
+                display2.setCurrent(al1);
+                break;
+            case 3:
+                yesNoAlert = new Alert("Atencion");
+                yesNoAlert.setString("Consumo: " + lectura_actual+ " Obs:"+vobs+". Desea guardar?");
+                softKey1 = new Command("No", Command.STOP, 1);
+                softKey2 = new Command("Yes", Command.OK, 1);
+                yesNoAlert.addCommand(softKey1);
+                yesNoAlert.addCommand(softKey2);
+                yesNoAlert.setCommandListener(this);
+                display2.setCurrent(yesNoAlert);
+                break;
+        } // end case
     }
 
     public int lAnterior(){
