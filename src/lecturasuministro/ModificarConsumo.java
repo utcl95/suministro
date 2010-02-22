@@ -93,18 +93,24 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
             suministro = consum.getString();
             // Id de Suministro.
             index = rms_orden.buscar(suministro);
-            currentIdSuministro = index;
-            boolean data = sRMS.tieneData(index);
-            if(data == true){
-                consum.setString("");
-                sc = new SetConsumo(suministro, this);
-                sc.addCommand(CMD_BACK);
-                sc.setCommandListener(this);
-                display2.setCurrent(sc);
+            if(index == 0){
+                String msg1 = "No existe suministro";
+                Alert al1 = new Alert(msg1);
+                display2.setCurrent(al1);
             }else{
-                String msg = "El suministro no tiene consumo";
-                Alert al = new Alert(msg);
-                display2.setCurrent(al);
+                currentIdSuministro = index;
+                boolean data = sRMS.tieneData(index);
+                if(data == true){
+                    consum.setString("");
+                    sc = new SetConsumo(suministro, this);
+                    sc.addCommand(CMD_BACK);
+                    sc.setCommandListener(this);
+                    display2.setCurrent(sc);
+                }else{
+                    String msg = "El suministro no tiene consumo";
+                    Alert al = new Alert(msg);
+                    display2.setCurrent(al);
+                }
             }
         }
     }
