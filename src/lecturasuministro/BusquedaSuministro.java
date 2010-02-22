@@ -114,17 +114,26 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
             // Busqueda
             int index = rms_orden.buscar(suministro);
+            System.out.println(index);
             if (index == 0) {
-                String msg = "No existe suministro"+"\n"+
-                             "o Ya tiene Lectura";
+                System.out.println("jaqui1");
+                String msg = "No existe suministro";
                 Alert al = new Alert("Atencion");
                 al.setString(msg);
                 display2.setCurrent(al);
             } else {
+                System.out.println("jaqui2");
                 boolean suministroConData = sRMS.tieneData(index);
+                System.out.println(suministroConData);
+                
                 if(index != 0 && !suministroConData) {
                     display2.setCurrent (mainForm2);
                     objCanvas.setCurrentSuministro(index);
+                }else{
+                    String msg1 = "El suministro ya tiene Lectura";
+                    Alert al1 = new Alert("Atencion");
+                    al1.setString(msg1);
+                    display2.setCurrent(al1);
                 }
             }
 
