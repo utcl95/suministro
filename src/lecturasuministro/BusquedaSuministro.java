@@ -173,10 +173,11 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             if((lactual==0 && !obsEsValido) && (!esValido && !obsEsValido))
                  mostrarMensaje("e", lactual);
             if((lactual==0 && obsEsValido) && (!esValido && obsEsValido))
-                 mostrarMensaje("f", lactual);
-            if(!esValido ) {
-                mostrarMensaje("c", lactual);
-            }if(esValido ){
+                 mostrarMensaje("c", lactual);
+//            if(!esValido ) {
+//                mostrarMensaje("c", lactual);
+//            }
+            if(esValido ){
                 mostrarMensaje("d", lactual);
             }else {
                 grabarConsumo();
@@ -226,7 +227,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             display2.setCurrent(al2);
         }else{
             yesNoAlert = new Alert("Atencion");
-            yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo? " + lectura_actual);
+            yesNoAlert.setString("Consumo: " + lectura_actual+ " Obs:"+vobs+". Desea guardar?");
             softKey1 = new Command("No", Command.STOP, 1);
             softKey2 = new Command("Yes", Command.OK, 1);
             yesNoAlert.addCommand(softKey1);
