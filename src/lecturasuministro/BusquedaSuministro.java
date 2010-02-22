@@ -17,7 +17,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_BUSCAR = new Command ("Buscar", Command.ITEM, 1);
     private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
-
+    private static final Command CMD_SALIR = new Command ("Salir", Command.HELP, 1);
     private boolean firstTime;
     private Form mainForm;
     private Form mainForm2;
@@ -29,6 +29,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
+    private Command softKey3;
     private FormCanvas objCanvas;
     private int vobs;
     private int lactual;
@@ -83,6 +84,12 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 display2.setCurrent(mainForm2);
 
             }if (c.getCommandType() == Command.STOP){
+                display2.setCurrent(mainForm2);
+
+            }if (c.getCommandType() == Command.HELP) {
+                grabarConsumo();
+                consumo.setString("");
+                obs.setString("");
                 display2.setCurrent(mainForm2);
 
             }if (c.getCommandType() == Command.EXIT){
@@ -176,10 +183,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                  mostrarMensaje(3, lactual);
             if(esValido ){
                 mostrarMensaje(1, lactual);
-                grabarConsumo();
-                consumo.setString("");
-                obs.setString("");
-                display2.setCurrent(mainForm2);
             }
 
          } // end if
@@ -203,6 +206,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 String msg = "Lectura correcta: "+lectura_actual+
                         "obs: "+vobs;
                 Alert al = new Alert(msg);
+                softKey3 = new Command("Salir", Command.HELP, 1);
+                al.addCommand(softKey3);
+                al.setCommandListener(this);
                 display2.setCurrent(al);
                 break;
             case 2:
