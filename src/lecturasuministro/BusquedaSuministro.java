@@ -17,7 +17,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_BUSCAR = new Command ("Buscar", Command.ITEM, 1);
     private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
-    private static final Command CMD_SALIR = new Command ("Salir", Command.HELP, 1);
     private boolean firstTime;
     private Form mainForm;
     private Form mainForm2;
@@ -177,11 +176,11 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
             if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) ))
                 esValido = true;
-            if((lactual==0 && !obsEsValido) && (!esValido && !obsEsValido))
+            if((lactual==0 && !obsEsValido) && (!suministroEsValido && !obsEsValido))
                  mostrarMensaje(2, lactual);
-            if((lactual==0 && obsEsValido) && (!esValido && obsEsValido))
+            if((lactual==0 && obsEsValido) && (!suministroEsValido && obsEsValido))
                  mostrarMensaje(3, lactual);
-            if(esValido ){
+            if(suministroEsValido && obsEsValido ){
                 mostrarMensaje(1, lactual);
             }
 
@@ -204,7 +203,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         switch(num_mensaje) {
             case 1:
                 String msg = "Lectura correcta: "+lectura_actual+
-                        "obs: "+vobs;
+                        " .Obs: "+vobs;
                 Alert al = new Alert(msg);
                 softKey3 = new Command("Salir", Command.HELP, 1);
                 al.addCommand(softKey3);
