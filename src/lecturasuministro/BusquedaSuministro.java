@@ -174,12 +174,8 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                  mostrarMensaje("e", lactual);
             if((lactual==0 && obsEsValido) && (!esValido && obsEsValido))
                  mostrarMensaje("c", lactual);
-//            if(!esValido ) {
-//                mostrarMensaje("c", lactual);
-//            }
             if(esValido ){
                 mostrarMensaje("d", lactual);
-            }else {
                 grabarConsumo();
                 consumo.setString("");
                 obs.setString("");
@@ -220,11 +216,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             String msg1 = "Consumo y observacion incorrectos";
             Alert al1 = new Alert(msg1);
             display2.setCurrent(al1);
-        }if(mns.equals("f")){
-            String msg2 = "Consumo incorrecto. Desea guardar lectura: "+lectura_actual+
-                        "obs: "+vobs;
-            Alert al2 = new Alert(msg2);
-            display2.setCurrent(al2);
         }else{
             yesNoAlert = new Alert("Atencion");
             yesNoAlert.setString("Consumo: " + lectura_actual+ " Obs:"+vobs+". Desea guardar?");
