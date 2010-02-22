@@ -171,7 +171,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) ))
                 esValido = true;
             if((lactual==0 && !obsEsValido) && (!esValido && !obsEsValido))
-                 mostrarMensaje("c", lactual);
+                 mostrarMensaje("e", lactual);
             if(!esValido ) {
                 mostrarMensaje("c", lactual);
             }if(esValido ){
