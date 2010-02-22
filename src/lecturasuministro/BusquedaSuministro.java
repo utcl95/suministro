@@ -159,11 +159,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 lactual = Integer.parseInt(consumo.getString());
             }
 
-            if (vobs >= 0 && vobs <= 40){                
-            } else {
-                 mostrarAlerta();
-            }
-
             lanterior = objCanvas.getAnterior();
             promedio = objCanvas.getPromedio();
             int cons_act = lactual - lanterior;
@@ -174,12 +169,15 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             boolean obsEsValido = (vobs > 0 && vobs <= 40);
             boolean obsEsCero = (vobs == 0);
 
-            if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) ))
-                esValido = true;
-            if((lactual==0 && !obsEsValido) && (!suministroEsValido && !obsEsValido))
+            if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
+                
+            }
+            if((lactual==0 && !obsEsValido) || (!suministroEsValido && !obsEsValido)){
                  mostrarMensaje(2, lactual);
-            if((lactual==0 && obsEsValido) && (!suministroEsValido && obsEsValido))
+            }
+            if((lactual==0 && obsEsValido) || (!suministroEsValido && obsEsValido)){
                  mostrarMensaje(3, lactual);
+            }
             if(suministroEsValido && obsEsValido ){
                 mostrarMensaje(1, lactual);
             }
@@ -217,7 +215,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 break;
             case 3:
                 yesNoAlert = new Alert("Atencion");
-                yesNoAlert.setString("Consumo: " + lectura_actual+ " Obs:"+vobs+". Desea guardar?");
+                yesNoAlert.setString("Consumo Incorrecto: " + lectura_actual+ " Obs:"+vobs+". Desea guardar?");
                 softKey1 = new Command("No", Command.STOP, 1);
                 softKey2 = new Command("Yes", Command.OK, 1);
                 yesNoAlert.addCommand(softKey1);
