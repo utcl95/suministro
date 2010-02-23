@@ -107,8 +107,13 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
                 vobs = Integer.parseInt(obs.getString());                
             }
             
-            lactual = Integer.parseInt(consumo.getString());
-
+            // Consumo puede ser 0, cuando se presenta algun problema.
+            if(consumo.getString().equals("")) {
+                lactual = 0;
+            } else {
+                lactual = Integer.parseInt(consumo.getString());
+            }
+            
             lanterior = objCanvas.getAnterior();
             promedio = objCanvas.getPromedio();
             int cons_act = lactual - lanterior;
