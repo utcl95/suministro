@@ -45,7 +45,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
             display2 = Display.getDisplay (this);
             mainForm = new Form ("");
-            mainForm.append ("BUSQUEDA POR SUMINISTRO");
+            mainForm.append ("");
             txtsum = new TextField ("Suministro", "", 15, TextField.NUMERIC);
             mainForm.append (txtsum);
 
@@ -165,24 +165,28 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
             // Validaciones
             boolean esValido = false;
-            boolean suministroEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+            boolean consumoEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
             boolean obsEsValido = (vobs > 0 && vobs <= 40);
             boolean obsEsCero = (vobs == 0);
 
-            if((suministroEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
-                
-            }
-            if((lactual==0 && !obsEsValido) || (!suministroEsValido && !obsEsValido)){
-                 mostrarMensaje(2, lactual);
-            }
-            if((lactual==0 && obsEsValido) || (!suministroEsValido && obsEsValido)){
-                 mostrarMensaje(3, lactual);
-            }
-            if(suministroEsValido && obsEsValido ){
+            if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
                 mostrarMensaje(1, lactual);
+                return;
             }
-            if(suministroEsValido && !obsEsValido){
+
+            if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero)){
+                 mostrarMensaje(3, lactual);
+                 return;
+            }
+            
+            if((lactual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido)){
+                 mostrarMensaje(2, lactual);
+                 return;
+            }
+            
+            if(consumoEsValido && !obsEsValido){
                 mostrarMensaje(4, lactual);
+                return;
             }
 
          } // end if
