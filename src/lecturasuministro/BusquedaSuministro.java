@@ -62,8 +62,8 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             mainForm2.append ("");
             objCanvas = new FormCanvas ("", Display.getDisplay (this));
             mainForm2.append (objCanvas);
-            consumo = new TextField("Consumo   ", "", 12, TextField.NUMERIC);
-            obs = new TextField ("Obs", "", 2, TextField.NUMERIC);
+            consumo = new TextField("Consumo/Observacion", "", 12, TextField.NUMERIC);
+            obs = new TextField ("", "", 2, TextField.NUMERIC);
             mainForm2.append(consumo);
             mainForm2.append (obs);
             StringItem item2 = new StringItem("", "Ingresar", Item.BUTTON);
