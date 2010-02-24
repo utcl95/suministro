@@ -174,12 +174,12 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 return;
             }
 
-            if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero)){
+            if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
                  mostrarMensaje(3, lactual);
                  return;
             }
             
-            if((lactual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido)){
+            if((lactual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido) || (lactual == 0 && obsEsCero) ){
                  mostrarMensaje(2, lactual);
                  return;
             }
@@ -222,7 +222,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 break;
             case 3:
                 yesNoAlert = new Alert("Atencion");
-                yesNoAlert.setString("Consumo Incorrecto: " + lectura_actual+ " Obs:"+vobs+". Desea guardar?");
+                yesNoAlert.setString("Consumo Incorrecto: " + lectura_actual+". Desea guardar?");
                 softKey1 = new Command("No", Command.STOP, 1);
                 softKey2 = new Command("Yes", Command.OK, 1);
                 yesNoAlert.addCommand(softKey1);
