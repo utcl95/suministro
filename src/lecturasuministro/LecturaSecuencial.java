@@ -124,8 +124,10 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             boolean obsEsCero = (vobs == 0);
 
             if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
-                mostrarMensaje(1, lactual);
-                return;
+               grabarConsumo();
+               consumo.setString("");
+               obs.setString("");
+               display.setCurrent(mainForm);
             }
 
             if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero)){
