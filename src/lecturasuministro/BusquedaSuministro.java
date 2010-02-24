@@ -170,8 +170,10 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             boolean obsEsCero = (vobs == 0);
 
             if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
-                mostrarMensaje(1, lactual);
-                return;
+                grabarConsumo();
+                consumo.setString("");
+                obs.setString("");
+                display2.setCurrent(mainForm);
             }
 
             if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
