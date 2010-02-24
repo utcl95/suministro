@@ -229,15 +229,14 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             setSuministro(data1[0]);
             // Numero de suministro, como id.
             m_current = cs;
-            //System.out.println("Linea : " + cs);
+
             // Setea el suministro actual
             currentSuministro = data1[0];
 
             setZona(data1[1]);
             dir2 = data1[3].substring(16, 32).trim();
             dir1 = data1[3].substring(0, 16);
-            System.out.println(dir1);
-            System.out.println(dir2);
+
             setDireccion1(dir1);
             setDireccion2(dir2);
             setSerie(data1[4]);
