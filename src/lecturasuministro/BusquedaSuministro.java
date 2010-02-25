@@ -218,7 +218,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 display2.setCurrent(al);
                 break;
             case 2:
-                String msg1 = "Consumo y observacion incorrectos";
+                String msg1 = "Consumo/Observacion Incorrecto";
                 Alert al1 = new Alert(msg1);
                 display2.setCurrent(al1);
                 break;

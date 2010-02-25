@@ -169,7 +169,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
      public void mostrarMensaje(int num_mensaje, int lectura_actual){
         switch(num_mensaje) {
             case 1:
-                String msg = "Lectura correcta: "+lectura_actual+
+                String msg = "Lectura Correcta: "+lectura_actual+
                         " .Obs: "+vobs;
                 Alert al = new Alert(msg);
                 softKey3 = new Command("Salir", Command.HELP, 1);
@@ -178,7 +178,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
                 display.setCurrent(al);
                 break;
             case 2:
-                String msg1 = "Consumo y observacion incorrectos";
+                String msg1 = "Consumo/Observacion Incorrecto";
                 Alert al1 = new Alert(msg1);
                 display.setCurrent(al1);
                 break;
