@@ -124,10 +124,10 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             boolean obsEsCero = (vobs == 0);
 
             if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
-               grabarConsumo();
-               consumo.setString("");
-               obs.setString("");
-               display.setCurrent(mainForm);
+                grabarConsumo();
+                consumo.setString("");
+                obs.setString("");
+                return;
             }
 
             if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
@@ -140,7 +140,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
                  return;
             }
 
-            if(consumoEsValido && !obsEsValido){
+            if(consumoEsValido && !obsEsValido && !obsEsCero){
                 mostrarMensaje(4, lactual);
                 return;
             }

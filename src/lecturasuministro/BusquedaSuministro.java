@@ -173,7 +173,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 grabarConsumo();
                 consumo.setString("");
                 obs.setString("");
-                display2.setCurrent(mainForm);
+                return;
             }
 
             if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
@@ -186,7 +186,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                  return;
             }
             
-            if(consumoEsValido && !obsEsValido){
+            if(consumoEsValido && !obsEsValido && !obsEsCero){
                 mostrarMensaje(4, lactual);
                 return;
             }
