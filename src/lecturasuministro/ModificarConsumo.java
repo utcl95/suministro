@@ -45,7 +45,7 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
             display2 = Display.getDisplay (this);
 
             mainForm.append ("BUSQUEDA POR CONSUMO");
-            consum = new TextField ("Suministro", "", 15, TextField.NUMERIC);
+            consum = new TextField ("Suministro", "", 8, TextField.NUMERIC);
             mainForm.append (consum);
 
             StringItem item = new StringItem("", "Buscar", Item.BUTTON);
@@ -218,8 +218,8 @@ class SetConsumo extends Form implements CommandListener, ItemCommandListener{
     public void leerConsumoSuministro(String msuministro) {
        suministro = msuministro;
        String lectura = new String(ss.lActual());
-       consumo = new TextField("Consumo   ", "", 20, TextField.NUMERIC);
-       append(new TextField("Suministro", suministro, 20, TextField.UNEDITABLE));
+       consumo = new TextField("Consumo   ", "", 6, TextField.NUMERIC);
+       append(new TextField("Suministro", suministro, 8, TextField.UNEDITABLE));
        consumo.setString(lectura);
        append(consumo);
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
