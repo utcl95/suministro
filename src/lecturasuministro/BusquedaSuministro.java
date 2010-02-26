@@ -17,6 +17,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_BUSCAR = new Command ("Buscar", Command.ITEM, 1);
     private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
+
+    private static final Command CMD_SAVE = new Command ("Grabar", Command.OK, 1);
+
     private boolean firstTime;
     private Form mainForm;
     private Form mainForm2;
@@ -32,6 +35,8 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private FormCanvas objCanvas;
     private int vobs;
     private int lactual;
+
+    private boolean lsave = false;
 
     RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
     RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
@@ -71,12 +76,28 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             item2.setItemCommandListener(this);
             mainForm2.append(item2);
             mainForm2.addCommand (CMD_EXIT);
+            mainForm2.addCommand(CMD_SAVE);
             mainForm2.setCommandListener (this);
     }
 
     public void commandAction (Command c, Displayable s) {
+            suministro = txtsum.getString();
+            if(obs.getString().equals("")) {
+                vobs = 0;
+            } else {
+                vobs = Integer.parseInt(obs.getString());
+            }
 
-            if (c.getCommandType() == Command.OK) {
+            // Consumo puede ser 0, cuando se presenta algun problema.
+            if(consumo.getString().equals("")) {
+                lactual = 0;
+            } else {
+                lactual = Integer.parseInt(consumo.getString());
+            }
+            
+            Validacion validarSuministro = new Validacion();
+
+            if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
                 grabarConsumo();
                 consumo.setString("");
                 obs.setString("");
@@ -98,8 +119,48 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             }if (c == CMD_CANCEL) {
                 destroyApp (false);
                 notifyDestroyed ();
+            } if (c == CMD_SAVE) {
+                suministro = objCanvas.getSuministro();
 
-        }
+                int lanterior = 0;
+                int promedio = 0;
+
+                
+                System.out.println("Consumo : " + lactual);
+                System.out.println("Observa : " + vobs);
+
+                lanterior = objCanvas.getAnterior();
+                promedio = objCanvas.getPromedio();
+                int cons_act = lactual - lanterior;
+
+                // Validaciones
+                boolean esValido = false;
+                boolean consumoEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+                boolean obsEsValido = (vobs > 0 && vobs <= 40);
+                boolean obsEsCero = (vobs == 0);
+
+                if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
+                    grabarConsumo();
+                    consumo.setString("");
+                    obs.setString("");
+                    return;
+                }
+
+                if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
+                     mostrarMensaje(3, lactual);
+                     return;
+                }
+
+                if((lactual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido) || (lactual == 0 && obsEsCero) ){
+                     mostrarMensaje(2, lactual);
+                     return;
+                }
+
+                if(consumoEsValido && !obsEsValido && !obsEsCero){
+                    mostrarMensaje(4, lactual);
+                    return;
+                }
+            } // if save
     }
 
     protected void destroyApp (boolean unconditional) {
@@ -138,8 +199,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                     display2.setCurrent(al1);
                 }
             }
+            return;
 
-        }if (c == CMD_GRABAR){
+        } if (c == CMD_GRABAR){
 
             suministro = objCanvas.getSuministro();
 
@@ -194,7 +256,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
          } // end if
 
      validarSuministro = null;
-   }
+   } // End CommandAction
 
    public void grabarConsumo(){
         int index = 0;
