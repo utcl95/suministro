@@ -152,7 +152,13 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
         String actual = data[1].trim();
         return actual;
     }
-    
+
+    public String obsActual(){
+        String data[] = sRMS.getRecord(index);
+        String actual = data[2].trim();
+        return actual;
+    }
+
     public int getIdSuministro() {
         int i = currentIdSuministro;
         return i;
@@ -222,7 +228,9 @@ class SetConsumo extends Form implements CommandListener, ItemCommandListener{
        append(new TextField("Suministro", suministro, 8, TextField.UNEDITABLE));
        consumo.setString(lectura);
        append(consumo);
+       String observacion = new String(ss.obsActual());
        obs = new TextField("Obs", "", 2, TextField.NUMERIC);
+       obs.setString(observacion);
        append(obs);
 
        StringItem item = new StringItem("", "Corregir", Item.BUTTON);
