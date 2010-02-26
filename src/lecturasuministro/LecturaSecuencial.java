@@ -44,7 +44,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             currentItem = objCanvas.siguienteSinData(currentItem);
             objCanvas.setCurrentSuministro(currentItem);
             mainForm.append (objCanvas);
-            consumo = new TextField("Consumo/Observacion", "", 12, TextField.NUMERIC);
+            consumo = new TextField("Consumo/Observacion", "", 6, TextField.NUMERIC);
             obs = new TextField ("", "", 2, TextField.NUMERIC);
             mainForm.append(consumo);
             mainForm.append (obs);
