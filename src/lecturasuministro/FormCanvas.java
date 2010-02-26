@@ -21,6 +21,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     private int location = UPPER;
     private int currentX = 0;
     private int currentY = 0;
+    private boolean isLastRecord = false;
     private String[][] data = new String[rows][cols];
 
     // Traversal stuff
@@ -267,6 +268,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         int numeroSuministros = m_rms.recordCount();
         int i = m_current;
         if(i == numeroSuministros) {
+            isLastRecord = true;
         } else {
             m_current = m_current + 1;
             while(m_rms.tieneData(m_current) && i <= numeroSuministros) {
@@ -275,6 +277,10 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             m_rms = null;
             setCurrentSuministro(m_current);
         }
+    }
+
+    public boolean esElUltimoRegistro() {
+        return isLastRecord;
     }
 
     public int siguienteSinData(int i) {

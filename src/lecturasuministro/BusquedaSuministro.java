@@ -313,6 +313,10 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     // Dibuja el Canvas despues de grabar.
     public void repaintCanvasAfterSave() {
         objCanvas.doNext();
+        if (objCanvas.esElUltimoRegistro()) {
+            destroyApp (false);
+            notifyDestroyed();
+        }
         //display2.setCurrent(canvas);
     }
 
