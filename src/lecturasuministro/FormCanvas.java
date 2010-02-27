@@ -142,7 +142,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 if(i == 1) {
                 } else {
                     m_current = m_current - 1;
-                    while(m_rms.tieneData(m_current) && i > 1) {
+                    while(m_rms.tieneData(m_current) && m_current > 1) {
                         m_current = m_current - 1;
                     }
                     m_rms = null;
@@ -158,7 +158,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                  if(i == numeroSuministros) {
                  } else {
                     m_current = m_current + 1;
-                    while(m_rms.tieneData(m_current) && i <= numeroSuministros) {
+                    while(m_rms.tieneData(m_current) && m_current <= numeroSuministros) {
                         m_current = m_current + 1;
                     }
                     m_rms = null;
@@ -271,12 +271,18 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             isLastRecord = true;
         } else {
             m_current = m_current + 1;
-            while(m_rms.tieneData(m_current) && i <= numeroSuministros) {
+
+            while(m_current <= numeroSuministros && m_rms.tieneData(m_current)) {
                 m_current = m_current + 1;
+            }
+            if(m_current > numeroSuministros) {
+                isLastRecord = true;
+                return;
             }
             m_rms = null;
             setCurrentSuministro(m_current);
         }
+        
     }
 
     public boolean esElUltimoRegistro() {
