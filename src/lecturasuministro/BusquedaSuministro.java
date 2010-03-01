@@ -259,7 +259,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         int index = 0;
 
         index = getIdSuministro();
-        sRMS.setSuministro(index, suministroAct, consumo.getString(), obs.getString());
+        String lactual1 = String.valueOf(lactual);
+        String vobs1 = String.valueOf(vobs);
+        sRMS.setSuministro(index, suministroAct, lactual1, vobs1);
         repaintCanvasAfterSave();
 
     }
