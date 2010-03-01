@@ -27,6 +27,7 @@ public class EnviarLectura extends MIDlet {
     public void startApp() {
         display = Display.getDisplay(this);
         sendData();
+
     }
 
     public void pauseApp() {
@@ -42,6 +43,7 @@ public class EnviarLectura extends MIDlet {
         RecordStore m_rs            = null;
         ByteArrayInputStream bin    = null;
         DataInputStream din         = null;
+        byte[] data = null;
         String m_rms[] = new String[3];
         //
         char cr = 13;
@@ -63,7 +65,7 @@ public class EnviarLectura extends MIDlet {
                 m_rms[1] = "";
                 m_rms[2] = "";
                 try {
-                    byte[] data = m_rs.getRecord(i);
+                    data = m_rs.getRecord(i);
 
                     bin = new ByteArrayInputStream(data);
                     din = new DataInputStream(bin);
@@ -79,11 +81,11 @@ public class EnviarLectura extends MIDlet {
                 }
                 //
                 
-                if(!m_rms[1].equals("00000000")) {
+                //if(!m_rms[1].equals("00000000")) {
                     m_rms[0] = m_rms[0].substring(0, 8);
                     m_linea =  m_rms[0] + "," + m_rms[1] + "," +  m_rms[2] + cr;
                     output.println(m_linea);
-                }
+                //}
             }
             m_rs.closeRecordStore();
             connection.close();
@@ -92,12 +94,12 @@ public class EnviarLectura extends MIDlet {
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
-        System.out.println("Echo");
+
         Alert al = new Alert("Archivo de Lecturas Generado...");
         //al.setTimeout(Alert.FOREVER);
         display.setCurrent(al);
-        // Borrar de memoria.
         destroyApp (false);
         notifyDestroyed();
     }
+
 }
