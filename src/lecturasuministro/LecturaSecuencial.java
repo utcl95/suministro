@@ -97,7 +97,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
         if (c == CMD_PRESS2){
 
             suministro = objCanvas.getSuministro();
-
+            System.out.println(suministro);
             int lanterior = 0;
             int promedio = 0;
 
@@ -153,9 +153,11 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
      public void grabarConsumo(){
         int index = 0;
 
-            index = getIdSuministro();
+        index = getIdSuministro();
+        String lactual1 = String.valueOf(lactual);
+        String vobs1 = String.valueOf(vobs);
+        sRMS.setSuministro(index, suministro, lactual1, vobs1);
 
-        sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
         repaintCanvasAfterSave();
 
     }
