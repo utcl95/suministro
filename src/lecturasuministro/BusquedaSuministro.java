@@ -28,6 +28,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     private TextField consumo;
     private TextField obs;
     private String suministro;
+    private String suministroAct;
     private Alert yesNoAlert;
     private Command softKey1;
     private Command softKey2;
@@ -121,13 +122,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 notifyDestroyed ();
             } if (c == CMD_SAVE) {
                 suministro = objCanvas.getSuministro();
-
+                
                 int lanterior = 0;
                 int promedio = 0;
-
-                
-                System.out.println("Consumo : " + lactual);
-                System.out.println("Observa : " + vobs);
 
                 lanterior = objCanvas.getAnterior();
                 promedio = objCanvas.getPromedio();
@@ -203,8 +200,8 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
         } if (c == CMD_GRABAR){
 
-            suministro = objCanvas.getSuministro();
-
+            suministroAct = objCanvas.getSuministro();
+            
             int lanterior = 0;
             int promedio = 0;
 
@@ -262,8 +259,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         int index = 0;
 
         index = getIdSuministro();
-
-        sRMS.setSuministro(index, suministro, consumo.getString(), obs.getString());
+        sRMS.setSuministro(index, suministroAct, consumo.getString(), obs.getString());
         repaintCanvasAfterSave();
 
     }
