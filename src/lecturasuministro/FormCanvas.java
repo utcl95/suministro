@@ -102,8 +102,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
     protected boolean traverse (int dir, int viewportWidth, int viewportHeight, int[] visRect_inout) {
         if (horz && vert) {
-            RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
-            int i = m_current;
+            
           switch (dir) {
 
                case Canvas.DOWN:
@@ -139,31 +138,12 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 break;
 
             case Canvas.LEFT:
-                if(i == 1) {
-                } else {
-                    m_current = m_current - 1;
-                    while(m_rms.tieneData(m_current) && m_current > 1) {
-                        m_current = m_current - 1;
-                    }
-                    m_rms = null;
-                    setCurrentSuministro(m_current);
-                }
-
+                doBack();
                 break;
 
             case Canvas.RIGHT:
-                 // m_rms = new RMS_Suministro("SUMINISTROS");
-                 int numeroSuministros = m_rms.recordCount();
-                
-                 if(i == numeroSuministros) {
-                 } else {
-                    m_current = m_current + 1;
-                    while(m_rms.tieneData(m_current) && m_current <= numeroSuministros) {
-                        m_current = m_current + 1;
-                    }
-                    m_rms = null;
-                    setCurrentSuministro(m_current);
-                 }
+                doNext();
+                break;
             } // end switch
         } // end if
        
@@ -283,6 +263,20 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             setCurrentSuministro(m_current);
         }
         
+    }
+
+    public void doBack() {
+      RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
+            int i = m_current;
+                if(i == 1) {
+                } else {
+                    m_current = m_current - 1;
+                    while(m_rms.tieneData(m_current) && m_current > 1) {
+                        m_current = m_current - 1;
+                    }
+                    m_rms = null;
+                    setCurrentSuministro(m_current);
+                }
     }
 
     public boolean esElUltimoRegistro() {
