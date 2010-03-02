@@ -15,6 +15,9 @@ import javax.microedition.midlet.MIDlet;
 public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCommandListener {
     private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
     private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
+
+    private static final Command CMD_SAVE = new Command ("Grabar", Command.OK, 1);
+    
     private Display display;
     private boolean firstTime;
     private Form mainForm;
@@ -53,6 +56,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             item.setItemCommandListener(this);
             mainForm.append(item);
             mainForm.addCommand (CMD_EXIT);
+            mainForm.addCommand(CMD_SAVE);
             mainForm.setCommandListener (this);
             firstTime = false;
 
@@ -62,12 +66,29 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
     }
 
     public void commandAction (Command c, Displayable d) {
+            //TODO: Revisar esta linea
+            //suministro = txtsum.getString();
+            suministro = objCanvas.getSuministro();
+            if(obs.getString().equals("")) {
+                vobs = 0;
+            } else {
+                vobs = Integer.parseInt(obs.getString());
+            }
+
+            // Consumo puede ser 0, cuando se presenta algun problema.
+            if(consumo.getString().equals("")) {
+                lactual = 0;
+            } else {
+                lactual = Integer.parseInt(consumo.getString());
+            }
+
+            Validacion validarSuministro = new Validacion();
         if (c == CMD_EXIT) {
             destroyApp (false);
             notifyDestroyed ();
         }
 
-        if (c.getCommandType() == Command.OK) {
+        if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
             grabarConsumo();            
             consumo.setString("");
             obs.setString("");
@@ -81,7 +102,44 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
 
         }else if (c.getCommandType() == Command.STOP){
             display.setCurrent(mainForm);
-        }
+        }  if (c == CMD_SAVE) {
+                suministro = objCanvas.getSuministro();
+
+                int lanterior = 0;
+                int promedio = 0;
+
+                lanterior = objCanvas.getAnterior();
+                promedio = objCanvas.getPromedio();
+                int cons_act = lactual - lanterior;
+
+                // Validaciones
+                boolean esValido = false;
+                boolean consumoEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+                boolean obsEsValido = (vobs > 0 && vobs <= 40);
+                boolean obsEsCero = (vobs == 0);
+
+                if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
+                    grabarConsumo();
+                    consumo.setString("");
+                    obs.setString("");
+                    return;
+                }
+
+                if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
+                     mostrarMensaje(3, lactual);
+                     return;
+                }
+
+                if((lactual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido) || (lactual == 0 && obsEsCero) ){
+                     mostrarMensaje(2, lactual);
+                     return;
+                }
+
+                if(consumoEsValido && !obsEsValido && !obsEsCero){
+                    mostrarMensaje(4, lactual);
+                    return;
+                }
+            } // if save
     }
 
     protected void destroyApp (boolean unconditional) {
