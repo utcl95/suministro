@@ -83,6 +83,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
     public void commandAction (Command c, Displayable s) {
             suministro = txtsum.getString();
+            suministroAct = objCanvas.getSuministro();
             if(obs.getString().equals("")) {
                 vobs = 0;
             } else {
@@ -99,6 +100,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             Validacion validarSuministro = new Validacion();
 
             if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
+                System.out.println("Entro 9");
                 grabarConsumo();
                 consumo.setString("");
                 obs.setString("");
@@ -135,25 +137,29 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 boolean consumoEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
                 boolean obsEsValido = (vobs > 0 && vobs <= 40);
                 boolean obsEsCero = (vobs == 0);
-
+                System.out.println("Entro 1");
                 if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
                     grabarConsumo();
+                    System.out.println("Entro 2");
                     consumo.setString("");
                     obs.setString("");
                     return;
                 }
 
                 if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
+                    System.out.println("Entro 3");
                      mostrarMensaje(3, lactual);
                      return;
                 }
 
                 if((lactual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido) || (lactual == 0 && obsEsCero) ){
+                    System.out.println("Entro 4");
                      mostrarMensaje(2, lactual);
                      return;
                 }
 
                 if(consumoEsValido && !obsEsValido && !obsEsCero){
+                    System.out.println("Entro 5");
                     mostrarMensaje(4, lactual);
                     return;
                 }
@@ -167,8 +173,8 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     }
 
     public void commandAction(Command c, Item item) {
-
         suministro = txtsum.getString();
+        suministroAct = objCanvas.getSuministro();
         Validacion validarSuministro = new Validacion();
         
         if (c == CMD_BUSCAR) {
@@ -261,6 +267,9 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         index = getIdSuministro();
         String lactual1 = String.valueOf(lactual);
         String vobs1 = String.valueOf(vobs);
+        System.out.println(lactual1);
+        System.out.println(vobs1);
+        System.out.println(suministroAct);
         sRMS.setSuministro(index, suministroAct, lactual1, vobs1);
         repaintCanvasAfterSave();
 
