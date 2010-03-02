@@ -11,11 +11,6 @@ public class Validacion {
 
     public boolean esValido(int cod_validacion, int lactual, int lanterior, int cons_act, int promedio) {
         boolean bReturn = false;
-//        System.out.println("ES VALIDO : " );
-//        System.out.println("lactual : " + lactual);
-//        System.out.println("lanterior : " + lanterior);
-//        System.out.println("cons_actt : " + cons_act);
-//        System.out.println("promedio : " + promedio);
 
         bReturn =   (lactual < lanterior) ||
                     (lanterior == 0) ||
@@ -35,5 +30,32 @@ public class Validacion {
                     (cons_act > 2500 && ( cons_act < 1.2 * promedio || promedio <= 0.6 * cons_act ));
                 
         return !bReturn;
+    }
+
+    public int validarConsumoObservacion(int observacion, int lecturaActual, int lecturaAnterior,
+                                         int consumoActual, int promedio) {
+        // Validaciones
+        boolean esValido = false;
+        boolean consumoEsValido  = esValido(observacion, lecturaActual, lecturaAnterior, consumoActual, promedio);
+        boolean obsEsValido = (observacion > 0 && observacion <= 40);
+        boolean obsEsCero = (observacion == 0);
+
+        if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lecturaActual == 0) )){
+            return 1;
+        }
+
+        if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lecturaActual != 0))){
+             return 3;
+        }
+
+        if((lecturaActual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido) || (lecturaActual == 0 && obsEsCero) ){
+             return 2;
+        }
+
+        if(consumoEsValido && !obsEsValido && !obsEsCero){
+            return 4;
+        }
+
+        return 0;
     }
 }
