@@ -101,7 +101,12 @@ public class GrabarLectura {
 
                 yesNoAlert.addCommand(CMD_NOT);
                 yesNoAlert.addCommand(CMD_YES);
-                yesNoAlert.setCommandListener(m_lecturaSecuencial);
+
+                if(m_busquedaSuministro == null)
+                    yesNoAlert.setCommandListener(m_lecturaSecuencial);
+                else
+                    yesNoAlert.setCommandListener(m_busquedaSuministro);
+
                 m_display.setCurrent(yesNoAlert);
                 break;
              case 4:
@@ -124,7 +129,11 @@ public class GrabarLectura {
         switch(codigoValidarLectura) {
         case 1:
             grabarLectura();
-            m_lecturaSecuencial.resetConsumoObservacion();
+            if(m_busquedaSuministro == null)
+                m_lecturaSecuencial.resetConsumoObservacion();
+            else
+                m_busquedaSuministro.resetConsumoObservacion();
+            
             return;
         case 2:
             mostrarMensaje(2, m_consumoActual);
