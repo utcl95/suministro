@@ -133,7 +133,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
                 // Validaciones
                 boolean esValido = false;
-                boolean consumoEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+                boolean consumoEsValido  = validarSuministro.esValido(lactual, lanterior, cons_act, promedio);
                 boolean obsEsValido = (vobs > 0 && vobs <= 40);
                 boolean obsEsCero = (vobs == 0);
                 if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
@@ -222,9 +222,10 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             promedio = objCanvas.getPromedio();
             int cons_act = lactual - lanterior;
 
+
             // Validaciones
             boolean esValido = false;
-            boolean consumoEsValido  = validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio);
+            boolean consumoEsValido  = validarSuministro.esValido(lactual, lanterior, cons_act, promedio);
             boolean obsEsValido = (vobs > 0 && vobs <= 40);
             boolean obsEsCero = (vobs == 0);
 

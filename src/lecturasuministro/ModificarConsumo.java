@@ -205,7 +205,7 @@ class SetConsumo extends Form implements CommandListener, ItemCommandListener{
 
         if (c == CMD_PRESS2){
 
-            if(!validarSuministro.esValido(vobs, lactual, lanterior, cons_act, promedio) ) {
+            if(!validarSuministro.esValido(lactual, lanterior, cons_act, promedio) ) {
               ss.mostrarMensaje("c", lactual);
             }else{
               datosConsumo();
