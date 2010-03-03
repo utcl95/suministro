@@ -22,20 +22,15 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
 
     private boolean firstTime;
 
+    private String suministro;
+    
     private TextField consumo;
     private TextField obs;
     
-    private int vobs;
-    private int lactual;
-
-    private String suministro;
-    private int currentItem = 1;
-
-    
+    private int currentItem = 1;    
 
     private GrabarLectura objGrabarLectura = null;
-
-    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
+    
     private FormCanvas objCanvas;
 
     public LecturaSecuencial () {
@@ -45,18 +40,24 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
 
     protected void startApp () {
         if (firstTime) {
-            display = Display.getDisplay (this);
-            objCanvas = new FormCanvas ("", Display.getDisplay (this));
+            display = Display.getDisplay(this);
+
+            objCanvas   = new FormCanvas ("", Display.getDisplay (this));
+
             currentItem = objCanvas.siguienteSinData(currentItem);
             objCanvas.setCurrentSuministro(currentItem);
-            mainForm.append (objCanvas);
-            consumo = new TextField("Consumo/Observacion", "", 6, TextField.NUMERIC);
-            obs = new TextField ("", "", 2, TextField.NUMERIC);
+
+            mainForm.append(objCanvas);
+            consumo     = new TextField("Consumo/Observacion", "", 6, TextField.NUMERIC);
+            obs         = new TextField ("", "", 2, TextField.NUMERIC);
+
             mainForm.append(consumo);
             mainForm.append (obs);
+
             StringItem item = new StringItem("", "Ingresar", Item.BUTTON);
             item.setDefaultCommand(CMD_GRABAR);
             item.setItemCommandListener(this);
+
             mainForm.append(item);
             mainForm.addCommand (CMD_EXIT);
             mainForm.addCommand(CMD_SAVE);
@@ -64,8 +65,8 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
 
             objGrabarLectura = new GrabarLectura(this, objCanvas, display);
             firstTime = false;
-
         }
+
         display.setCurrent (mainForm);
 
     }
@@ -77,25 +78,22 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
         if (c == CMD_EXIT) {
             destroyApp (false);
             notifyDestroyed ();
-        }
-
-        if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
+        } else if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
             objGrabarLectura.grabarLectura();
             resetConsumoObservacion();
             display.setCurrent(mainForm);
-        } if (c.getCommandType() == Command.HELP) {
+        } else if (c.getCommandType() == Command.HELP) {
             objGrabarLectura.grabarLectura();
             resetConsumoObservacion();
             display.setCurrent(mainForm);
         } else if (c.getCommandType() == Command.STOP){
             display.setCurrent(mainForm);
-        }  if (c == CMD_SAVE) {
-                suministro = objCanvas.getSuministro();                
-                objGrabarLectura.consultaGrabar();
-            } // if save
+        } else if (c == CMD_SAVE) {
+            objGrabarLectura.consultaGrabar();
+        } // if save
     }
 
-    public void commandAction(Command c, Item item) {
+    public void commandAction(Command c, Item item) {        
         if (c == CMD_GRABAR) {
             suministro = objCanvas.getSuministro();
             objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());
