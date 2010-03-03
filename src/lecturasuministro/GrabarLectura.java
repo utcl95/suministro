@@ -17,6 +17,9 @@ public class GrabarLectura {
     // Para ser usado por la clase Lectura Secuencial
     private LecturaSecuencial m_lecturaSecuencial = null;
 
+    // Para ser usado por la clase Lectura Secuencial
+    private BusquedaSuministro m_busquedaSuministro = null;
+
     // Canvas de la Clase actual.
     private FormCanvas m_objCanvas = null;
 
@@ -44,6 +47,12 @@ public class GrabarLectura {
     public GrabarLectura(LecturaSecuencial lecturasecuencial, FormCanvas objCanvas, Display display) {
         m_objCanvas         = objCanvas;
         m_lecturaSecuencial = lecturasecuencial;
+        m_display           = display;
+    }
+
+    public GrabarLectura(BusquedaSuministro busquedasuministro, FormCanvas objCanvas, Display display) {
+        m_objCanvas         = objCanvas;
+        m_busquedaSuministro= busquedasuministro;
         m_display           = display;
     }
 
