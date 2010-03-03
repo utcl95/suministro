@@ -39,7 +39,7 @@ public class GrabarLectura {
     private final Command CMD_QUIT  = new Command("Salir", Command.HELP, 1);
 
 
-    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
+    RMS_Suministro objRmsSuministro = new RMS_Suministro("SUMINISTROS");
 
     public GrabarLectura(LecturaSecuencial lecturasecuencial, FormCanvas objCanvas, Display display) {
         m_objCanvas         = objCanvas;
@@ -67,12 +67,13 @@ public class GrabarLectura {
 
     public void grabarLectura(){
         int index = 0;
-
         index = m_objCanvas.getCurrentSuministroPosition();
+
         String consumoActual = Integer.toString(m_consumoActual);
         String mobservacion  = Integer.toString(m_observacion);    
 
-        sRMS.setSuministro(index, m_suministro, consumoActual, mobservacion);
+        objRmsSuministro.setSuministro(index, m_suministro, consumoActual, mobservacion);
+
         repaintCanvasAfterSave();
     }
 
@@ -80,17 +81,9 @@ public class GrabarLectura {
 
         switch(num_mensaje) {
             case 1:
-                String msg = "Lectura Correcta: "+lectura_actual+
-                        " .Obs: "+m_observacion;
-                Alert al = new Alert(msg);
-                
-                al.addCommand(CMD_QUIT);
-                al.setCommandListener(m_lecturaSecuencial);
-                m_display.setCurrent(al);
                 break;
             case 2:
-                String msg1 = "Consumo/Observacion Incorrecto";
-                Alert al1 = new Alert(msg1);
+                Alert al1 = new Alert("Consumo/Observacion Incorrecto");
                 m_display.setCurrent(al1);
                 break;
             case 3:
@@ -103,9 +96,8 @@ public class GrabarLectura {
                 m_display.setCurrent(yesNoAlert);
                 break;
              case 4:
-                String msg2 = "Observacion incorrecta";
-                Alert al2 = new Alert(msg2);
-                m_display.setCurrent(al2);
+                Alert msgAlert = new Alert("Observacion incorrecta");
+                m_display.setCurrent(msgAlert);
                 break;
         } // end case
      } // end Mostrar Mensaje.
@@ -114,8 +106,8 @@ public class GrabarLectura {
         int lanterior = 0;
         int promedio = 0;
 
-        lanterior = m_objCanvas.getAnterior();
-        promedio = m_objCanvas.getPromedio();
+        lanterior    = m_objCanvas.getAnterior();
+        promedio     = m_objCanvas.getPromedio();
         int cons_act = m_consumoActual - lanterior;
 
         int codigoValidarLectura = validarLectura.validarConsumoObservacion(m_observacion, m_consumoActual, lanterior, cons_act, promedio);
@@ -137,7 +129,7 @@ public class GrabarLectura {
         }   // end case.
     } // End Consulta Grabar
 
-     public void repaintCanvasAfterSave() {
+    public void repaintCanvasAfterSave() {
         m_objCanvas.doNext();
     }
 }
