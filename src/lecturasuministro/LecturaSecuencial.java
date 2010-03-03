@@ -13,18 +13,21 @@ import javax.microedition.midlet.MIDlet;
  * Lectura Secuencial de Suministro.
  */
 public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCommandListener {
-    private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
+    private static final Command CMD_EXIT   = new Command ("Exit", Command.EXIT, 1);
     private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
-    private static final Command CMD_SAVE = new Command ("Grabar", Command.OK, 1);
+    private static final Command CMD_SAVE   = new Command ("Grabar", Command.OK, 1);
     
     private Display display;
-    private boolean firstTime;
     private Form mainForm;
+
+    private boolean firstTime;
 
     private TextField consumo;
     private TextField obs;
+    
     private int vobs;
     private int lactual;
+
     private String suministro;
     private int currentItem = 1;
 
@@ -68,12 +71,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
     }
 
     public void commandAction (Command c, Displayable d) {
-        //TODO: Revisar esta linea
-        //suministro = txtsum.getString();
         suministro = objCanvas.getSuministro();
-
-        //objGrabarLectura.setConsumoObservacion(consumo.getString(), obs.getString());
-
         objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());
             
         if (c == CMD_EXIT) {
@@ -85,19 +83,29 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             objGrabarLectura.grabarLectura();
             resetConsumoObservacion();
             display.setCurrent(mainForm);
-
-        }if (c.getCommandType() == Command.HELP) {
+        } if (c.getCommandType() == Command.HELP) {
             objGrabarLectura.grabarLectura();
             resetConsumoObservacion();
             display.setCurrent(mainForm);
-
-        }else if (c.getCommandType() == Command.STOP){
+        } else if (c.getCommandType() == Command.STOP){
             display.setCurrent(mainForm);
         }  if (c == CMD_SAVE) {
                 suministro = objCanvas.getSuministro();                
-                objGrabarLectura.setConsumoObservacion(consumo.getString(), obs.getString());
                 objGrabarLectura.consultaGrabar();
             } // if save
+    }
+
+    public void commandAction(Command c, Item item) {
+        if (c == CMD_GRABAR) {
+            suministro = objCanvas.getSuministro();
+            objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());
+            objGrabarLectura.consultaGrabar();
+        }
+    }
+
+    public void resetConsumoObservacion() {
+        consumo.setString("");
+        obs.setString("");
     }
 
     protected void destroyApp (boolean unconditional) {
@@ -105,24 +113,4 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
 
     protected void pauseApp () {
     }
-
-    public void commandAction(Command c, Item item) {
-        if (c == CMD_GRABAR){
-            suministro = objCanvas.getSuministro();
-            System.out.println(suministro);
-
-            objGrabarLectura.setConsumoObservacion(consumo.getString(), obs.getString());
-
-            objGrabarLectura.consultaGrabar();
-       }        // end if
-    }
-
-    public void resetConsumoObservacion() {
-        consumo.setString("");
-        obs.setString("");
-    }
-    
-
-
-
 }

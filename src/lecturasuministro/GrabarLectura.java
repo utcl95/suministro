@@ -7,7 +7,6 @@ package lecturasuministro;
 
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 
 /**
@@ -15,14 +14,16 @@ import javax.microedition.lcdui.Display;
  * @author Juan
  */
 public class GrabarLectura {
-    private Object m_parentObject = null;
-
+    // Para ser usado por la clase Lectura Secuencial
     private LecturaSecuencial m_lecturaSecuencial = null;
 
+    // Canvas de la Clase actual.
     private FormCanvas m_objCanvas = null;
-    
+
+    // Display para mostrar los mensajes.
     private Display m_display;
 
+    // Clase validacion, para todas las validaciones a realizar.
     private Validacion validarLectura = new Validacion();
     
     // Variables a ser usadas para grabar (suministro, consumo, observacion).
@@ -48,25 +49,8 @@ public class GrabarLectura {
 
     public void setLectura(String suministro, String lectura, String observacion) {
         m_suministro    = suministro;
-        setConsumoObservacion(lectura, observacion);
-    }
-
-    public void setConsumoObservacion(String consumo, String observacion) {
-        if(observacion.equals("")) {
-            m_observacion = 0;
-        } else {
-            m_observacion = Integer.parseInt(observacion);
-        }
-
-        // Consumo puede ser 0, cuando se presenta algun problema.
-        if(consumo.equals("")) {
-            m_consumoActual = 0;
-        } else {
-            m_consumoActual = Integer.parseInt(consumo);
-        }
-        System.out.println("Consumo 0: " + m_consumoActual);
-        System.out.println("Observacion 0: " + m_observacion);
-
+        m_consumoActual = (lectura.equals("")) ? 0 : (Integer.parseInt(lectura));
+        m_observacion   = (observacion.equals("")) ? 0 : (Integer.parseInt(observacion));
     }
 
     public int getConsumoActual() {
@@ -77,19 +61,16 @@ public class GrabarLectura {
         return m_observacion;
     }
 
+    public String getSuministro() {
+        return m_suministro;
+    }
+
     public void grabarLectura(){
         int index = 0;
 
         index = m_objCanvas.getCurrentSuministroPosition();
         String consumoActual = Integer.toString(m_consumoActual);
-        String mobservacion  = Integer.toString(m_observacion);
-        System.out.println("Index : " + index);
-        System.out.println("Suministro : " + m_suministro);
-        System.out.println("Consumo : " + m_consumoActual);
-        System.out.println("Observacion : " + m_observacion);
-        System.out.println("Consumo 1 : " + consumoActual);
-        System.out.println("Observacion 1 : " + mobservacion);
-        
+        String mobservacion  = Integer.toString(m_observacion);    
 
         sRMS.setSuministro(index, m_suministro, consumoActual, mobservacion);
         repaintCanvasAfterSave();
@@ -104,7 +85,7 @@ public class GrabarLectura {
                 Alert al = new Alert(msg);
                 
                 al.addCommand(CMD_QUIT);
-                al.setCommandListener((CommandListener) m_parentObject);
+                al.setCommandListener(m_lecturaSecuencial);
                 m_display.setCurrent(al);
                 break;
             case 2:
@@ -159,5 +140,4 @@ public class GrabarLectura {
      public void repaintCanvasAfterSave() {
         m_objCanvas.doNext();
     }
-
 }
