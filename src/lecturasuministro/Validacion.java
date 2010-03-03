@@ -6,10 +6,15 @@ package lecturasuministro;
  * @author utcl95
  */
 public class Validacion {
+    private final int LECTURA_VALIDA            = 1;
+    private final int LECTURA_NO_VALIDA         = 2;
+    private final int PREGUNTAR_GRABAR_LECTURA  = 3;
+    private final int OBSERVACION_INCORRECTA    = 4;
+
     public Validacion() {
     }
 
-    public boolean esValido(int cod_validacion, int lactual, int lanterior, int cons_act, int promedio) {
+    public boolean esValido(int lactual, int lanterior, int cons_act, int promedio) {
         boolean bReturn = false;
 
         bReturn =   (lactual < lanterior) ||
@@ -34,26 +39,33 @@ public class Validacion {
 
     public int validarConsumoObservacion(int observacion, int lecturaActual, int lecturaAnterior,
                                          int consumoActual, int promedio) {
+        // Verificar valores o setearlos adecuadamente.
+
+        System.out.println("Observacion     : " + observacion);
+        System.out.println("Lectura Actual  : " + lecturaActual);
+        System.out.println("Lectura Anterior: " + lecturaAnterior);
+        System.out.println("Consumo Actual  : " + consumoActual);
+        System.out.println("Promedio        : " + promedio);
         // Validaciones
         boolean esValido = false;
-        boolean consumoEsValido  = esValido(observacion, lecturaActual, lecturaAnterior, consumoActual, promedio);
+        boolean consumoEsValido  = esValido(lecturaActual, lecturaAnterior, consumoActual, promedio);
         boolean obsEsValido = (observacion > 0 && observacion <= 40);
         boolean obsEsCero = (observacion == 0);
 
         if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lecturaActual == 0) )){
-            return 1;
+            return LECTURA_VALIDA;
         }
 
         if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lecturaActual != 0))){
-             return 3;
+             return PREGUNTAR_GRABAR_LECTURA;
         }
 
         if((lecturaActual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido) || (lecturaActual == 0 && obsEsCero) ){
-             return 2;
+             return LECTURA_NO_VALIDA;
         }
 
         if(consumoEsValido && !obsEsValido && !obsEsCero){
-            return 4;
+            return OBSERVACION_INCORRECTA;
         }
 
         return 0;
