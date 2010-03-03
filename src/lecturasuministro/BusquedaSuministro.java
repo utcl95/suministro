@@ -12,32 +12,27 @@ import javax.microedition.midlet.MIDlet;
  * @author Jaqui
  */
 public class BusquedaSuministro extends MIDlet implements CommandListener, ItemCommandListener {
-    private static final Command CMD_BACK = new Command ("Regresar", Command.BACK, 1);
-    private static final Command CMD_EXIT = new Command ("Salir", Command.EXIT, 1);
+    private static final Command CMD_BACK   = new Command ("Regresar", Command.BACK, 1);
+    private static final Command CMD_EXIT   = new Command ("Salir", Command.EXIT, 1);
     private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_BUSCAR = new Command ("Buscar", Command.ITEM, 1);
     private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
-
-    private static final Command CMD_SAVE = new Command ("Grabar", Command.OK, 1);
+    private static final Command CMD_SAVE   = new Command ("Grabar", Command.OK, 1);
 
     private boolean firstTime;
     private Form mainForm;
     private Form mainForm2;
-    private Display display2;
+    private Display display;
+
     private TextField txtsum;
     private TextField consumo;
     private TextField obs;
+    
     private String suministro;
-    private String suministroAct;
-    private Alert yesNoAlert;
-    private Command softKey1;
-    private Command softKey2;
-    private Command softKey3;
-    private FormCanvas objCanvas;
-    private int vobs;
-    private int lactual;
 
-    private boolean lsave = false;
+    private FormCanvas objCanvas;
+
+    GrabarLectura objGrabarLectura = null;
 
     RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
     RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
@@ -49,7 +44,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
     protected void startApp () {
 
-            display2 = Display.getDisplay (this);
+            display = Display.getDisplay (this);
             mainForm = new Form ("");
             mainForm.append ("");
             txtsum = new TextField ("Suministro", "", 8, TextField.NUMERIC);
@@ -62,7 +57,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
 
             mainForm.addCommand (CMD_CANCEL);
             mainForm.setCommandListener (this);
-            display2.setCurrent(mainForm);
+            display.setCurrent(mainForm);
 
             mainForm2 = new Form ("");
             mainForm2.append ("");
@@ -79,84 +74,35 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             mainForm2.addCommand (CMD_EXIT);
             mainForm2.addCommand(CMD_SAVE);
             mainForm2.setCommandListener (this);
+
+            objGrabarLectura = new GrabarLectura(this, objCanvas, display);
     }
 
     public void commandAction (Command c, Displayable s) {
-            suministro = txtsum.getString();
-            suministroAct = objCanvas.getSuministro();
-            if(obs.getString().equals("")) {
-                vobs = 0;
-            } else {
-                vobs = Integer.parseInt(obs.getString());
-            }
-
-            // Consumo puede ser 0, cuando se presenta algun problema.
-            if(consumo.getString().equals("")) {
-                lactual = 0;
-            } else {
-                lactual = Integer.parseInt(consumo.getString());
-            }
-            
-            Validacion validarSuministro = new Validacion();
+            suministro = objCanvas.getSuministro();
+            objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());            
 
             if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
-                grabarConsumo();
-                consumo.setString("");
-                obs.setString("");
-                display2.setCurrent(mainForm2);
+                objGrabarLectura.grabarLectura();
+                resetConsumoObservacion();
+                display.setCurrent(mainForm);
 
             }if (c.getCommandType() == Command.STOP){
-                display2.setCurrent(mainForm2);
+                display.setCurrent(mainForm2);
 
             }if (c.getCommandType() == Command.HELP) {
-                grabarConsumo();
-                consumo.setString("");
-                obs.setString("");
-                display2.setCurrent(mainForm2);
+                objGrabarLectura.grabarLectura();
+                resetConsumoObservacion();
+                display.setCurrent(mainForm);
 
             }if (c.getCommandType() == Command.EXIT){
                 txtsum.setString("");
-                display2.setCurrent(mainForm);
-
+                display.setCurrent(mainForm);
             }if (c == CMD_CANCEL) {
                 destroyApp (false);
                 notifyDestroyed ();
             } if (c == CMD_SAVE) {
-                suministro = objCanvas.getSuministro();
-                
-                int lanterior = 0;
-                int promedio = 0;
-
-                lanterior = objCanvas.getAnterior();
-                promedio = objCanvas.getPromedio();
-                int cons_act = lactual - lanterior;
-
-                // Validaciones
-                boolean esValido = false;
-                boolean consumoEsValido  = validarSuministro.esValido(lactual, lanterior, cons_act, promedio);
-                boolean obsEsValido = (vobs > 0 && vobs <= 40);
-                boolean obsEsCero = (vobs == 0);
-                if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
-                    grabarConsumo();
-                    consumo.setString("");
-                    obs.setString("");
-                    return;
-                }
-
-                if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
-                     mostrarMensaje(3, lactual);
-                     return;
-                }
-
-                if((lactual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido) || (lactual == 0 && obsEsCero) ){
-                     mostrarMensaje(2, lactual);
-                     return;
-                }
-
-                if(consumoEsValido && !obsEsValido && !obsEsCero){
-                    mostrarMensaje(4, lactual);
-                    return;
-                }
+                objGrabarLectura.consultaGrabar();
             } // if save
     }
 
@@ -166,11 +112,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     protected void pauseApp () {
     }
 
-    public void commandAction(Command c, Item item) {
-        suministro = txtsum.getString();
-        suministroAct = objCanvas.getSuministro();
-        Validacion validarSuministro = new Validacion();
-        
+    public void commandAction(Command c, Item item) {        
         if (c == CMD_BUSCAR) {
             // No realizar la busqueda.
             if( suministro.trim().length() < 8 )
@@ -183,154 +125,32 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                 String msg = "No existe suministro";
                 Alert al = new Alert("Atencion");
                 al.setString(msg);
-                display2.setCurrent(al);
+                display.setCurrent(al);
             } else { // Suministro Encontrado
                 boolean suministroConData = sRMS.tieneData(index);                
                 if(!suministroConData) { // Suministro Sin Data
-                    display2.setCurrent (mainForm2);
+                    display.setCurrent (mainForm2);
                     objCanvas.setCurrentSuministro(index);
                 } else {
                     String msg1 = "El suministro ya tiene Lectura";
                     Alert al1 = new Alert("Atencion");
                     al1.setString(msg1);
-                    display2.setCurrent(al1);
+                    display.setCurrent(al1);
                 }
             }
             return;
 
         } if (c == CMD_GRABAR){
-
-            suministroAct = objCanvas.getSuministro();
-            
-            int lanterior = 0;
-            int promedio = 0;
-
-            if(obs.getString().equals("")) {
-                vobs = 0;
-            } else {
-                vobs = Integer.parseInt(obs.getString());                
-            }
-
-            // Consumo puede ser 0, cuando se presenta algun problema.
-            if(consumo.getString().equals("")) {
-                lactual = 0;
-            } else {
-                lactual = Integer.parseInt(consumo.getString());
-            }
-
-            lanterior = objCanvas.getAnterior();
-            promedio = objCanvas.getPromedio();
-            int cons_act = lactual - lanterior;
-
-
-            // Validaciones
-            boolean esValido = false;
-            boolean consumoEsValido  = validarSuministro.esValido(lactual, lanterior, cons_act, promedio);
-            boolean obsEsValido = (vobs > 0 && vobs <= 40);
-            boolean obsEsCero = (vobs == 0);
-
-            if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lactual == 0) )){
-                grabarConsumo();
-                consumo.setString("");
-                obs.setString("");
-                return;
-            }
-
-            if((!consumoEsValido && obsEsValido) || (!consumoEsValido && obsEsCero && (lactual != 0))){
-                 mostrarMensaje(3, lactual);
-                 return;
-            }
-            
-            if((lactual==0 && !obsEsValido) || (!consumoEsValido && !obsEsValido) || (lactual == 0 && obsEsCero) ){
-                 mostrarMensaje(2, lactual);
-                 return;
-            }
-            
-            if(consumoEsValido && !obsEsValido && !obsEsCero){
-                mostrarMensaje(4, lactual);
-                return;
-            }
+            suministro = objCanvas.getSuministro();
+            objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());
+            objGrabarLectura.consultaGrabar();
 
          } // end if
-
-     validarSuministro = null;
    } // End CommandAction
 
-   public void grabarConsumo(){
-        int index = 0;
-
-        index = getIdSuministro();
-        String lactual1 = String.valueOf(lactual);
-        String vobs1 = String.valueOf(vobs);
-        System.out.println(lactual1);
-        System.out.println(vobs1);
-        System.out.println(suministroAct);
-        sRMS.setSuministro(index, suministroAct, lactual1, vobs1);
-        repaintCanvasAfterSave();
-
-    }
-
-   public void mostrarMensaje(int num_mensaje, int lectura_actual){
-        switch(num_mensaje) {
-            case 1:
-                String msg = "Lectura correcta: "+lectura_actual+
-                        " .Obs: "+vobs;
-                Alert al = new Alert(msg);
-                softKey3 = new Command("Salir", Command.HELP, 1);
-                al.addCommand(softKey3);
-                al.setCommandListener(this);
-                display2.setCurrent(al);
-                break;
-            case 2:
-                String msg1 = "Consumo/Observacion Incorrecto";
-                Alert al1 = new Alert(msg1);
-                display2.setCurrent(al1);
-                break;
-            case 3:
-                yesNoAlert = new Alert("Atencion");
-                yesNoAlert.setString("Consumo Incorrecto: " + lectura_actual+". Desea guardar?");
-                softKey1 = new Command("No", Command.STOP, 1);
-                softKey2 = new Command("Yes", Command.OK, 1);
-                yesNoAlert.addCommand(softKey1);
-                yesNoAlert.addCommand(softKey2);
-                yesNoAlert.setCommandListener(this);
-                display2.setCurrent(yesNoAlert);
-                break;
-            case 4:
-                String msg2 = "Observacion incorrecta";
-                Alert al2 = new Alert(msg2);
-                display2.setCurrent(al2);
-                break;
-        } // end case
-    }
-
-    public int lAnterior(){
-        return objCanvas.getAnterior();
-    }
-
-    public int lPromedio(){
-        return objCanvas.getPromedio();
-    }
-
-    // Dibuja el Canvas despues de grabar.
-    public void repaintCanvasAfterSave() {
-        objCanvas.doNext();
-        if (objCanvas.esElUltimoRegistro()) {
-            destroyApp (false);
-            notifyDestroyed();
-        }
-        //display2.setCurrent(canvas);
-    }
-
-    public void mostrarAlerta(){
-        Alert al1 = new Alert("Atención");
-        al1.setString("Observación Incorrecta.");
-        display2.setCurrent(al1);
-     }
-
-    public int getIdSuministro() {
-        int i = objCanvas.getCurrentSuministroPosition();
-        return i;
+    public void resetConsumoObservacion() {
+        consumo.setString("");
+        obs.setString("");
     }
 
     public String getObservacion(int i) {
@@ -342,4 +162,3 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     }
 
 }
-
