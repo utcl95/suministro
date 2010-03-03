@@ -15,69 +15,95 @@ import javax.microedition.lcdui.Display;
  * @author Juan
  */
 public class GrabarLectura {
-    //
-    private FormCanvas m_objCanvas;
+    private Object m_parentObject = null;
+
+    private LecturaSecuencial m_lecturaSecuencial = null;
+
+    private FormCanvas m_objCanvas = null;
     
     private Display m_display;
 
-    private Object m_parentObject = null;
+    private Validacion validarLectura = new Validacion();
     
-    String m_suministro     = "";
-    String m_consumoActual  = "";
-    String m_observacion    = "";
+    // Variables a ser usadas para grabar (suministro, consumo, observacion).
+    private String m_suministro  = "";
+    private int m_consumoActual  = 0;
+    private int m_observacion    = 0;
+
     private Alert yesNoAlert;
     
-    private final Command CMD_EXIT = new Command ("Salir", Command.EXIT, 1);
-    
-    private Command softKey1;
-    private Command softKey2;
-    private Command softKey3;
+    private final Command CMD_EXIT  = new Command("Salir", Command.EXIT, 1);
+    private final Command CMD_NOT   = new Command("No",    Command.STOP, 1);
+    private final Command CMD_YES   = new Command("Yes",   Command.OK,   1);
+    private final Command CMD_QUIT  = new Command("Salir", Command.HELP, 1);
+
 
     RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
 
-    public GrabarLectura(FormCanvas objCanvas) {
-        m_objCanvas = objCanvas;
+    public GrabarLectura(LecturaSecuencial lecturasecuencial, FormCanvas objCanvas, Display display) {
+        m_objCanvas         = objCanvas;
+        m_lecturaSecuencial = lecturasecuencial;
+        m_display           = display;
     }
 
-    public void setCurrentDisplay(Display display) {
-        m_display = display;
+    public void setLectura(String suministro, String lectura, String observacion) {
+        m_suministro    = suministro;
+        setConsumoObservacion(lectura, observacion);
     }
 
-    public void setParentObject(Object obj) {}
+    public void setConsumoObservacion(String consumo, String observacion) {
+        if(observacion.equals("")) {
+            m_observacion = 0;
+        } else {
+            m_observacion = Integer.parseInt(observacion);
+        }
 
-    private void Validar() {
-        int lanterior = 0;
-        int promedio = 0;
-        Validacion validarSuministro = new Validacion();
-        lanterior = m_objCanvas.getAnterior();
-        promedio = m_objCanvas.getPromedio();
+        // Consumo puede ser 0, cuando se presenta algun problema.
+        if(consumo.equals("")) {
+            m_consumoActual = 0;
+        } else {
+            m_consumoActual = Integer.parseInt(consumo);
+        }
+        System.out.println("Consumo 0: " + m_consumoActual);
+        System.out.println("Observacion 0: " + m_observacion);
+
     }
 
-    public void grabarConsumo(String suministro, int lactual, int vobs){
+    public int getConsumoActual() {
+        return m_consumoActual;
+    }
+
+    public int getObservacion() {
+        return m_observacion;
+    }
+
+    public void grabarLectura(){
         int index = 0;
 
         index = m_objCanvas.getCurrentSuministroPosition();
-        String lactual1 = String.valueOf(lactual);
-        String vobs1 = String.valueOf(vobs);
-        sRMS.setSuministro(index, suministro, lactual1, vobs1);
+        String consumoActual = Integer.toString(m_consumoActual);
+        String mobservacion  = Integer.toString(m_observacion);
+        System.out.println("Index : " + index);
+        System.out.println("Suministro : " + m_suministro);
+        System.out.println("Consumo : " + m_consumoActual);
+        System.out.println("Observacion : " + m_observacion);
+        System.out.println("Consumo 1 : " + consumoActual);
+        System.out.println("Observacion 1 : " + mobservacion);
+        
+
+        sRMS.setSuministro(index, m_suministro, consumoActual, mobservacion);
         repaintCanvasAfterSave();
     }
 
-     public void mostrarAlerta(){
-        Alert al1 = new Alert("Atención");
-        al1.setString("Observación Incorrecta.");
-        m_display.setCurrent(al1);
-     }
-
-     public void mostrarMensaje(int num_mensaje, int lectura_actual){
+    public void mostrarMensaje(int num_mensaje, int lectura_actual){
 
         switch(num_mensaje) {
             case 1:
                 String msg = "Lectura Correcta: "+lectura_actual+
                         " .Obs: "+m_observacion;
                 Alert al = new Alert(msg);
-                softKey3 = new Command("Salir", Command.HELP, 1);
-                al.addCommand(softKey3);
+                
+                al.addCommand(CMD_QUIT);
                 al.setCommandListener((CommandListener) m_parentObject);
                 m_display.setCurrent(al);
                 break;
@@ -89,11 +115,10 @@ public class GrabarLectura {
             case 3:
                 yesNoAlert = new Alert("Atencion");
                 yesNoAlert.setString("Consumo Incorrecto: " + lectura_actual+". Desea guardar?");
-                softKey1 = new Command("No", Command.STOP, 1);
-                softKey2 = new Command("Yes", Command.OK, 1);
-                yesNoAlert.addCommand(softKey1);
-                yesNoAlert.addCommand(softKey2);
-                yesNoAlert.setCommandListener((CommandListener) m_parentObject);
+
+                yesNoAlert.addCommand(CMD_NOT);
+                yesNoAlert.addCommand(CMD_YES);
+                yesNoAlert.setCommandListener(m_lecturaSecuencial);
                 m_display.setCurrent(yesNoAlert);
                 break;
              case 4:
@@ -103,6 +128,33 @@ public class GrabarLectura {
                 break;
         } // end case
      } // end Mostrar Mensaje.
+
+    public void consultaGrabar() {
+        int lanterior = 0;
+        int promedio = 0;
+
+        lanterior = m_objCanvas.getAnterior();
+        promedio = m_objCanvas.getPromedio();
+        int cons_act = m_consumoActual - lanterior;
+
+        int codigoValidarLectura = validarLectura.validarConsumoObservacion(m_observacion, m_consumoActual, lanterior, cons_act, promedio);
+
+        switch(codigoValidarLectura) {
+        case 1:
+            grabarLectura();
+            m_lecturaSecuencial.resetConsumoObservacion();
+            return;
+        case 2:
+            mostrarMensaje(2, m_consumoActual);
+            return;
+        case 3:
+            mostrarMensaje(3, m_consumoActual);
+            return;
+        case 4:
+            mostrarMensaje(4, m_consumoActual);
+            return;
+        }   // end case.
+    } // End Consulta Grabar
 
      public void repaintCanvasAfterSave() {
         m_objCanvas.doNext();
