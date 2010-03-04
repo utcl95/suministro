@@ -12,23 +12,21 @@ import javax.microedition.midlet.MIDlet;
  * @author Jaqui
  */
 public class BusquedaSuministro extends MIDlet implements CommandListener, ItemCommandListener {
-    private static final Command CMD_BACK   = new Command ("Regresar", Command.BACK, 1);
     private static final Command CMD_EXIT   = new Command ("Salir", Command.EXIT, 1);
     private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_BUSCAR = new Command ("Buscar", Command.ITEM, 1);
     private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
     private static final Command CMD_SAVE   = new Command ("Grabar", Command.OK, 1);
 
-    private boolean firstTime;
-    private Form mainForm;
-    private Form mainForm2;
+    private Form FormBuscar;
+    private Form FormCanvas;
     private Display display;
 
-    private TextField txtsum;
-    private TextField consumo;
-    private TextField obs;
+    private TextField txtSuministro;
+    private TextField txtConsumo;
+    private TextField txtObservacion;
     
-    private String suministro;
+    private String m_suministro;
 
     private FormCanvas objCanvas;
 
@@ -38,113 +36,105 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
 
     public BusquedaSuministro () {
-        firstTime = true;
-        mainForm = new Form ("Ingreso Suministro");
+        FormBuscar = new Form ("Ingreso Suministro");
     }
 
     protected void startApp () {
+        display = Display.getDisplay (this);
+        FormBuscar = new Form ("Busqueda");
+        txtSuministro = new TextField ("Suministro", "", 8, TextField.NUMERIC);
+        FormBuscar.append (txtSuministro);
 
-            display = Display.getDisplay (this);
-            mainForm = new Form ("");
-            mainForm.append ("");
-            txtsum = new TextField ("Suministro", "", 8, TextField.NUMERIC);
-            mainForm.append (txtsum);
+        StringItem btnBuscar = new StringItem("", "Buscar", Item.BUTTON);
+        btnBuscar.setDefaultCommand(CMD_BUSCAR);
+        btnBuscar.setItemCommandListener(this);
+        FormBuscar.append(btnBuscar);
 
-            StringItem item = new StringItem("", "Buscar", Item.BUTTON);
-            item.setDefaultCommand(CMD_BUSCAR);
-            item.setItemCommandListener(this);
-            mainForm.append(item);
+        FormBuscar.addCommand (CMD_CANCEL);
+        FormBuscar.setCommandListener (this);
+        display.setCurrent(FormBuscar);
 
-            mainForm.addCommand (CMD_CANCEL);
-            mainForm.setCommandListener (this);
-            display.setCurrent(mainForm);
+        FormCanvas = new Form ("");
+        objCanvas = new FormCanvas ("", Display.getDisplay (this));
+        FormCanvas.append (objCanvas);
 
-            mainForm2 = new Form ("");
-            mainForm2.append ("");
-            objCanvas = new FormCanvas ("", Display.getDisplay (this));
-            mainForm2.append (objCanvas);
-            consumo = new TextField("Consumo/Observacion", "", 6, TextField.NUMERIC);
-            obs = new TextField ("", "", 2, TextField.NUMERIC);
-            mainForm2.append(consumo);
-            mainForm2.append (obs);
-            StringItem item2 = new StringItem("", "Ingresar", Item.BUTTON);
-            item2.setDefaultCommand(CMD_GRABAR);
-            item2.setItemCommandListener(this);
-            mainForm2.append(item2);
-            mainForm2.addCommand (CMD_EXIT);
-            mainForm2.addCommand(CMD_SAVE);
-            mainForm2.setCommandListener (this);
-            objGrabarLectura = new GrabarLectura(this, objCanvas, display);
+        txtConsumo      = new TextField("Consumo/Observacion", "", 6, TextField.NUMERIC);
+        txtObservacion  = new TextField ("", "", 2, TextField.NUMERIC);
+
+        FormCanvas.append(txtConsumo);
+        FormCanvas.append(txtObservacion);
+
+        StringItem btnIngresar = new StringItem("", "Ingresar", Item.BUTTON);
+        btnIngresar.setDefaultCommand(CMD_GRABAR);
+        btnIngresar.setItemCommandListener(this);
+        FormCanvas.append(btnIngresar);
+        
+        FormCanvas.addCommand(CMD_EXIT);
+        FormCanvas.addCommand(CMD_SAVE);
+        FormCanvas.setCommandListener (this);
+
+        objGrabarLectura = new GrabarLectura(this, objCanvas, display);
     }
 
     public void commandAction (Command c, Displayable s) {
-            suministro = objCanvas.getSuministro();
-            objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());            
+        m_suministro = objCanvas.getSuministro();
+        objGrabarLectura.setLectura(m_suministro, txtConsumo.getString(), txtObservacion.getString());
 
-            if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
-                objGrabarLectura.grabarLectura();
-                resetConsumoObservacion();
-                display.setCurrent(mainForm2);
+        if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
+            objGrabarLectura.grabarLectura();
+            resetConsumoObservacion();
+            display.setCurrent(FormCanvas);
+        } else if (c.getCommandType() == Command.STOP){
+            display.setCurrent(FormCanvas);
 
-            }if (c.getCommandType() == Command.STOP){
-                display.setCurrent(mainForm2);
-
-            }if (c.getCommandType() == Command.HELP) {
-                objGrabarLectura.grabarLectura();
-                resetConsumoObservacion();
-                display.setCurrent(mainForm);
-
-            }if (c.getCommandType() == Command.EXIT){
-                txtsum.setString("");
-                display.setCurrent(mainForm);
-            }if (c == CMD_CANCEL) {
-                destroyApp (false);
-                notifyDestroyed ();
-            } if (c == CMD_SAVE) {
-                objGrabarLectura.consultaGrabar();
-            } // if save
+        } else if (c.getCommandType() == Command.EXIT){
+            txtSuministro.setString("");
+            display.setCurrent(FormBuscar);
+        } else if (c == CMD_CANCEL) {
+            destroyApp (false);
+            notifyDestroyed ();
+        } else if (c == CMD_SAVE) {
+            objGrabarLectura.consultaGrabar();
+        } // if save
     }
 
-    protected void destroyApp (boolean unconditional) {
-    }
 
-    protected void pauseApp () {
-    }
 
     public void commandAction(Command c, Item item) {
-        suministro = txtsum.getString();
-        objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());
-        System.out.println("Suministro XXX : " + suministro);
+        String msgAlert = "";
+        m_suministro = txtSuministro.getString();
+        objGrabarLectura.setLectura(m_suministro, txtConsumo.getString(), txtObservacion.getString());
         
         if (c == CMD_BUSCAR) {
             // No realizar la busqueda.
-            if( suministro.trim().length() < 8 )
+            if( m_suministro.trim().length() < 8 )
                 return;
+
             // Busqueda
-            int index = rms_orden.buscar(suministro);
+            int index = rms_orden.buscar(m_suministro);
             // Suministro No encontrado
             if (index == 0) {
-                String msg = "No existe suministro";
+                msgAlert = "No existe suministro";
                 Alert al = new Alert("Atencion");
-                al.setString(msg);
+                al.setString(msgAlert);
                 display.setCurrent(al);
             } else { // Suministro Encontrado
                 boolean suministroConData = sRMS.tieneData(index);                
                 if(!suministroConData) { // Suministro Sin Data
-                    display.setCurrent (mainForm2);
+                    display.setCurrent (FormCanvas);
                     objCanvas.setCurrentSuministro(index);
                 } else {
-                    String msg1 = "El suministro ya tiene Lectura";
+                    msgAlert = "El suministro ya tiene Lectura";
                     Alert al1 = new Alert("Atencion");
-                    al1.setString(msg1);
+                    al1.setString(msgAlert);
                     display.setCurrent(al1);
                 }
             }
             return;
 
         } if (c == CMD_GRABAR){
-            suministro = objCanvas.getSuministro();
-            objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());
+            m_suministro = objCanvas.getSuministro();
+            objGrabarLectura.setLectura(m_suministro, txtConsumo.getString(), txtObservacion.getString());
             objGrabarLectura.consultaGrabar();
 
          } // end if
@@ -152,8 +142,8 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
    } // End CommandAction
 
     public void resetConsumoObservacion() {
-        consumo.setString("");
-        obs.setString("");
+        txtConsumo.setString("");
+        txtObservacion.setString("");
     }
 
     public String getObservacion(int i) {
@@ -162,6 +152,12 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
                                       "EX", "ES", "FC", "MA", "MD", "ME", "EA", "MF", "TR", "SE",
                                       "CV", "RI", "LR", "CE", "AY", "PR", "PC", "LD", "MC", "TD"};
         return observacion[i];
+    }
+
+    protected void destroyApp (boolean unconditional) {
+    }
+
+    protected void pauseApp () {
     }
 
 }
