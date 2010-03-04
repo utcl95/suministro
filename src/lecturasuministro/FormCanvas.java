@@ -49,15 +49,13 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     // Promedio de lectura del suministro
     public int m_promedioLectura = 0;
     public int m_anteriorLectura = 0;
-//    private BusquedaSuministro ingreso = null;
-//    private Suministro ss = null;
+
     private int cs = 1;
     private RMS_DataSuministros dataRMS = new RMS_DataSuministros("DATA00");
 
 
 
     public FormCanvas (String title, Display d) {
-
         super (title);
         display = d;
         setDefaultCommand (CMD_EDIT);
@@ -101,8 +99,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
    }
 
     protected boolean traverse (int dir, int viewportWidth, int viewportHeight, int[] visRect_inout) {
-        if (horz && vert) {
-            
+        if (horz && vert) {            
           switch (dir) {
 
                case Canvas.DOWN:
@@ -115,7 +112,6 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                         return false;
                     }
                 }
-
                 break;
 
             case Canvas.UP:
@@ -130,11 +126,9 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                     }
                     else {
                         location = UPPER;
-
                         return false;
                     }
                 }
-
                 break;
 
             case Canvas.LEFT:
@@ -161,10 +155,6 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public void commandAction (Command c, Item i) {
-//        if (c == CMD_EDIT) {
-//            TextInput textInput = new TextInput (data[currentY][currentX], this, display);
-//            display.setCurrent (textInput);
-//        }
     }
 
     public void setSuministro(String ss) {
@@ -179,19 +169,11 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         m_zona = sz;
     }
 
-//    public void setNombre(String sn) {
-//        m_nombre = sn;
-//    }
-
     public void setDireccion1(String sd1) {
-        //int nl = sd.length();
-        //sd = sd.substring(0, nl-2);
         m_direccion1 = sd1;
     }
     
     public void setDireccion2(String sd2) {
-        //int nl = sd.length();
-        //sd = sd.substring(0, nl-2);
         m_direccion2 = sd2;
     }
 
@@ -266,17 +248,17 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public void doBack() {
-      RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
-            int i = m_current;
-                if(i == 1) {
-                } else {
-                    m_current = m_current - 1;
-                    while(m_rms.tieneData(m_current) && m_current > 1) {
-                        m_current = m_current - 1;
-                    }
-                    m_rms = null;
-                    setCurrentSuministro(m_current);
-                }
+        RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
+        int i = m_current;
+        if(i == 1) {
+        } else {
+            m_current = m_current - 1;
+            while(m_rms.tieneData(m_current) && m_current > 1) {
+                m_current = m_current - 1;
+            }
+            m_rms = null;
+            setCurrentSuministro(m_current);
+        }
     }
 
     public boolean esElUltimoRegistro() {
@@ -296,6 +278,4 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         m_rms = null;
         return l_siguiente;
     }
-
-
 }
