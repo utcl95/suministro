@@ -74,7 +74,6 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             mainForm2.addCommand (CMD_EXIT);
             mainForm2.addCommand(CMD_SAVE);
             mainForm2.setCommandListener (this);
-
             objGrabarLectura = new GrabarLectura(this, objCanvas, display);
     }
 
@@ -85,7 +84,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             if ((c.getCommandType() == Command.OK) && (c != CMD_SAVE)) {
                 objGrabarLectura.grabarLectura();
                 resetConsumoObservacion();
-                display.setCurrent(mainForm);
+                display.setCurrent(mainForm2);
 
             }if (c.getCommandType() == Command.STOP){
                 display.setCurrent(mainForm2);
@@ -112,12 +111,15 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     protected void pauseApp () {
     }
 
-    public void commandAction(Command c, Item item) {        
+    public void commandAction(Command c, Item item) {
+        suministro = txtsum.getString();
+        objGrabarLectura.setLectura(suministro, consumo.getString(), obs.getString());
+        System.out.println("Suministro XXX : " + suministro);
+        
         if (c == CMD_BUSCAR) {
             // No realizar la busqueda.
             if( suministro.trim().length() < 8 )
                 return;
-
             // Busqueda
             int index = rms_orden.buscar(suministro);
             // Suministro No encontrado
@@ -146,6 +148,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             objGrabarLectura.consultaGrabar();
 
          } // end if
+         
    } // End CommandAction
 
     public void resetConsumoObservacion() {
