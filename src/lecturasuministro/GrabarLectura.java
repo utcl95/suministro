@@ -36,10 +36,9 @@ public class GrabarLectura {
 
     private Alert yesNoAlert;
     
-    private final Command CMD_EXIT  = new Command("Salir", Command.EXIT, 1);
     private final Command CMD_NOT   = new Command("No",    Command.STOP, 1);
     private final Command CMD_YES   = new Command("Yes",   Command.OK,   1);
-    private final Command CMD_QUIT  = new Command("Salir", Command.HELP, 1);
+    
 
 
     RMS_Suministro objRmsSuministro = new RMS_Suministro("SUMINISTROS");

@@ -82,10 +82,6 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             objGrabarLectura.grabarLectura();
             resetConsumoObservacion();
             display.setCurrent(mainForm);
-        } else if (c.getCommandType() == Command.HELP) {
-            objGrabarLectura.grabarLectura();
-            resetConsumoObservacion();
-            display.setCurrent(mainForm);
         } else if (c.getCommandType() == Command.STOP){
             display.setCurrent(mainForm);
         } else if (c == CMD_SAVE) {
