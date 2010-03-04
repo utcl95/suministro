@@ -34,6 +34,12 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
 
     private String suministro;
 
+    int m_lecturaAnterior = 0;
+    int m_lecturaPromedio = 0;
+
+    String m_lecturaModificar = "";
+    String m_observacionModificar = "";
+
     private int index;
     private int currentIdSuministro = 0;
     private boolean status;
@@ -75,6 +81,9 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
         suministro = txtSuministro.getString();
         objGrabarLectura.setLectura(suministro, txtConsumo.getString(), txtObservacion.getString());
         objGrabarLectura.setIndexSuministro(index);
+        getLecturaAnteriorPromedio();
+        objGrabarLectura.setConsumoAnterior(m_lecturaAnterior);
+        objGrabarLectura.setConsumoPromedio(m_lecturaPromedio);
 
         if (c.getCommandType() == Command.OK) {
             objGrabarLectura.grabarLectura();
@@ -98,6 +107,9 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
             suministro = txtSuministro.getString();
             objGrabarLectura.setLectura(suministro, txtConsumo.getString(), txtObservacion.getString());
             objGrabarLectura.setIndexSuministro(index);
+            getLecturaAnteriorPromedio();
+            objGrabarLectura.setConsumoAnterior(m_lecturaAnterior);
+            objGrabarLectura.setConsumoPromedio(m_lecturaPromedio);
             objGrabarLectura.consultaGrabar();
             destroyApp (false);
             notifyDestroyed ();
@@ -131,13 +143,13 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
         formModificar = new Form("Modificar...");
         suministro = msuministro;
 
-        String lectura = new String(lActual());
+        String lectura = new String(m_lecturaModificar);
         txtConsumo = new TextField("Consumo   ", "", 6, TextField.NUMERIC);
         formModificar.append(new TextField("Suministro", suministro, 8, TextField.UNEDITABLE));
         txtConsumo.setString(lectura);
         formModificar.append(txtConsumo);
 
-        String observacion = new String(obsActual());
+        String observacion = new String(m_observacionModificar);
         txtObservacion = new TextField("Obs", "", 2, TextField.NUMERIC);
         txtObservacion.setString(observacion);
         formModificar.append(txtObservacion);
@@ -152,28 +164,17 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
         formModificar.append(item);
     }
 
-    public int lAnterior(){
+    public void getLecturaAnteriorPromedio(){
         String data[] = dataRMS.getRecord(index);
-        int anterior = Integer.parseInt(data[5].trim());
-        return anterior;
+        m_lecturaAnterior = Integer.parseInt(data[5].trim());
+        m_lecturaPromedio = Integer.parseInt(data[6]);
+
     }
 
-    public int lPromedio(){
-        String data[] = dataRMS.getRecord(index);
-        int promedio = Integer.parseInt(data[6]);
-        return promedio;
-    }
-
-    public String lActual(){
+    public void getLecturaActualObservacion(){
         String data[] = sRMS.getRecord(index);
-        String actual = data[1].trim();
-        return actual;
-    }
-
-    public String obsActual(){
-        String data[] = sRMS.getRecord(index);
-        String actual = data[2].trim();
-        return actual;
+        m_lecturaModificar      = data[1].trim();
+        m_observacionModificar  = data[2].trim();
     }
 
     public int getIdSuministro() {
