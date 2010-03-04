@@ -20,8 +20,12 @@ public class GrabarLectura {
     // Para ser usado por la clase Lectura Secuencial
     private BusquedaSuministro m_busquedaSuministro = null;
 
+    // Para ser usado por la clase Lectura Secuencial
+    private ModificarConsumo m_modificarConsumo = null;
+
     // Canvas de la Clase actual.
     private FormCanvas m_objCanvas = null;
+    private boolean m_ObjSinCanvas = false;
 
     // Display para mostrar los mensajes.
     private Display m_display;
@@ -34,15 +38,21 @@ public class GrabarLectura {
     private int m_consumoActual  = 0;
     private int m_observacion    = 0;
 
+    private int m_consumoAnterior = 0;
+    private int m_consumoPromedio = 0;
+
+    // Posicion dentro de toda el RMS.
+    private int m_indexSuministro = 0;
+
     private Alert yesNoAlert;
     
     private final Command CMD_NOT   = new Command("No",    Command.STOP, 1);
     private final Command CMD_YES   = new Command("Yes",   Command.OK,   1);
     
-
-
     RMS_Suministro objRmsSuministro = new RMS_Suministro("SUMINISTROS");
 
+    public GrabarLectura() {}
+    
     public GrabarLectura(LecturaSecuencial lecturasecuencial, FormCanvas objCanvas, Display display) {
         m_objCanvas         = objCanvas;
         m_lecturaSecuencial = lecturasecuencial;
@@ -55,10 +65,28 @@ public class GrabarLectura {
         m_display           = display;
     }
 
+    public GrabarLectura(ModificarConsumo modificarconsumo, Display display) {
+        m_modificarConsumo  = modificarconsumo;
+        m_display           = display;
+        m_ObjSinCanvas = true;
+    }
+
     public void setLectura(String suministro, String lectura, String observacion) {
         m_suministro    = suministro;
         m_consumoActual = (lectura.equals("")) ? 0 : (Integer.parseInt(lectura));
         m_observacion   = (observacion.equals("")) ? 0 : (Integer.parseInt(observacion));
+    }
+
+    public void setIndexSuministro(int index) {
+        m_indexSuministro = index;
+    }
+
+    public void setConsumoAnterior(int consumoanterior) {
+        m_consumoAnterior = consumoanterior;
+    }
+
+    public void setConsumoPromedio(int consumopromedio) {
+        m_consumoPromedio = consumopromedio;
     }
 
     public int getConsumoActual() {
@@ -74,15 +102,15 @@ public class GrabarLectura {
     }
 
     public void grabarLectura(){
-        int index = 0;
-        index = m_objCanvas.getCurrentSuministroPosition();
+        m_indexSuministro = (m_ObjSinCanvas) ? m_indexSuministro : m_objCanvas.getCurrentSuministroPosition();
 
         String consumoActual = Integer.toString(m_consumoActual);
         String mobservacion  = Integer.toString(m_observacion);    
 
-        objRmsSuministro.setSuministro(index, m_suministro, consumoActual, mobservacion);
-
-        repaintCanvasAfterSave();
+        objRmsSuministro.setSuministro(m_indexSuministro, m_suministro, consumoActual, mobservacion);
+        if(!m_ObjSinCanvas) {
+            repaintCanvasAfterSave();
+        }
     }
 
     public void mostrarMensaje(int num_mensaje, int lectura_actual){
@@ -115,15 +143,12 @@ public class GrabarLectura {
         } // end case
      } // end Mostrar Mensaje.
 
-    public void consultaGrabar() {
-        int lanterior = 0;
-        int promedio = 0;
+    public void consultaGrabar() {     
+        m_consumoAnterior   = (m_ObjSinCanvas)? m_consumoAnterior:m_objCanvas.getAnterior();
+        m_consumoPromedio   = (m_ObjSinCanvas)? m_consumoPromedio:m_objCanvas.getPromedio();
+        int cons_act = m_consumoActual - m_consumoAnterior;
 
-        lanterior    = m_objCanvas.getAnterior();
-        promedio     = m_objCanvas.getPromedio();
-        int cons_act = m_consumoActual - lanterior;
-
-        int codigoValidarLectura = validarLectura.validarConsumoObservacion(m_observacion, m_consumoActual, lanterior, cons_act, promedio);
+        int codigoValidarLectura = validarLectura.validarConsumoObservacion(m_observacion, m_consumoActual, m_consumoAnterior, cons_act, m_consumoPromedio);
 
         switch(codigoValidarLectura) {
         case 1:

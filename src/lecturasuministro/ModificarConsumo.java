@@ -11,128 +11,145 @@ import javax.microedition.midlet.*;
 /**
  * @author Carlos
  */
-public class ModificarConsumo extends MIDlet implements CommandListener, ItemCommandListener{
-    private boolean firstTime;
-    private Form mainForm;
-    private Display display2;
-    private TextField consum;
-    private static final Command CMD_BACK = new Command ("Back", Command.BACK, 1);
-    private static final Command CMD_PRESS = new Command ("Buscar", Command.ITEM, 1);
-    private static final Command CMD_PRESS2 = new Command ("Ingresar", Command.ITEM, 1);
-    private static final Command CMD_EXIT = new Command ("Exit", Command.EXIT, 1);
-    private String suministro;
-    private SetConsumo sc;
-    private Alert yesNoAlert;
-    private Command softKey1;
-    private Command softKey2;
-    private boolean status;
-    private int index;
+public class ModificarConsumo extends MIDlet implements CommandListener, ItemCommandListener{  
+    private static final Command CMD_BACK   = new Command ("Regresar", Command.BACK, 1);
+    private static final Command CMD_BUSCAR = new Command ("Buscar", Command.ITEM, 1);
+    private static final Command CMD_EXIT   = new Command ("Salir", Command.EXIT, 1);
+    private static final Command CMD_GRABAR = new Command ("Grabar", Command.ITEM, 1);
 
-    RMS_Ordenados rms_orden = new RMS_Ordenados("ORDENADOS");
+    private RMS_Ordenados rms_orden     = new RMS_Ordenados("ORDENADOS");
     private RMS_DataSuministros dataRMS = new RMS_DataSuministros("DATA00");
-    int currentIdSuministro = 0;
+    private RMS_Suministro sRMS         = new RMS_Suministro("SUMINISTROS");
 
-    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
+    private GrabarLectura objGrabarLectura = null;
+    
+    private Form formBuscar;
+    private Form formModificar;
+
+    private TextField txtSuministro;
+    private TextField txtConsumo;
+    private TextField txtObservacion;
+
+    private Display displayModificar;
+
+    private String suministro;
+
+    private int index;
+    private int currentIdSuministro = 0;
+    private boolean status;
+    private boolean firstTime;
     
     public ModificarConsumo () {
         firstTime = true;
-        mainForm = new Form ("Busqueda...");
+        formBuscar = new Form ("Modificacion...");
     }
     
     public void startApp() {
         if (firstTime) {
             
-            display2 = Display.getDisplay (this);
+            displayModificar = Display.getDisplay (this);
 
-            mainForm.append ("BUSQUEDA POR CONSUMO");
-            consum = new TextField ("Suministro", "", 8, TextField.NUMERIC);
-            mainForm.append (consum);
+            formBuscar.append ("");
+            txtSuministro = new TextField ("Suministro", "", 8, TextField.NUMERIC);
+            formBuscar.append (txtSuministro);
 
             StringItem item = new StringItem("", "Buscar", Item.BUTTON);
-            item.setDefaultCommand(CMD_PRESS);
+            item.setDefaultCommand(CMD_BUSCAR);
             item.setItemCommandListener(this);
 
-            mainForm.append(item);
-            mainForm.setCommandListener (this);
-            mainForm.addCommand (CMD_EXIT);
+            formBuscar.append(item);
+            formBuscar.setCommandListener (this);
+            formBuscar.addCommand (CMD_EXIT);
             firstTime = false;
+            
+            objGrabarLectura = new GrabarLectura(this, displayModificar);
 
-            display2.setCurrent(mainForm);
+            displayModificar.setCurrent(formBuscar);
             
         }
     }
 
-    public void pauseApp() {
-    }
-
-    public void destroyApp(boolean unconditional) {
-    }
-
     public void commandAction(Command c, Displayable d) {
-         status = c.getCommandType() == Command.OK;
+        status = c.getCommandType() == Command.OK;
+
+        suministro = txtSuministro.getString();
+        objGrabarLectura.setLectura(suministro, txtConsumo.getString(), txtObservacion.getString());
+        objGrabarLectura.setIndexSuministro(index);
 
         if (c.getCommandType() == Command.OK) {
-                sc.datosConsumo();
-                // Volver al menu principal
-                destroyApp (false);
-                notifyDestroyed();
-                //display2.setCurrent(mainForm);
-
-            } else if (c.getCommandType() == Command.STOP){
-                display2.setCurrent(sc);
-            }else if (c.getCommandType() == Command.BACK) {
-                        display2.setCurrent(mainForm);
-            } else if (c.getCommandType() == Command.EXIT) {
-                        destroyApp (false);
-                        notifyDestroyed ();
-            }
+            objGrabarLectura.grabarLectura();
+            resetConsumoObservacion();
+            // Volver al menu principal
+            destroyApp (false);
+            notifyDestroyed();
+        } else if (c.getCommandType() == Command.STOP) {
+            displayModificar.setCurrent(formModificar);
+        } else if (c.getCommandType() == Command.BACK) {
+            displayModificar.setCurrent(formBuscar);
+        } else if (c.getCommandType() == Command.EXIT) {
+            destroyApp (false);
+            notifyDestroyed ();
+        }
     }
 
     public void commandAction(Command c, Item item) {
-        if (c == CMD_PRESS) {
-            suministro = consum.getString();
+        String msgAlert = "";
+        if (c == CMD_GRABAR){
+            suministro = txtSuministro.getString();
+            objGrabarLectura.setLectura(suministro, txtConsumo.getString(), txtObservacion.getString());
+            objGrabarLectura.setIndexSuministro(index);
+            objGrabarLectura.consultaGrabar();
+            destroyApp (false);
+            notifyDestroyed ();
+        } // end if
+        if (c == CMD_BUSCAR) {
+            suministro = txtSuministro.getString();
             // Id de Suministro.
             index = rms_orden.buscar(suministro);
             if(index == 0){
-                String msg1 = "No existe suministro";
-                Alert al1 = new Alert(msg1);
-                display2.setCurrent(al1);
-            }else{
+                msgAlert = "No existe suministro";
+                Alert al1 = new Alert(msgAlert);
+                displayModificar.setCurrent(al1);
+            } else {
                 currentIdSuministro = index;
                 boolean data = sRMS.tieneData(index);
                 if(data == true){
-                    consum.setString("");
-                    sc = new SetConsumo(suministro, this);
-                    sc.addCommand(CMD_BACK);
-                    sc.setCommandListener(this);
-                    display2.setCurrent(sc);
-                }else{
-                    String msg = "El suministro no tiene consumo";
-                    Alert al = new Alert(msg);
-                    display2.setCurrent(al);
+                    txtSuministro.setString("");
+                    createFormModicar(suministro);
+                    
+                    displayModificar.setCurrent(formModificar);
+                } else {
+                    msgAlert = "El suministro no tiene consumo";
+                    Alert al = new Alert(msgAlert);
+                    displayModificar.setCurrent(al);
                 }
             }
-        }
+        } // end CMD_BUSCAR
     }
 
-    public void mostrarMensaje(String m, int lectura_actual){
-        String mns = m;
+    public void createFormModicar(String msuministro) {
+        formModificar = new Form("Modificar...");
+        suministro = msuministro;
 
-        if(mns.equals("d")){
-            String msg = "Lectura correcta";
-            Alert al = new Alert(msg);
-            display2.setCurrent(al);
-        }else{
-            yesNoAlert = new Alert("Atencion");
-            yesNoAlert.setString("Consumo incorrecto. Desea guardar consumo : " + lectura_actual);
-            softKey1 = new Command("No", Command.STOP, 1);
-            softKey2 = new Command("Yes", Command.OK, 1);
-            yesNoAlert.addCommand(softKey1);
-            yesNoAlert.addCommand(softKey2);
-            yesNoAlert.setCommandListener(this);
-            display2.setCurrent(yesNoAlert);
-            status = false;
-        }
+        String lectura = new String(lActual());
+        txtConsumo = new TextField("Consumo   ", "", 6, TextField.NUMERIC);
+        formModificar.append(new TextField("Suministro", suministro, 8, TextField.UNEDITABLE));
+        txtConsumo.setString(lectura);
+        formModificar.append(txtConsumo);
+
+        String observacion = new String(obsActual());
+        txtObservacion = new TextField("Obs", "", 2, TextField.NUMERIC);
+        txtObservacion.setString(observacion);
+        formModificar.append(txtObservacion);
+
+        StringItem item = new StringItem("", "Corregir", Item.BUTTON);
+        item.setDefaultCommand(CMD_GRABAR);
+        item.setItemCommandListener(this);
+
+        formModificar.addCommand(CMD_BACK);
+        formModificar.setCommandListener(this);
+        
+        formModificar.append(item);
     }
 
     public int lAnterior(){
@@ -163,95 +180,15 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
         int i = currentIdSuministro;
         return i;
     }
-}
 
-
-class SetConsumo extends Form implements CommandListener, ItemCommandListener{
-
-    private static final Command CMD_PRESS2 = new Command ("Press", Command.ITEM, 1);
-    private ModificarConsumo ss;
-    private TextField consumo;
-    private String suministro;
-    private TextField obs;
-    private int vobs;
-    private int lactual;
-    private String sumanterior;
-
-    RMS_Suministro sRMS = new RMS_Suministro("SUMINISTROS");
-    private String lect;
-
-    SetConsumo(String lect, ModificarConsumo ss) {
-        super("Lectura de Consumo");
-        this.ss = ss;
-        this.lect = lect;
-        leerConsumoSuministro(lect);
-    }
-
-    public void commandAction (Command c, Item item) {
-        Validacion validarSuministro = new Validacion();
-
-        if(obs.getString().equals(""))
-            vobs = 0;
-        else
-            vobs = Integer.parseInt(obs.getString());
-
-        if(consumo.getString().equals(""))
-            lactual = 0;
-        else
-           lactual = Integer.parseInt(consumo.getString());
-        int lanterior = ss.lAnterior();
-        int promedio = ss.lPromedio();
-        int cons_act = lactual - lanterior;
-
-        if (c == CMD_PRESS2){
-
-            if(!validarSuministro.esValido(lactual, lanterior, cons_act, promedio) ) {
-              ss.mostrarMensaje("c", lactual);
-            }else{
-              datosConsumo();
-            }
-        }       // end if
-
-        validarSuministro = null;
-    }
-
-     public void datosConsumo(){
-
-        if (ingresarConsumo(suministro, consumo.getString(), obs.getString())){}
-
-    }
-
-    public void leerConsumoSuministro(String msuministro) {
-       suministro = msuministro;
-       String lectura = new String(ss.lActual());
-       consumo = new TextField("Consumo   ", "", 6, TextField.NUMERIC);
-       append(new TextField("Suministro", suministro, 8, TextField.UNEDITABLE));
-       consumo.setString(lectura);
-       append(consumo);
-       String observacion = new String(ss.obsActual());
-       obs = new TextField("Obs", "", 2, TextField.NUMERIC);
-       obs.setString(observacion);
-       append(obs);
-
-       StringItem item = new StringItem("", "Corregir", Item.BUTTON);
-       item.setDefaultCommand(CMD_PRESS2);
-       item.setItemCommandListener(this);
-       append(item);
-
-    }
-
-    public boolean ingresarConsumo(String msuministro, String mconsumo, String mobs) {
-        int index = ss.getIdSuministro();
-        sRMS.setSuministro(index, msuministro, mconsumo, mobs);
-        return false;
+    public void resetConsumoObservacion() {
+        txtConsumo.setString("");
+        txtObservacion.setString("");
     }
 
     public void pauseApp() {
     }
 
     public void destroyApp(boolean unconditional) {
-    }
-
-    public void commandAction(Command c, Displayable d) {
     }
 }
