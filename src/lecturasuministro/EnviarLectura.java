@@ -12,8 +12,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
@@ -21,20 +20,27 @@ import javax.microedition.rms.RecordStoreException;
 /**
  * @author utcl95
  */
-public class EnviarLectura extends MIDlet {
-    private Display display;
+public class EnviarLectura extends MIDlet implements CommandListener {
+    private final Command CMD_YES   = new Command("Aceptar",   Command.OK,   1);
+
+    private Display m_display;
+    private Alert exitAlert;
+
 
     public void startApp() {
-        display = Display.getDisplay(this);
+        m_display = Display.getDisplay(this);
         sendData();
+        
+        exitAlert = new Alert("Aviso");
+        exitAlert.setString("Archivo de Lecturas Generado...");
+        exitAlert.setTimeout(Alert.FOREVER);
+        exitAlert.addCommand(CMD_YES);
 
+        exitAlert.setCommandListener(this);
+        m_display.setCurrent(exitAlert);
     }
 
-    public void pauseApp() {
-    }
 
-    public void destroyApp(boolean unconditional) {
-    }
 
     public void sendData() {
         String[] m_record = new String[3];
@@ -95,11 +101,18 @@ public class EnviarLectura extends MIDlet {
             ex.printStackTrace();
         }
 
-        Alert al = new Alert("Archivo de Lecturas Generado...");
-        //al.setTimeout(Alert.FOREVER);
-        display.setCurrent(al);
-        destroyApp (false);
-        notifyDestroyed();
     }
 
+    public void commandAction(Command c, Displayable d) {
+        if ((c.getCommandType() == Command.OK) ) {
+            destroyApp (false);
+            notifyDestroyed ();
+        }
+    }
+
+    public void pauseApp() {
+    }
+
+    public void destroyApp(boolean unconditional) {
+    }
 }
