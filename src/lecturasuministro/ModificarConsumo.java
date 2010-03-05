@@ -177,11 +177,6 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
         m_observacionModificar  = data[2].trim();
     }
 
-    public int getIdSuministro() {
-        int i = currentIdSuministro;
-        return i;
-    }
-
     public void resetConsumoObservacion() {
         txtConsumo.setString("");
         txtObservacion.setString("");
