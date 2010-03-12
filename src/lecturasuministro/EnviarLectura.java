@@ -87,11 +87,11 @@ public class EnviarLectura extends MIDlet implements CommandListener {
                 }
                 //
                 
-                //if(!m_rms[1].equals("00000000")) {
+                if(!m_rms[1].equals("00000000") || !m_rms[2].equals("00")) {
                     m_rms[0] = m_rms[0].substring(0, 8);
                     m_linea =  m_rms[0] + "," + m_rms[1] + "," +  m_rms[2] + cr;
                     output.println(m_linea);
-                //}
+                }
             }
             m_rs.closeRecordStore();
             connection.close();
