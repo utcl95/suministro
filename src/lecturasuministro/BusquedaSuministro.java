@@ -146,6 +146,14 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         txtObservacion.setString("");
     }
 
+    public void repaintCanvasAfterSave() {
+        objCanvas.doNext();
+        if (objCanvas.esElUltimoRegistro()) {
+            destroyApp (false);
+            notifyDestroyed();
+        }
+    }
+
     public String getObservacion(int i) {
         String[] observacion = {"OO", "AL", "MI", "MO", "MT", "SM", "MS", "TI", "LC", "PI", "NU",
                                       "MM", "BY", "CM", "ST", "DL", "FR", "NS", "CY", "DI", "DC",

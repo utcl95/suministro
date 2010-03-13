@@ -102,6 +102,14 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
         obs.setString("");
     }
 
+    public void repaintCanvasAfterSave() {
+        objCanvas.doNext();
+        if (objCanvas.esElUltimoRegistro()) {
+            destroyApp (false);
+            notifyDestroyed();
+        }
+    }
+
     protected void destroyApp (boolean unconditional) {
     }
 

@@ -109,7 +109,11 @@ public class GrabarLectura {
 
         objRmsSuministro.setSuministro(m_indexSuministro, m_suministro, consumoActual, mobservacion);
         if(!m_ObjSinCanvas) {
-            repaintCanvasAfterSave();
+            if(m_lecturaSecuencial == null) {
+                m_busquedaSuministro.repaintCanvasAfterSave();
+            } else {
+                m_lecturaSecuencial.repaintCanvasAfterSave();
+            }
         }
     }
 
@@ -170,8 +174,4 @@ public class GrabarLectura {
             return;
         }   // end case.
     } // End Consulta Grabar
-
-    public void repaintCanvasAfterSave() {
-        m_objCanvas.doNext();
-    }
 }
