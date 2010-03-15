@@ -121,6 +121,7 @@ public class CargaSuministro extends MIDlet implements CommandListener {
             if(m_temp.length() == 8) {
                 num = num + 1;
                 sRMS.addSuministro(m_temp);
+                //System.out.println(num + " : " + m_temp);
             }
                         
             m_nsuministros = num;
@@ -171,6 +172,7 @@ public class CargaSuministro extends MIDlet implements CommandListener {
             while((ch=is.read()) != -1) {
                 if (ch == '\n') {
                     m_linea = sb.toString().trim(); // Linea
+                    //System.out.println(m_linea);
                     m_data = split_linea(m_linea);  // Divide la Linea en partes.
                     // Busca el nombre correcto, 100 por RMS.
                     if((num_linea%100) == 0) {
@@ -187,9 +189,15 @@ public class CargaSuministro extends MIDlet implements CommandListener {
                     sb.append((char)ch);
                 }
             }
-            
+            if((num_linea%100) == 0) {
+                        dataRMS.closeRMS();
+                        m_namerms = getNameFile(num_linea);
+                        dataRMS.setNameRMS(m_namerms);
+                        dataRMS.openRMS();
+           }
             m_linea = sb.toString().trim();
             if(m_linea.length() > 8) {
+                //System.out.println(m_linea);
                 num_linea = num_linea + 1;
                 m_data = split_linea(m_linea);
                 dataRMS.addSuministro(m_data);
