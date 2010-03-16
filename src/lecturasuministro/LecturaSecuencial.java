@@ -54,11 +54,11 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
             mainForm.append(consumo);
             mainForm.append (obs);
 
-            StringItem item = new StringItem("", "Ingresar", Item.BUTTON);
-            item.setDefaultCommand(CMD_GRABAR);
-            item.setItemCommandListener(this);
+            //StringItem item = new StringItem("", "Ingresar", Item.BUTTON);
+            //item.setDefaultCommand(CMD_GRABAR);
+            //item.setItemCommandListener(this);
 
-            mainForm.append(item);
+            //mainForm.append(item);
             mainForm.addCommand (CMD_EXIT);
             mainForm.addCommand(CMD_SAVE);
             mainForm.setCommandListener (this);

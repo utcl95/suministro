@@ -64,10 +64,10 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         FormCanvas.append(txtConsumo);
         FormCanvas.append(txtObservacion);
 
-        StringItem btnIngresar = new StringItem("", "Ingresar", Item.BUTTON);
-        btnIngresar.setDefaultCommand(CMD_GRABAR);
-        btnIngresar.setItemCommandListener(this);
-        FormCanvas.append(btnIngresar);
+        //StringItem btnIngresar = new StringItem("", "Ingresar", Item.BUTTON);
+        //btnIngresar.setDefaultCommand(CMD_GRABAR);
+        //btnIngresar.setItemCommandListener(this);
+        //FormCanvas.append(btnIngresar);
         
         FormCanvas.addCommand(CMD_EXIT);
         FormCanvas.addCommand(CMD_SAVE);
