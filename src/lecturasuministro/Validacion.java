@@ -52,6 +52,10 @@ public class Validacion {
         boolean obsEsValido = (observacion > 0 && observacion <= 40);
         boolean obsEsCero = (observacion == 0);
 
+        if(lecturaActual == 0 && lecturaAnterior == 0) {
+            return LECTURA_VALIDA;
+        }
+
         if((consumoEsValido && (obsEsValido || obsEsCero)) || (obsEsValido && (lecturaActual == 0) )){
             return LECTURA_VALIDA;
         }
