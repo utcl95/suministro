@@ -133,11 +133,15 @@ public class GrabarLectura {
                 yesNoAlert.addCommand(CMD_NOT);
                 yesNoAlert.addCommand(CMD_YES);
 
-                if(m_busquedaSuministro == null)
-                    yesNoAlert.setCommandListener(m_lecturaSecuencial);
-                else
-                    yesNoAlert.setCommandListener(m_busquedaSuministro);
-
+                boolean ingresarModificar = (m_busquedaSuministro == null && m_lecturaSecuencial == null);
+                if(ingresarModificar) {
+                    yesNoAlert.setCommandListener(m_modificarConsumo);
+                } else {
+                    if(m_busquedaSuministro == null)
+                        yesNoAlert.setCommandListener(m_lecturaSecuencial);
+                    else
+                        yesNoAlert.setCommandListener(m_busquedaSuministro);
+                }
                 m_display.setCurrent(yesNoAlert);
                 break;
              case 4:
@@ -147,13 +151,12 @@ public class GrabarLectura {
         } // end case
      } // end Mostrar Mensaje.
 
-    public void consultaGrabar() {     
+    public void consultaGrabar() {
         m_consumoAnterior   = (m_ObjSinCanvas)? m_consumoAnterior:m_objCanvas.getAnterior();
         m_consumoPromedio   = (m_ObjSinCanvas)? m_consumoPromedio:m_objCanvas.getPromedio();
         int cons_act = m_consumoActual - m_consumoAnterior;
 
         int codigoValidarLectura = validarLectura.validarConsumoObservacion(m_observacion, m_consumoActual, m_consumoAnterior, cons_act, m_consumoPromedio);
-
         switch(codigoValidarLectura) {
         case 1:
             grabarLectura();

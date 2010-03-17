@@ -53,7 +53,7 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     public void startApp() {
         if (firstTime) {
             
-            displayModificar = Display.getDisplay (this);
+            displayModificar = Display.getDisplay(this);
 
             formBuscar.append ("");
             txtSuministro = new TextField ("Suministro", "", 8, TextField.NUMERIC);
@@ -78,7 +78,7 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     public void commandAction(Command c, Displayable d) {
         status = c.getCommandType() == Command.OK;
 
-        suministro = txtSuministro.getString();
+        //suministro = txtSuministro.getString();
         objGrabarLectura.setLectura(suministro, txtConsumo.getString(), txtObservacion.getString());
         objGrabarLectura.setIndexSuministro(index);
         getLecturaAnteriorPromedio();
@@ -104,15 +104,15 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     public void commandAction(Command c, Item item) {
         String msgAlert = "";
         if (c == CMD_GRABAR){
-            suministro = txtSuministro.getString();
+            //suministro = txtSuministro.getString();
             objGrabarLectura.setLectura(suministro, txtConsumo.getString(), txtObservacion.getString());
             objGrabarLectura.setIndexSuministro(index);
             getLecturaAnteriorPromedio();
             objGrabarLectura.setConsumoAnterior(m_lecturaAnterior);
             objGrabarLectura.setConsumoPromedio(m_lecturaPromedio);
             objGrabarLectura.consultaGrabar();
-            destroyApp (false);
-            notifyDestroyed ();
+            //destroyApp (false);
+            //notifyDestroyed ();
         } // end if
         if (c == CMD_BUSCAR) {
             suministro = txtSuministro.getString();
@@ -127,6 +127,7 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
                 boolean data = sRMS.tieneData(index);
                 if(data == true){
                     txtSuministro.setString("");
+                    getLecturaActualObservacion();
                     createFormModicar(suministro);
                     
                     displayModificar.setCurrent(formModificar);
