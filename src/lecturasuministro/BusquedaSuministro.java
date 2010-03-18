@@ -13,7 +13,7 @@ import javax.microedition.midlet.MIDlet;
  */
 public class BusquedaSuministro extends MIDlet implements CommandListener, ItemCommandListener {
     private static final Command CMD_EXIT   = new Command ("Salir", Command.EXIT, 1);
-    private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
+    //private static final Command CMD_GRABAR = new Command ("Press", Command.ITEM, 1);
     private static final Command CMD_BUSCAR = new Command ("Buscar", Command.ITEM, 1);
     private static final Command CMD_CANCEL = new Command ("Cancelar", Command.CANCEL, 1);
     private static final Command CMD_SAVE   = new Command ("Grabar", Command.OK, 1);
@@ -45,12 +45,15 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
         txtSuministro = new TextField ("Suministro", "", 8, TextField.NUMERIC);
         FormBuscar.append (txtSuministro);
 
+        /*
         StringItem btnBuscar = new StringItem("", "Buscar", Item.BUTTON);
         btnBuscar.setDefaultCommand(CMD_BUSCAR);
         btnBuscar.setItemCommandListener(this);
         FormBuscar.append(btnBuscar);
-
+        */
+        FormBuscar.addCommand (CMD_BUSCAR);
         FormBuscar.addCommand (CMD_CANCEL);
+
         FormBuscar.setCommandListener (this);
         display.setCurrent(FormBuscar);
 
@@ -95,12 +98,46 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             notifyDestroyed ();
         } else if (c == CMD_SAVE) {
             objGrabarLectura.consultaGrabar();
-        } // if save
-    }
+        } else {
+            String msgAlert = "";
+            m_suministro = txtSuministro.getString();
+            objGrabarLectura.setLectura(m_suministro, txtConsumo.getString(), txtObservacion.getString());
+
+            if (c == CMD_BUSCAR) {
+                // No realizar la busqueda.
+                if( m_suministro.trim().length() < 8 )
+                    return;
+
+                // Busqueda
+                int index = rms_orden.buscar(m_suministro);
+                // Suministro No encontrado
+                if (index == 0) {
+                    msgAlert = "No existe suministro";
+                    Alert al = new Alert("Atencion");
+                    al.setString(msgAlert);
+                    display.setCurrent(al);
+                } else { // Suministro Encontrado
+                    boolean suministroConData = sRMS.tieneData(index);
+                    if(!suministroConData) { // Suministro Sin Data
+                        display.setCurrent (FormCanvas);
+                        objCanvas.setCurrentSuministro(index);
+                    } else {
+                        msgAlert = "El suministro ya tiene Lectura";
+                        Alert al1 = new Alert("Atencion");
+                        al1.setString(msgAlert);
+                        display.setCurrent(al1);
+                    }
+                }
+                return;
+
+            } // end buscar
+        }
+    } // end commandAction
 
 
 
     public void commandAction(Command c, Item item) {
+        /*
         String msgAlert = "";
         m_suministro = txtSuministro.getString();
         objGrabarLectura.setLectura(m_suministro, txtConsumo.getString(), txtObservacion.getString());
@@ -132,12 +169,14 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
             }
             return;
 
-        } if (c == CMD_GRABAR){
-            m_suministro = objCanvas.getSuministro();
-            objGrabarLectura.setLectura(m_suministro, txtConsumo.getString(), txtObservacion.getString());
-            objGrabarLectura.consultaGrabar();
+        }
+        */
+        //if (c == CMD_GRABAR){
+          //  m_suministro = objCanvas.getSuministro();
+          //  objGrabarLectura.setLectura(m_suministro, txtConsumo.getString(), txtObservacion.getString());
+          //  objGrabarLectura.consultaGrabar();
 
-         } // end if
+         // } // end if
          
    } // End CommandAction
 
