@@ -189,6 +189,8 @@ public class RMS_Suministro {
             }
             sobs = s;
         }
+        sobs = (sobs.equals("0")) ? "" : sobs;
+
         openRMS();
         try {
             dout.writeUTF(ssuministro); // Suministro
