@@ -42,7 +42,6 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
 
     private int index;
     private int currentIdSuministro = 0;
-    private boolean status;
     private boolean firstTime;
     
     public ModificarConsumo () {
@@ -75,17 +74,14 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
         }
     }
 
-    public void commandAction(Command c, Displayable d) {
-        status = c.getCommandType() == Command.OK;
-
+    public void commandAction(Command c, Displayable d) {        
         //suministro = txtSuministro.getString();
-        objGrabarLectura.setLectura(suministro, txtConsumo.getString(), txtObservacion.getString());
-        objGrabarLectura.setIndexSuministro(index);
-        getLecturaAnteriorPromedio();
-        objGrabarLectura.setConsumoAnterior(m_lecturaAnterior);
-        objGrabarLectura.setConsumoPromedio(m_lecturaPromedio);
-
         if (c.getCommandType() == Command.OK) {
+            objGrabarLectura.setLectura(suministro, txtConsumo.getString(), txtObservacion.getString());
+            objGrabarLectura.setIndexSuministro(index);
+            getLecturaAnteriorPromedio();
+            objGrabarLectura.setConsumoAnterior(m_lecturaAnterior);
+            objGrabarLectura.setConsumoPromedio(m_lecturaPromedio);
             objGrabarLectura.grabarLectura();
             resetConsumoObservacion();
             // Volver al menu principal
