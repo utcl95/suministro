@@ -5,6 +5,7 @@
 
 package lecturasuministro;
 
+import java.io.IOException;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 
@@ -103,7 +104,11 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
     }
 
     public void repaintCanvasAfterSave() {
-        objCanvas.doNext();
+        try {
+            objCanvas.doNext();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         if (objCanvas.esElUltimoRegistro()) {
             destroyApp (false);
             notifyDestroyed();

@@ -5,7 +5,12 @@
 
 package lecturasuministro;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import javax.microedition.lcdui.*;
+import javax.microedition.rms.RecordStore;
+import javax.microedition.rms.RecordStoreException;
 
 
 public class FormCanvas extends CustomItem implements ItemCommandListener {
@@ -136,7 +141,11 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 break;
 
             case Canvas.RIGHT:
+            try {
                 doNext();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
                 break;
             } // end switch
         } // end if
@@ -225,23 +234,65 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         return m_current;
     }
 
-    public void doNext() {
-        RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
-        int numeroSuministros = m_rms.recordCount();
+    public void doNext() throws IOException {
+        //RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
+        //int numeroSuministros = m_rms.recordCount();
         int i = m_current;
+        // Agregado
+        boolean btieneData = false;
+        ByteArrayInputStream bin = null;
+        DataInputStream din = null;
+        RecordStore rsSuministro     = null;
+        byte[] data_binary = null;
+        int numeroSuministros = 0;
+
+        try {
+            rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
+            numeroSuministros = rsSuministro.getNumRecords();
+        } catch (RecordStoreException ex) {
+            ex.printStackTrace();
+        }
+        
+
         if(i == numeroSuministros) {
             isLastRecord = true;
         } else {
             m_current = m_current + 1;
+            // Begin Tiene data
+            bin = null;
+            din = null;
+            String m_datarms[] = new String[3];
+            try {
+                data_binary = rsSuministro.getRecord(m_current);
 
-            while(m_current <= numeroSuministros && m_rms.tieneData(m_current)) {
+                bin = new ByteArrayInputStream(data_binary);
+                din = new DataInputStream(bin);
+
+                m_datarms[0] = din.readUTF();
+                m_datarms[1] = din.readUTF();
+                m_datarms[2] = din.readUTF();
+                din.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (RecordStoreException ex) {
+                ex.printStackTrace();
+            }
+
+            btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
+            // End
+            while(m_current <= numeroSuministros && btieneData) {
                 m_current = m_current + 1;
             }
             if(m_current > numeroSuministros) {
                 isLastRecord = true;
                 return;
             }
-            m_rms = null;
+            try {
+                rsSuministro.closeRecordStore();
+            } catch (RecordStoreException ex) {
+                ex.printStackTrace();
+            }
+            rsSuministro = null;
             setCurrentSuministro(m_current);
         }
         

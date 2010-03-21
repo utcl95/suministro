@@ -5,6 +5,7 @@
 
 package lecturasuministro;
 
+import java.io.IOException;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
 
@@ -186,7 +187,11 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     }
 
     public void repaintCanvasAfterSave() {
-        objCanvas.doNext();
+        try {
+            objCanvas.doNext();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         if (objCanvas.esElUltimoRegistro()) {
             destroyApp (false);
             notifyDestroyed();
