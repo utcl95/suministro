@@ -104,11 +104,7 @@ public class LecturaSecuencial extends MIDlet implements CommandListener, ItemCo
     }
 
     public void repaintCanvasAfterSave() {
-        try {
             objCanvas.doNext();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
         if (objCanvas.esElUltimoRegistro()) {
             destroyApp (false);
             notifyDestroyed();

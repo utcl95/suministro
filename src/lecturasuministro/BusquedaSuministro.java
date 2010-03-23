@@ -187,11 +187,7 @@ public class BusquedaSuministro extends MIDlet implements CommandListener, ItemC
     }
 
     public void repaintCanvasAfterSave() {
-        try {
             objCanvas.doNext();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
         if (objCanvas.esElUltimoRegistro()) {
             destroyApp (false);
             notifyDestroyed();
