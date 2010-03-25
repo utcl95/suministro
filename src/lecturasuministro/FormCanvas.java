@@ -406,16 +406,86 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public int siguienteSinData(int i) {
-        RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
-        int numeroSuministros = m_rms.recordCount();
+        //RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
+        //int numeroSuministros = m_rms.recordCount();
+
+        // Agregado
+        boolean btieneData = false;
+        ByteArrayInputStream bin = null;
+        DataInputStream din = null;
+        RecordStore rsSuministro     = null;
+        byte[] data_binary = null;
+        String m_datarms[] = new String[3];
+        int numeroSuministros = 0;
+
+        try {
+            rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
+            numeroSuministros = rsSuministro.getNumRecords();
+        } catch (RecordStoreException ex) {
+            ex.printStackTrace();
+        }
+
         int l_siguiente = i;
         if(i == numeroSuministros) {
         } else {
-            while(m_rms.tieneData(l_siguiente) && i < numeroSuministros) {
+            // Begin Tiene data
+            bin = null;
+            din = null;
+            //m_datarms[] = new String[3];
+            try {
+                data_binary = rsSuministro.getRecord(l_siguiente);
+
+                bin = new ByteArrayInputStream(data_binary);
+                din = new DataInputStream(bin);
+
+                m_datarms[0] = din.readUTF();
+                m_datarms[1] = din.readUTF();
+                m_datarms[2] = din.readUTF();
+                din.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (RecordStoreException ex) {
+                ex.printStackTrace();
+            }
+
+            btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
+            System.out.println("Data : " + l_siguiente);
+            // End
+            while(btieneData && l_siguiente < numeroSuministros) {
                 l_siguiente = l_siguiente + 1;
+                System.out.println("Data2 : " + l_siguiente);
+                // Begin Tiene data
+                bin = null;
+                din = null;
+                //m_datarms[] = new String[3];
+                try {
+                    data_binary = rsSuministro.getRecord(l_siguiente);
+
+                    bin = new ByteArrayInputStream(data_binary);
+                    din = new DataInputStream(bin);
+
+                    m_datarms[0] = din.readUTF();
+                    m_datarms[1] = din.readUTF();
+                    m_datarms[2] = din.readUTF();
+                    din.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (RecordStoreException ex) {
+                    ex.printStackTrace();
+                }
+
+                btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
+                // End
             }
         }
-        m_rms = null;
+        //m_rms = null;
+        try {
+            rsSuministro.closeRecordStore();
+        } catch (RecordStoreException ex) {
+            ex.printStackTrace();
+        }
+        rsSuministro = null;
+        
         return l_siguiente;
     }
 }
