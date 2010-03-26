@@ -449,11 +449,11 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             }
 
             btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
-            System.out.println("Data : " + l_siguiente);
+            //System.out.println("Data : " + l_siguiente);
             // End
             while(btieneData && l_siguiente < numeroSuministros) {
                 l_siguiente = l_siguiente + 1;
-                System.out.println("Data2 : " + l_siguiente);
+                //System.out.println("Data2 : " + l_siguiente);
                 // Begin Tiene data
                 bin = null;
                 din = null;
