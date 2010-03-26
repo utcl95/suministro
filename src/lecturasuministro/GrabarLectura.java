@@ -118,7 +118,7 @@ public class GrabarLectura {
     }
 
     public void mostrarMensaje(int num_mensaje, int lectura_actual){
-
+        String m_msg = "";
         switch(num_mensaje) {
             case 1:
                 break;
@@ -128,7 +128,13 @@ public class GrabarLectura {
                 break;
             case 3:
                 yesNoAlert = new Alert("Atencion");
-                yesNoAlert.setString("Consumo Incorrecto: " + lectura_actual+". Desea guardar?");
+                int delta = m_consumoActual - m_consumoAnterior;
+                if( (delta - m_consumoPromedio) > 500 )
+                    m_msg = "Consumo Incorrecto: " + lectura_actual+ ". Diferencia : " + (delta-m_consumoPromedio) + ". Desea guardar?";
+                else
+                    m_msg = "Consumo Incorrecto: " + lectura_actual+". Desea guardar?";
+
+                yesNoAlert.setString(m_msg);
 
                 yesNoAlert.addCommand(CMD_NOT);
                 yesNoAlert.addCommand(CMD_YES);
