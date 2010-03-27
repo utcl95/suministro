@@ -12,12 +12,12 @@ import javax.microedition.lcdui.*;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
-
 public class FormCanvas extends CustomItem implements ItemCommandListener {
     private static final Command CMD_EDIT = new Command ("Edit", Command.ITEM, 1);
     private static final int UPPER = 0;
     private static final int IN = 1;
     private static final int LOWER = 2;
+    
     private Display display;
     private int rows = 5;
     private int cols = 3;
@@ -29,13 +29,18 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     private boolean isLastRecord = false;
     private String[][] data = new String[rows][cols];
 
+    // Usado en doNext, doBack, siguienteSinData
+    private ByteArrayInputStream bin = null;
+    private DataInputStream din = null;
+    private byte[] data_binary = null;
+    private String m_datarms[] = new String[3];
+
     // Traversal stuff
     // indicating support of horizontal traversal internal to the CustomItem
     boolean horz;
 
     // indicating support for vertical traversal internal to the CustomItem.
     boolean vert;
-
 
     public int number = 0;
     String m_title = "";
@@ -50,15 +55,12 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     // Actual "registro", 1..1000
     private int m_current = 0;
 
-
     // Promedio de lectura del suministro
     public int m_promedioLectura = 0;
     public int m_anteriorLectura = 0;
 
     private int cs = 1;
     private RMS_DataSuministros dataRMS = new RMS_DataSuministros("DATA00");
-
-
 
     public FormCanvas (String title, Display d) {
         super (title);
@@ -231,16 +233,10 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public void doNext() {
-        //RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
-        //int numeroSuministros = m_rms.recordCount();
         int i = m_current;
-        // Agregado
-        boolean btieneData = false;
-        ByteArrayInputStream bin = null;
-        DataInputStream din = null;
+
+        boolean btieneData = false;        
         RecordStore rsSuministro     = null;
-        byte[] data_binary = null;
-        String m_datarms[] = new String[3];
         int numeroSuministros = 0;
 
         try {
@@ -250,39 +246,14 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             ex.printStackTrace();
         }
         
-
         if(i == numeroSuministros) {
             isLastRecord = true;
         } else {
-            m_current = m_current + 1;
-            // Begin Tiene data
-            bin = null;
-            din = null;
-            //m_datarms[] = new String[3];
-            try {
-                data_binary = rsSuministro.getRecord(m_current);
-
-                bin = new ByteArrayInputStream(data_binary);
-                din = new DataInputStream(bin);
-
-                m_datarms[0] = din.readUTF();
-                m_datarms[1] = din.readUTF();
-                m_datarms[2] = din.readUTF();
-                din.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (RecordStoreException ex) {
-                ex.printStackTrace();
-            }
-
-            btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
-            // End
-            while(m_current <= numeroSuministros && btieneData) {
+            do {
                 m_current = m_current + 1;
                 // Begin Tiene data
                 bin = null;
                 din = null;
-                //m_datarms[] = new String[3];
                 try {
                     data_binary = rsSuministro.getRecord(m_current);
 
@@ -301,7 +272,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
                 btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
                 // End
-            }
+            } while(m_current <= numeroSuministros && btieneData);
+            
             if(m_current > numeroSuministros) {
                 isLastRecord = true;
                 return;
@@ -318,16 +290,10 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public void doBack() {
-        //RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
         int oldCurrent = m_current;
 
-        // Agregado
         boolean btieneData = false;
-        ByteArrayInputStream bin = null;
-        DataInputStream din = null;
         RecordStore rsSuministro     = null;
-        byte[] data_binary = null;
-        String m_datarms[] = new String[3];
 
         try {
             rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
@@ -336,36 +302,12 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         }
 
         if(oldCurrent == 1) {
-        } else {
-            m_current = m_current - 1;
-            // Begin
-            bin = null;
-            din = null;
-            //String m_datarms[] = new String[3];
-            try {
-                data_binary = rsSuministro.getRecord(m_current);
-
-                bin = new ByteArrayInputStream(data_binary);
-                din = new DataInputStream(bin);
-
-                m_datarms[0] = din.readUTF();
-                m_datarms[1] = din.readUTF();
-                m_datarms[2] = din.readUTF();
-                din.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (RecordStoreException ex) {
-                ex.printStackTrace();
-            }
-
-            btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
-            // End
-            while(btieneData && m_current > 1) {
+        } else {                        
+            do {
                 m_current = m_current - 1;
                 // Begin
                 bin = null;
                 din = null;
-                //String m_datarms[] = new String[3];
                 try {
                     data_binary = rsSuministro.getRecord(m_current);
 
@@ -384,8 +326,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
                 btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
                 // End
-            }
-            //m_rms = null;
+            } while(btieneData && m_current > 1);
+            
             try {
                 rsSuministro.closeRecordStore();
             } catch (RecordStoreException ex) {
@@ -406,16 +348,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public int siguienteSinData(int i) {
-        //RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
-        //int numeroSuministros = m_rms.recordCount();
-
-        // Agregado
         boolean btieneData = false;
-        ByteArrayInputStream bin = null;
-        DataInputStream din = null;
         RecordStore rsSuministro     = null;
-        byte[] data_binary = null;
-        String m_datarms[] = new String[3];
         int numeroSuministros = 0;
 
         try {
@@ -425,39 +359,14 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             ex.printStackTrace();
         }
 
-        int l_siguiente = i;
+        int l_siguiente = i-1;
         if(i == numeroSuministros) {
         } else {
-            // Begin Tiene data
-            bin = null;
-            din = null;
-            //m_datarms[] = new String[3];
-            try {
-                data_binary = rsSuministro.getRecord(l_siguiente);
-
-                bin = new ByteArrayInputStream(data_binary);
-                din = new DataInputStream(bin);
-
-                m_datarms[0] = din.readUTF();
-                m_datarms[1] = din.readUTF();
-                m_datarms[2] = din.readUTF();
-                din.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (RecordStoreException ex) {
-                ex.printStackTrace();
-            }
-
-            btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
-            //System.out.println("Data : " + l_siguiente);
-            // End
-            while(btieneData && l_siguiente < numeroSuministros) {
+            do {
                 l_siguiente = l_siguiente + 1;
-                //System.out.println("Data2 : " + l_siguiente);
                 // Begin Tiene data
                 bin = null;
                 din = null;
-                //m_datarms[] = new String[3];
                 try {
                     data_binary = rsSuministro.getRecord(l_siguiente);
 
@@ -476,16 +385,15 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
                 btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
                 // End
-            }
+            } while(btieneData && l_siguiente < numeroSuministros);
         }
-        //m_rms = null;
+        
         try {
             rsSuministro.closeRecordStore();
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
-        rsSuministro = null;
-        
+        rsSuministro = null;        
         return l_siguiente;
     }
 }
