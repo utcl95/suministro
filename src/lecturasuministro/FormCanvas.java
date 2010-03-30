@@ -234,10 +234,10 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
     public void doNext() {
         int i = m_current;
-
         boolean btieneData = false;        
         RecordStore rsSuministro     = null;
         int numeroSuministros = 0;
+        isLastRecord = false;
 
         try {
             rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
@@ -272,9 +272,9 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
                 btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
                 // End
-            } while(m_current <= numeroSuministros && btieneData);
+            } while(m_current < numeroSuministros && btieneData);
             
-            if(m_current > numeroSuministros) {
+            if(m_current == numeroSuministros) {
                 isLastRecord = true;
                 return;
             }
