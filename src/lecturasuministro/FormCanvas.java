@@ -27,6 +27,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     private int currentX = 0;
     private int currentY = 0;
     private boolean isLastRecord = false;
+    private boolean isBeginRecord = false;
+    
     private String[][] data = new String[rows][cols];
 
     private boolean firstTime = true;
@@ -307,7 +309,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
     public void doBack() {
         int oldCurrent = m_current;
-
+        isBeginRecord = false;
         boolean btieneData = false;
         RecordStore rsSuministro     = null;
 
@@ -343,7 +345,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
                 // End
                 System.out.println("Data I1 : "  + m_current);
-            } while(btieneData && m_current > 1);
+            } while(btieneData && m_current > 1);            
 
             System.out.println("Data I2 : "  + m_current);
             try {
@@ -353,16 +355,29 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             }
             rsSuministro = null;
 
-            if (btieneData) {
+            if(btieneData) {
+                isBeginRecord = true;
                 setCurrentSuministro(oldCurrent);
             } else {
                 setCurrentSuministro(m_current);
             }
+
+
         }
     }
 
+    /**
+     * Llego al final y no hay registros vacios?
+     */
     public boolean esElUltimoRegistro() {
         return isLastRecord;
+    }
+
+    /**
+     * LLego al inicio y no hay mas registro vacios?
+     */
+    public boolean esElPrimerRegistro() {
+        return isBeginRecord;
     }
 
     public int siguienteSinData(int i) {
