@@ -177,6 +177,8 @@ public class ModificarConsumo extends MIDlet implements CommandListener, ItemCom
     public void resetConsumoObservacion() {
         txtConsumo.setString("");
         txtObservacion.setString("");
+        destroyApp (false);
+        notifyDestroyed ();
     }
 
     public void pauseApp() {

@@ -103,16 +103,15 @@ public class GrabarLectura {
 
     public void grabarLectura(){
         m_indexSuministro = (m_ObjSinCanvas) ? m_indexSuministro : m_objCanvas.getCurrentSuministroPosition();
-
         String consumoActual = Integer.toString(m_consumoActual);
         String mobservacion  = Integer.toString(m_observacion);    
 
         objRmsSuministro.setSuministro(m_indexSuministro, m_suministro, consumoActual, mobservacion);
         if(!m_ObjSinCanvas) {
-            if(m_lecturaSecuencial == null) {
+            if(m_lecturaSecuencial == null) {                
                 m_busquedaSuministro.repaintCanvasAfterSave();
             } else {
-                m_lecturaSecuencial.repaintCanvasAfterSave();
+               m_lecturaSecuencial.repaintCanvasAfterSave();               
             }
         }
     }
@@ -166,11 +165,13 @@ public class GrabarLectura {
         switch(codigoValidarLectura) {
         case 1:
             grabarLectura();
-            if(m_busquedaSuministro == null)
-                m_lecturaSecuencial.resetConsumoObservacion();
-            else
-                m_busquedaSuministro.resetConsumoObservacion();
-            
+            if(m_busquedaSuministro == null && m_modificarConsumo == null){
+               m_lecturaSecuencial.resetConsumoObservacion();  }
+            if(m_lecturaSecuencial == null && m_modificarConsumo == null){
+               m_busquedaSuministro.resetConsumoObservacion();  }
+            else{
+               m_modificarConsumo.resetConsumoObservacion();
+               }
             return;
         case 2:
             mostrarMensaje(2, m_consumoActual);
