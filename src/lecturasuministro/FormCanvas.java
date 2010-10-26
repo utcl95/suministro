@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * (c) utcl95
  */
 
 package lecturasuministro;
@@ -60,6 +59,9 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     // Actual "registro", 1..1000
     private int m_current = 0;
 
+    // Numero de suministros en el RMS.
+    private int totalSuministrosRMS = 0;
+
     // Promedio de lectura del suministro
     public int m_promedioLectura = 0;
     public int m_anteriorLectura = 0;
@@ -69,12 +71,23 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
     public FormCanvas (String title, Display d) {
         super (title);
+        RecordStore t_rsSuministro = null;
         display = d;
         setDefaultCommand (CMD_EDIT);
         setItemCommandListener (this);
         int interactionMode = getInteractionModes ();
         horz = ((interactionMode & CustomItem.TRAVERSE_HORIZONTAL) != 0);
         vert = ((interactionMode & CustomItem.TRAVERSE_VERTICAL) != 0);
+
+        // Calcular el numero de suministros en el RMS.
+        try {
+            t_rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
+            totalSuministrosRMS = t_rsSuministro.getNumRecords();
+            t_rsSuministro.closeRecordStore();
+        } catch (RecordStoreException ex) {
+            ex.printStackTrace();
+        }
+        
         setCurrentSuministro(cs);
     }
 
@@ -246,17 +259,19 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         // Verificar siempre q no estamos al final de los registros.
         isLastRecord = false;
 
+        numeroSuministros = totalSuministrosRMS;
+        
         try {
             rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
-            numeroSuministros = rsSuministro.getNumRecords();
-            // Inicializacion.
-            if(firstTime) {
-                lastRecordWithoutData = numeroSuministros;
-                firstTime = false;
-            }
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
+
+        if(firstTime) {
+            lastRecordWithoutData = numeroSuministros;
+            firstTime = false;
+        }
+
         oldCurrent = m_current;
 
         if(i == numeroSuministros) {
@@ -385,9 +400,9 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         RecordStore rsSuministro     = null;
         int numeroSuministros = 0;
 
+        numeroSuministros = totalSuministrosRMS;
         try {
             rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
-            numeroSuministros = rsSuministro.getNumRecords();
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
