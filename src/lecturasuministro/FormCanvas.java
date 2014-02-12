@@ -15,8 +15,7 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     private static final Command CMD_EDIT = new Command ("Edit", Command.ITEM, 1);
     private static final int UPPER = 0;
     private static final int IN = 1;
-    private static final int LOWER = 2;
-    
+    private static final int LOWER = 2;    
     private Display display;
     private int rows = 5;
     private int cols = 3;
@@ -25,19 +24,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     private int location = UPPER;
     private int currentX = 0;
     private int currentY = 0;
-    private boolean isLastRecord = false;
-    private boolean isBeginRecord = false;
-    
+    private boolean isLastRecord = false;    
     private String[][] data = new String[rows][cols];
-
-    private boolean firstTime = true;
-    private int lastRecordWithoutData = 0;
-
-    // Usado en doNext, doBack, siguienteSinData
-    private ByteArrayInputStream bin = null;
-    private DataInputStream din = null;
-    private byte[] data_binary = null;
-    private String m_datarms[] = new String[3];
 
     // Traversal stuff
     // indicating support of horizontal traversal internal to the CustomItem
@@ -59,8 +47,6 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     // Actual "registro", 1..1000
     private int m_current = 0;
 
-    // Numero de suministros en el RMS.
-    private int totalSuministrosRMS = 0;
 
     // Promedio de lectura del suministro
     public int m_promedioLectura = 0;
@@ -71,23 +57,12 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
     public FormCanvas (String title, Display d) {
         super (title);
-        RecordStore t_rsSuministro = null;
         display = d;
         setDefaultCommand (CMD_EDIT);
         setItemCommandListener (this);
         int interactionMode = getInteractionModes ();
         horz = ((interactionMode & CustomItem.TRAVERSE_HORIZONTAL) != 0);
-        vert = ((interactionMode & CustomItem.TRAVERSE_VERTICAL) != 0);
-
-        // Calcular el numero de suministros en el RMS.
-        try {
-            t_rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
-            totalSuministrosRMS = t_rsSuministro.getNumRecords();
-            t_rsSuministro.closeRecordStore();
-        } catch (RecordStoreException ex) {
-            ex.printStackTrace();
-        }
-        
+        vert = ((interactionMode & CustomItem.TRAVERSE_VERTICAL) != 0);    
         setCurrentSuministro(cs);
     }
 
@@ -108,18 +83,22 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     protected void paint (Graphics g, int w, int h) {
+        String lecturaAnterior;
         g.setColor(0xffffff);
         g.fillRect(0, 0, w, h);
         g.setColor(0x000000);
+        lecturaAnterior = Integer.toString(m_anteriorLectura);
 
         // Suministro y Zona
         g.drawString(m_suministro + "--" + m_zona,   0, 0, Graphics.TOP | Graphics.LEFT);
+        // Lectura Anterior
+        g.drawString(lecturaAnterior, 0, 17, Graphics.TOP | Graphics.LEFT);
         // Cliente
-        g.drawString(m_direccion1,       0, 20, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_direccion1,       0, 34, Graphics.TOP | Graphics.LEFT);
         // Direccion
-        g.drawString(m_direccion2,    0, 40, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_direccion2,    0, 51, Graphics.TOP | Graphics.LEFT);
         // Serie Suministro
-        g.drawString(m_serie,        0, 60, Graphics.TOP | Graphics.LEFT);
+        g.drawString(m_serie,        0, 68, Graphics.TOP | Graphics.LEFT);
 
    }
 
@@ -207,8 +186,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public void setCurrentSuministro(int cs) {
-            String m_url = "file:///SDCard//suministros.txt";
-            //String m_url = "file:///e:/suministros.txt";
+            //String m_url = "file:///SDCard//suministros.txt";
+            String m_url = "file:///e:/suministros.txt";
 
             String data1[] = dataRMS.getRecord(cs);
             String dir1;
@@ -251,37 +230,34 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public void doNext() {
+        //RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
+        //int numeroSuministros = m_rms.recordCount();
         int i = m_current;
-        int oldCurrent = 0;
+        // Agregado
         boolean btieneData = false;        
+        ByteArrayInputStream bin = null;
+        DataInputStream din = null;
         RecordStore rsSuministro     = null;
+        byte[] data_binary = null;
+        String m_datarms[] = new String[3];
         int numeroSuministros = 0;
-        // Verificar siempre q no estamos al final de los registros.
-        isLastRecord = false;
-
-        numeroSuministros = totalSuministrosRMS;
         
         try {
             rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
+            numeroSuministros = rsSuministro.getNumRecords();
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
 
-        if(firstTime) {
-            lastRecordWithoutData = numeroSuministros;
-            firstTime = false;
-        }
-
-        oldCurrent = m_current;
 
         if(i == numeroSuministros) {
             isLastRecord = true;
         } else {
-            do {
                 m_current = m_current + 1;
                 // Begin Tiene data
                 bin = null;
                 din = null;
+            //m_datarms[] = new String[3];
                 try {
                     data_binary = rsSuministro.getRecord(m_current);
 
@@ -300,47 +276,69 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
                 btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
                 // End
-            } while(m_current < numeroSuministros && btieneData);
+            while(m_current <= numeroSuministros && btieneData) {
+                m_current = m_current + 1;
+                // Begin Tiene data
+                bin = null;
+                din = null;
+                //m_datarms[] = new String[3];
+                try {
+                    data_binary = rsSuministro.getRecord(m_current);
 
-            if(btieneData) {
-                isLastRecord = true;
-                m_current = oldCurrent;
-                if(oldCurrent < lastRecordWithoutData) {
-                    lastRecordWithoutData = oldCurrent;
+                    bin = new ByteArrayInputStream(data_binary);
+                    din = new DataInputStream(bin);
+
+                    m_datarms[0] = din.readUTF();
+                    m_datarms[1] = din.readUTF();
+                    m_datarms[2] = din.readUTF();
+                    din.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (RecordStoreException ex) {
+                    ex.printStackTrace();
                 }
+
+                btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
+                // End
+            }
+            if(m_current > numeroSuministros) {
+                isLastRecord = true;
                 return;
             }
-
             try {
                 rsSuministro.closeRecordStore();
             } catch (RecordStoreException ex) {
                 ex.printStackTrace();
-            }
-            
+            }            
             rsSuministro = null;
             setCurrentSuministro(m_current);
         }        
     }
 
     public void doBack() {
+        //RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
         int oldCurrent = m_current;
-        isBeginRecord = false;
+
+        // Agregado
         boolean btieneData = false;
+        ByteArrayInputStream bin = null;
+        DataInputStream din = null;
         RecordStore rsSuministro     = null;
+        byte[] data_binary = null;
+        String m_datarms[] = new String[3];
 
         try {
             rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
-        System.out.println("Data I0 : "  + m_current);
         if(oldCurrent == 1) {
         } else {                        
-            do {
                 m_current = m_current - 1;
                 // Begin
                 bin = null;
                 din = null;
+            //String m_datarms[] = new String[3];
                 try {
                     data_binary = rsSuministro.getRecord(m_current);
 
@@ -359,10 +357,32 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
 
                 btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
                 // End
-                System.out.println("Data I1 : "  + m_current);
-            } while(btieneData && m_current > 1);            
+            while(btieneData && m_current > 1) {
+                m_current = m_current - 1;
+                // Begin
+                bin = null;
+                din = null;
+                //String m_datarms[] = new String[3];
+                try {
+                    data_binary = rsSuministro.getRecord(m_current);
 
-            System.out.println("Data I2 : "  + m_current);
+                    bin = new ByteArrayInputStream(data_binary);
+                    din = new DataInputStream(bin);
+
+                    m_datarms[0] = din.readUTF();
+                    m_datarms[1] = din.readUTF();
+                    m_datarms[2] = din.readUTF();
+                    din.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (RecordStoreException ex) {
+                    ex.printStackTrace();
+                }
+
+                btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
+                // End
+            }
+            //m_rms = null;
             try {
                 rsSuministro.closeRecordStore();
             } catch (RecordStoreException ex) {
@@ -371,13 +391,10 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
             rsSuministro = null;
 
             if(btieneData) {
-                isBeginRecord = true;
                 setCurrentSuministro(oldCurrent);
             } else {
                 setCurrentSuministro(m_current);
             }
-
-
         }
     }
 
@@ -388,33 +405,33 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
         return isLastRecord;
     }
 
-    /**
-     * LLego al inicio y no hay mas registro vacios?
-     */
-    public boolean esElPrimerRegistro() {
-        return isBeginRecord;
-    }
-
     public int siguienteSinData(int i) {
+        //RMS_Suministro m_rms = new RMS_Suministro("SUMINISTROS");
+        //int numeroSuministros = m_rms.recordCount();
+
+        // Agregado
         boolean btieneData = false;
+        ByteArrayInputStream bin = null;
+        DataInputStream din = null;
         RecordStore rsSuministro     = null;
+        byte[] data_binary = null;
+        String m_datarms[] = new String[3];
         int numeroSuministros = 0;
 
-        numeroSuministros = totalSuministrosRMS;
         try {
             rsSuministro = RecordStore.openRecordStore("SUMINISTROS", true);
+            numeroSuministros = rsSuministro.getNumRecords();
         } catch (RecordStoreException ex) {
             ex.printStackTrace();
         }
 
-        int l_siguiente = i-1;
+        int l_siguiente = i;
         if(i == numeroSuministros) {
         } else {
-            do {
-                l_siguiente = l_siguiente + 1;
                 // Begin Tiene data
                 bin = null;
                 din = null;
+            //m_datarms[] = new String[3];
                 try {
                     data_binary = rsSuministro.getRecord(l_siguiente);
 
@@ -432,10 +449,36 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
                 }
 
                 btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
+            //System.out.println("Data : " + l_siguiente);
                 // End
-            } while(btieneData && l_siguiente < numeroSuministros);
+            while(btieneData && l_siguiente < numeroSuministros) {
+                l_siguiente = l_siguiente + 1;
+                //System.out.println("Data2 : " + l_siguiente);
+                // Begin Tiene data
+                bin = null;
+                din = null;
+                //m_datarms[] = new String[3];
+                try {
+                    data_binary = rsSuministro.getRecord(l_siguiente);
+
+                    bin = new ByteArrayInputStream(data_binary);
+                    din = new DataInputStream(bin);
+
+                    m_datarms[0] = din.readUTF();
+                    m_datarms[1] = din.readUTF();
+                    m_datarms[2] = din.readUTF();
+                    din.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (RecordStoreException ex) {
+                    ex.printStackTrace();
         }
         
+                btieneData = (m_datarms[1].equals("00000000") || m_datarms[2].equals("00")) ? false : true;
+                // End
+            }
+        }
+        //m_rms = null;
         try {
             rsSuministro.closeRecordStore();
         } catch (RecordStoreException ex) {

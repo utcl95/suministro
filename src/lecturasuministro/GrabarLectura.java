@@ -5,9 +5,15 @@
 
 package lecturasuministro;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
+import javax.microedition.rms.RecordStore;
+import javax.microedition.rms.RecordStoreException;
 
 /**
  *
@@ -165,13 +171,11 @@ public class GrabarLectura {
         switch(codigoValidarLectura) {
         case 1:
             grabarLectura();
-            if(m_busquedaSuministro == null && m_modificarConsumo == null){
-               m_lecturaSecuencial.resetConsumoObservacion();  }
-            if(m_lecturaSecuencial == null && m_modificarConsumo == null){
-               m_busquedaSuministro.resetConsumoObservacion();  }
-            else{
-               m_modificarConsumo.resetConsumoObservacion();
-               }
+            if(m_busquedaSuministro == null)
+                m_lecturaSecuencial.resetConsumoObservacion();
+            else
+                m_busquedaSuministro.resetConsumoObservacion();
+            
             return;
         case 2:
             mostrarMensaje(2, m_consumoActual);

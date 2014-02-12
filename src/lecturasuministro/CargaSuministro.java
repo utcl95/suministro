@@ -41,8 +41,8 @@ public class CargaSuministro extends MIDlet implements CommandListener {
         display = Display.getDisplay(this);
 
         // Un solo lugar para modificar el path a los archivos en el emulador y en el celular.
-        //urlToFile = "file:///e:/";
-        urlToFile = "file:///SDCard//";
+        urlToFile = "file:///e:/";
+        //urlToFile = "file:///SDCard//";
 
         sRMS.openRMS();
         int numDatos = sRMS.recordCount();
