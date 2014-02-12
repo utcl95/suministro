@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
@@ -51,7 +52,7 @@ public class RMS_Suministro {
      */
     public boolean tieneData(int index) {
         boolean bReturn = false;
-        String data[] = new String[3];
+        String data[] = new String[4];
         data = getRecord(index);
         bReturn = (data[1].equals("00000000") || data[2].equals("00")) ? false : true;
         // System.out.println("Tiene Data : " + bReturn);
@@ -85,6 +86,7 @@ public class RMS_Suministro {
             dout.writeUTF(asuministro); // Suministro
             dout.writeUTF("00000000");  // Consumo a cero al inicio.
             dout.writeUTF("00");        // Observacion
+            dout.writeUTF("000000000000000"); // Fecha hora.
             dout.close();
             byte[] data = bout.toByteArray();
             m_rs.addRecord(data, 0, data.length); // Añade el registro.
@@ -111,7 +113,7 @@ public class RMS_Suministro {
 
         // getRecord
         byte[] data = null;
-        String m_rms[] = new String[3];
+        String m_rms[] = new String[4];
 
         //System.out.println(nextID+"JAQUI");
         //showRMS();
@@ -196,6 +198,11 @@ public class RMS_Suministro {
             dout.writeUTF(ssuministro); // Suministro
             dout.writeUTF(sconsumo);
             dout.writeUTF(sobs);
+            // Save Date
+            Date now = new Date();
+            String sdate = Long.toString(now.getTime());
+            dout.writeUTF(sdate);
+            // end Save Date
 
             dout.close();
             byte[] data = bout.toByteArray();
@@ -248,7 +255,7 @@ public class RMS_Suministro {
     public String[] getRecord(int index) {
         ByteArrayInputStream bin = null;
         DataInputStream din = null;
-        String m_rms[] = new String[3];
+        String m_rms[] = new String[4];
         openRMS();
         try {
             byte[] data = m_rs.getRecord(index);
@@ -259,6 +266,7 @@ public class RMS_Suministro {
             m_rms[0] = din.readUTF();
             m_rms[1] = din.readUTF();
             m_rms[2] = din.readUTF();
+            m_rms[3] = din.readUTF();
             din.close();
             closeRMS();
         } catch (IOException ex) {

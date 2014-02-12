@@ -43,22 +43,22 @@ public class EnviarLectura extends MIDlet implements CommandListener {
 
 
     public void sendData() {
-        String[] m_record = new String[3];
+        String[] m_record = new String[4];
         String m_linea = "";
         //
         RecordStore m_rs            = null;
         ByteArrayInputStream bin    = null;
         DataInputStream din         = null;
         byte[] data = null;
-        String m_rms[] = new String[3];
+        String m_rms[] = new String[4];
         //
         char cr = 13;
         try {
             m_rs = RecordStore.openRecordStore("SUMINISTROS", true);
             int numRMS = m_rs.getNumRecords();
             //System.out.println(numRMS);
-            //FileConnection connection = (FileConnection) Connector.open("file:///SDCard//lecturas.txt", Connector.WRITE );
-            FileConnection connection = (FileConnection) Connector.open("file:///e:/lecturas.txt", Connector.WRITE );
+            FileConnection connection = (FileConnection) Connector.open("file:///SDCard//lecturas.txt", Connector.WRITE );
+            //FileConnection connection = (FileConnection) Connector.open("file:///e:/lecturas.txt", Connector.WRITE );
             connection.create();
             OutputStream out = connection.openOutputStream();
             PrintStream output = new PrintStream(out);
@@ -70,6 +70,7 @@ public class EnviarLectura extends MIDlet implements CommandListener {
                 m_rms[0] = "";
                 m_rms[1] = "";
                 m_rms[2] = "";
+                m_rms[3] = "";
                 try {
                     data = m_rs.getRecord(i);
 
@@ -79,6 +80,7 @@ public class EnviarLectura extends MIDlet implements CommandListener {
                     m_rms[0] = din.readUTF();
                     m_rms[1] = din.readUTF();
                     m_rms[2] = din.readUTF();
+                    m_rms[3] = din.readUTF();
                     din.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -89,7 +91,7 @@ public class EnviarLectura extends MIDlet implements CommandListener {
                 
                 if(!m_rms[1].equals("00000000") || !m_rms[2].equals("00")) {
                     m_rms[0] = m_rms[0].substring(0, 8);
-                    m_linea =  m_rms[0] + "," + m_rms[1] + "," +  m_rms[2] + cr;
+                    m_linea =  m_rms[0] + "," + m_rms[1] + "," +  m_rms[2] + "," +  m_rms[3] + cr;
                     output.println(m_linea);
                 }
             }

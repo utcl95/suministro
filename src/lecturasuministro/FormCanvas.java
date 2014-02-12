@@ -186,8 +186,8 @@ public class FormCanvas extends CustomItem implements ItemCommandListener {
     }
 
     public void setCurrentSuministro(int cs) {
-            //String m_url = "file:///SDCard//suministros.txt";
-            String m_url = "file:///e:/suministros.txt";
+            String m_url = "file:///SDCard//suministros.txt";
+            //String m_url = "file:///e:/suministros.txt";
 
             String data1[] = dataRMS.getRecord(cs);
             String dir1;
