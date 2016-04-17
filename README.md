@@ -1,4 +1,4 @@
 Suministro
 ==========
 
-Programa para la lectura de suministros usando una aplicacion J2ME.
+Programa para la lectura de suministros (leer consumo de electricidad) usando una aplicacion J2ME.
